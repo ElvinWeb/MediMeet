@@ -228,10 +228,17 @@ const adminDashboard = async (req, res) => {
     const doctors = await doctorModel.find({});
     const users = await userModel.find({});
     const appointments = await appointmentModel.find({});
+    let earnings = 0;
 
     const latestAppointments = appointments
       .sort((a, b) => b.createdAt - a.createdAt)
       .slice(0, 5);
+
+    appointments.map((item) => {
+      if (item.isCompleted || item.payment) {
+        earnings += item.amount;
+      }
+    });
 
     const recentlyAddedDoctors = await doctorModel
       .find({})
@@ -268,6 +275,7 @@ const adminDashboard = async (req, res) => {
       patients: users.length,
       latestAppointments,
       doctorActivity,
+      earnings,
     };
 
     res.json({ success: true, dashData });

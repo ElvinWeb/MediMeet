@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import appointmentModel from "../models/appointmentModel.js";
 import doctorModel from "../models/doctorModel.js";
+import dayjs from "dayjs";
 import {
   generateAvailableSlots,
   formatDateToSlotKey,
@@ -145,16 +146,14 @@ const doctorDashboard = async (req, res) => {
 
     const doctor = await doctorModel.findById(docId);
     const appointments = await appointmentModel.find({ docId });
-
     let earnings = 0;
+    let patients = [];
 
     appointments.map((item) => {
       if (item.isCompleted || item.payment) {
         earnings += item.amount;
       }
     });
-
-    let patients = [];
 
     appointments.map((item) => {
       if (!patients.includes(item.userId)) {
@@ -166,17 +165,21 @@ const doctorDashboard = async (req, res) => {
       .sort((a, b) => b.createdAt - a.createdAt)
       .slice(0, 5);
 
-    const TOTAL_AVAILABLE_SLOTS = generateAvailableSlots();
-    const todayKey = formatDateToSlotKey();
+    const totalSlots = generateAvailableSlots();
+    const todayKey = dayjs().format("D_M_YYYY");
     const todayBookedSlots = doctor.slots_booked?.[todayKey] || [];
-    const freeSlotsToday =
-      TOTAL_AVAILABLE_SLOTS[0].length - todayBookedSlots.length;
+    const freeSlotsToday = totalSlots[0].length - todayBookedSlots.length;
+
+    const todayAppointments = appointments.filter(
+      (app) => app.slotDate === todayKey
+    );
 
     const dashData = {
       earnings,
-      appointments: appointments.length,
-      patients: patients.length,
       latestAppointments,
+      allAppointments: appointments,
+      appointmentsCount: todayAppointments.length,
+      patients: patients.length,
       freeSlotsToday,
     };
 

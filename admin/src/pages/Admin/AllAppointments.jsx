@@ -27,6 +27,11 @@ const AllAppointments = () => {
     );
   });
 
+  const handleResetSearch = () => {
+    setSearchInput("");
+    setSearchTerm("");
+  };
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setSearchTerm(searchInput);
@@ -64,6 +69,19 @@ const AllAppointments = () => {
             title="No Appointments Yet"
             subtitle="When appointments are made, they’ll appear here."
           />
+        ) : filteredAppointments.length === 0 ? (
+          <div className="flex flex-col items-center justify-center pb-4">
+            <EmptyState
+              title="No Matches Found"
+              subtitle="We couldn't find any appointments matching your search."
+            />
+            <button
+              onClick={handleResetSearch}
+              className="px-5 py-2 bg-primary text-white rounded hover:bg-blue-600 transition-all"
+            >
+              Show All Appointments
+            </button>
+          </div>
         ) : (
           filteredAppointments.map((item, index) => (
             <div

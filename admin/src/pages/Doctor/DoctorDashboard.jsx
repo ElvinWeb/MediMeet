@@ -31,7 +31,7 @@ const DoctorDashboard = () => {
         <div className="flex flex-row gap-5 mt-10">
           <DoctorBookingActivity />
           <DoctorAppointmentsStatusPieChart
-            appointments={dashData.latestAppointments}
+            appointments={dashData.allAppointments}
           />
         </div>
       </div>

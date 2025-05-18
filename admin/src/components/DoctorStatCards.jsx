@@ -15,19 +15,22 @@ const DoctorStatCards = () => {
   return (
     <div className="flex flex-wrap gap-3">
       <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
-        <img className="w-14" src={assets.earning_icon} alt="" />
+        <div className="p-3 bg-[#F5F7FF] rounded-md">
+          <img className="w-8" src={assets.calendar_icon} alt="" />
+        </div>
         <div>
           <p className="text-xl font-semibold text-gray-600">
-            {CURRENCY_SYMBOL} {dashData.earnings}
+            {dashData.freeSlotsToday}
           </p>
-          <p className="text-gray-400">Earnings</p>
+          <p className="text-gray-400">Free Slots</p>
         </div>
       </div>
+
       <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
         <img className="w-14" src={assets.appointments_icon} alt="" />
         <div>
           <p className="text-xl font-semibold text-gray-600">
-            {dashData.appointments}
+            {dashData.appointmentsCount}
           </p>
           <p className="text-gray-400">Appointments</p>
         </div>
@@ -42,14 +45,12 @@ const DoctorStatCards = () => {
         </div>
       </div>
       <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
-        <div className="p-3 bg-[#F5F7FF] rounded-md">
-          <img className="w-8" src={assets.calendar_icon} alt="" />
-        </div>
+        <img className="w-14" src={assets.earning_icon} alt="" />
         <div>
           <p className="text-xl font-semibold text-gray-600">
-            {dashData.freeSlotsToday}
+            {CURRENCY_SYMBOL} {dashData.earnings}
           </p>
-          <p className="text-gray-400">Free Slots</p>
+          <p className="text-gray-400">Earnings</p>
         </div>
       </div>
     </div>
