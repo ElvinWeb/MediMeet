@@ -21,8 +21,8 @@ const DoctorBookingActivity = () => {
   }, [dToken, getDashData]);
 
   return (
-    <div className="bg-white">
-      <div className="flex items-center gap-2.5 px-4 py-4 mt-10 rounded-t border">
+    <div className="bg-white shadow columns-xl rounded-md">
+      <div className="flex items-center gap-2.5 px-4 py-4 rounded-t border">
         <img
           src={assets.calendar_icon}
           alt="calendar image"
