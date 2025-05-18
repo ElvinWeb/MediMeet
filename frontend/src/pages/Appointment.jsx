@@ -21,8 +21,6 @@ const Appointment = () => {
   const [slotTime, setSlotTime] = useState("");
   const navigate = useNavigate();
 
-  console.log(docSlots)
-
   const fetchDocInfo = useCallback(async () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
     setDocInfo(docInfo);
@@ -77,20 +75,25 @@ const Appointment = () => {
     }
   }, [docInfo, getAvailableSolts]);
 
+  console.log("docInfo", docInfo);
+
   return docInfo ? (
     <div>
       {/* ---------- Doctor Details ----------- */}
       <DoctorDetails docInfo={docInfo} />
 
       {/* Booking slots */}
-      <BookingSlots
-        docSlots={docSlots}
-        onBookAppointment={bookAppointment}
-        slotIndex={slotIndex}
-        slotTime={slotTime}
-        onSlotIndex={setSlotIndex}
-        onSlotTime={setSlotTime}
-      />
+
+      {docInfo.available && (
+        <BookingSlots
+          docSlots={docSlots}
+          onBookAppointment={bookAppointment}
+          slotIndex={slotIndex}
+          slotTime={slotTime}
+          onSlotIndex={setSlotIndex}
+          onSlotTime={setSlotTime}
+        />
+      )}
 
       {/* Listing Releated Doctors */}
       <RelatedDoctors speciality={docInfo.speciality} docId={docId} />

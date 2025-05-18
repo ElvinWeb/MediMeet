@@ -18,6 +18,7 @@ const DoctorDetails = ({ docInfo }) => {
           {docInfo.name}
           <img className="w-5" src={assets.verified_icon} alt="" />
         </p>
+
         <div className="flex items-center gap-2 mt-1 text-gray-600">
           <p>
             {docInfo.degree} - {docInfo.speciality}
@@ -43,6 +44,13 @@ const DoctorDetails = ({ docInfo }) => {
             {docInfo.fees}
           </span>
         </p>
+
+        {!docInfo.available && (
+          <div className="mt-3 p-3 border border-red-300 bg-red-50 text-red-600 text-sm rounded">
+            Currently unavailable for booking. Please check back later or choose
+            another doctor.
+          </div>
+        )}
       </div>
     </div>
   );
@@ -53,6 +61,7 @@ DoctorDetails.propTypes = {
     image: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     degree: PropTypes.string.isRequired,
+    available: PropTypes.bool.isRequired,
     speciality: PropTypes.string.isRequired,
     experience: PropTypes.string.isRequired,
     about: PropTypes.string.isRequired,
