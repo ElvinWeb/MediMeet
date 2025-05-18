@@ -1,7 +1,11 @@
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import doctorModel from "../models/doctorModel.js";
+import jwt from "jsonwebtoken";
 import appointmentModel from "../models/appointmentModel.js";
+import doctorModel from "../models/doctorModel.js";
+import {
+  generateAvailableSlots,
+  formatDateToSlotKey,
+} from "../utils/appointmentUtils.js";
 
 // API for doctor Login
 const loginDoctor = async (req, res) => {
@@ -139,6 +143,7 @@ const doctorDashboard = async (req, res) => {
   try {
     const { docId } = req.body;
 
+    const doctor = await doctorModel.findById(docId);
     const appointments = await appointmentModel.find({ docId });
 
     let earnings = 0;
@@ -157,11 +162,22 @@ const doctorDashboard = async (req, res) => {
       }
     });
 
+    const latestAppointments = appointments
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .slice(0, 5);
+
+    const TOTAL_AVAILABLE_SLOTS = generateAvailableSlots();
+    const todayKey = formatDateToSlotKey();
+    const todayBookedSlots = doctor.slots_booked?.[todayKey] || [];
+    const freeSlotsToday =
+      TOTAL_AVAILABLE_SLOTS[0].length - todayBookedSlots.length;
+
     const dashData = {
       earnings,
       appointments: appointments.length,
       patients: patients.length,
-      latestAppointments: appointments.reverse(),
+      latestAppointments,
+      freeSlotsToday,
     };
 
     res.json({ success: true, dashData });
@@ -172,13 +188,13 @@ const doctorDashboard = async (req, res) => {
 };
 
 export {
-  loginDoctor,
-  appointmentsDoctor,
   appointmentCancel,
-  doctorList,
-  changeAvailablity,
   appointmentComplete,
+  appointmentsDoctor,
+  changeAvailablity,
   doctorDashboard,
+  doctorList,
   doctorProfile,
+  loginDoctor,
   updateDoctorProfile,
 };

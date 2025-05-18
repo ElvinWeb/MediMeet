@@ -28,9 +28,11 @@ const updateFormSchema = yup.object().shape({
   about: yup.string().required("About is required"),
   image: yup
     .mixed()
-    .required("Image is required")
-    .test("fileExist", "Image is required", (value) => {
-      return value instanceof File;
+    .test("fileRequiredOnCreate", "Image is required", function (value) {
+      const isFileList =
+        value instanceof FileList ||
+        (Array.isArray(value) && value[0] instanceof File);
+      return !value || isFileList || typeof value === "string";
     }),
 });
 
@@ -59,6 +61,7 @@ const UpdateDoctor = () => {
       address1: "",
       address2: "",
       about: "",
+      image: "",
     },
     mode: "all",
   });
@@ -79,8 +82,6 @@ const UpdateDoctor = () => {
       setValue("address2", doctorData.address?.line2 || "");
     }
   }, [doctorData, setValue]);
-
-  console.log(doctorData);
 
   const onSubmit = async (data) => {
     if (!doctorData._id) return;
@@ -105,6 +106,8 @@ const UpdateDoctor = () => {
         })
       );
     }
+
+    console.log("data updated");
 
     try {
       const { data } = await axios.put(

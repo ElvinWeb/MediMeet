@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useCallback } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import PropTypes from "prop-types";
@@ -16,7 +16,7 @@ const DoctorContextProvider = ({ children }) => {
   const isAppoinmentAvailable = !appointments || appointments.length === 0;
 
   // Getting Doctor appointment data from Database using API
-  const getAppointments = async () => {
+  const getAppointments = useCallback(async () => {
     try {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.APPOINTMENTS,
@@ -32,10 +32,10 @@ const DoctorContextProvider = ({ children }) => {
       console.log(error);
       toast.error(error.message);
     }
-  };
+  }, [dToken]);
 
   // Getting Doctor profile data from Database using API
-  const getProfileData = async () => {
+  const getProfileData = useCallback(async () => {
     try {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.PROFILE,
@@ -43,13 +43,12 @@ const DoctorContextProvider = ({ children }) => {
           headers: { dToken },
         }
       );
-      console.log(data.profileData);
       setProfileData(data.profileData);
     } catch (error) {
       console.log(error);
       toast.error(error.message);
     }
-  };
+  }, [dToken]);
 
   // Function to cancel doctor appointment using API
   const cancelAppointment = async (appointmentId) => {
@@ -96,7 +95,7 @@ const DoctorContextProvider = ({ children }) => {
   };
 
   // Getting Doctor dashboard data using API
-  const getDashData = async () => {
+  const getDashData = useCallback(async () => {
     try {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.DASHBOARD,
@@ -114,7 +113,7 @@ const DoctorContextProvider = ({ children }) => {
       console.log(error);
       toast.error(error.message);
     }
-  };
+  }, [dToken]);
 
   const value = {
     dToken,

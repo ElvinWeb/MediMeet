@@ -21,6 +21,8 @@ const Appointment = () => {
   const [slotTime, setSlotTime] = useState("");
   const navigate = useNavigate();
 
+  console.log(docSlots)
+
   const fetchDocInfo = useCallback(async () => {
     const docInfo = doctors.find((doc) => doc._id === docId);
     setDocInfo(docInfo);

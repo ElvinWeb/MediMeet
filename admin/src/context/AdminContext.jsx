@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
 import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
@@ -16,7 +16,7 @@ const AdminContextProvider = ({ children }) => {
   const isAppoinmentAvailable = !appointments || appointments.length === 0;
 
   // Getting all Doctors data from Database using API
-  const getAllDoctors = async () => {
+  const getAllDoctors = useCallback(async () => {
     try {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.ADMIN.ALL_DOCTORS,
@@ -32,7 +32,7 @@ const AdminContextProvider = ({ children }) => {
     } catch (error) {
       toast.error(error.message);
     }
-  };
+  }, [aToken]);
 
   // Function to change doctor availablity using API
   const changeAvailability = async (docId) => {
@@ -55,7 +55,7 @@ const AdminContextProvider = ({ children }) => {
   };
 
   // Getting all appointment data from Database using API
-  const getAllAppointments = async () => {
+  const getAllAppointments = useCallback(async () => {
     try {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.ADMIN.APPOINTMENTS,
@@ -72,7 +72,7 @@ const AdminContextProvider = ({ children }) => {
       toast.error(error.message);
       console.log(error);
     }
-  };
+  }, [aToken]);
 
   // Function to cancel appointment using API
   const cancelAppointment = async (appointmentId) => {
@@ -96,7 +96,7 @@ const AdminContextProvider = ({ children }) => {
   };
 
   // Getting Admin Dashboard data from Database using API
-  const getDashData = async () => {
+  const getDashData = useCallback(async () => {
     try {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.ADMIN.DASHBOARD,
@@ -114,7 +114,7 @@ const AdminContextProvider = ({ children }) => {
       console.log(error);
       toast.error(error.message);
     }
-  };
+  }, [aToken]);
 
   const value = {
     aToken,
