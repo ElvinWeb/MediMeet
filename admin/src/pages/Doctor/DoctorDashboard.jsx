@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import DoctorBookingActivity from "../../components/DoctorBookingActivity";
 import DoctorStatCards from "../../components/DoctorStatCards";
 import { DoctorContext } from "../../context/DoctorContext";
-import DoctorAppointmentsStatusPieChart from "../../components/DoctorAppointmentsStatusPieChart";
+import AppointmentsStatusPieChart from "../../components/AppointmentsStatusPieChart";
 
 const DoctorDashboard = () => {
   const { dToken, dashData, profileData, getDashData, getProfileData } =
@@ -14,7 +14,7 @@ const DoctorDashboard = () => {
       getDashData();
     }
   }, [dToken, getDashData, getProfileData]);
-  
+
   return (
     dashData && (
       <div className="m-5">
@@ -30,9 +30,7 @@ const DoctorDashboard = () => {
         <DoctorStatCards />
         <div className="flex flex-row gap-5 mt-10">
           <DoctorBookingActivity />
-          <DoctorAppointmentsStatusPieChart
-            appointments={dashData.allAppointments}
-          />
+          <AppointmentsStatusPieChart appointments={dashData.allAppointments} />
         </div>
       </div>
     )

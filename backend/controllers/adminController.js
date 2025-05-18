@@ -273,6 +273,7 @@ const adminDashboard = async (req, res) => {
       doctors: doctors.length,
       appointments: appointments.length,
       patients: users.length,
+      allAppointments: appointments,
       latestAppointments,
       doctorActivity,
       earnings,

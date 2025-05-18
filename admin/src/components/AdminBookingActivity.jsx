@@ -19,7 +19,7 @@ const AdminBookingActivity = () => {
   }, [aToken, dashData, getDashData]);
 
   return (
-    <div className="bg-white columns-sm rounded-md shadow">
+    <div className="bg-white columns-lg rounded-md shadow">
       <div className="flex items-center gap-2.5 px-4 py-4 rounded-t border">
         <img
           src={assets.calendar_icon}

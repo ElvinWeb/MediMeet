@@ -3,6 +3,7 @@ import AdminDoctorActivity from "../../components/AdminDoctorActivity";
 import AdminStatCards from "../../components/AdminStatCards";
 import { useContext, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
+import AppointmentsStatusPieChart from "../../components/AppointmentsStatusPieChart";
 
 const Dashboard = () => {
   const { aToken, getDashData, dashData } = useContext(AdminContext);
@@ -29,6 +30,7 @@ const Dashboard = () => {
         <div className="flex flex-row gap-5 mt-10">
           <AdminBookingActivity />
           <AdminDoctorActivity />
+          <AppointmentsStatusPieChart appointments={dashData.allAppointments} />
         </div>
       </div>
     )
