@@ -1,12 +1,9 @@
 import bcrypt from "bcrypt";
+import dayjs from "dayjs";
 import jwt from "jsonwebtoken";
 import appointmentModel from "../models/appointmentModel.js";
 import doctorModel from "../models/doctorModel.js";
-import dayjs from "dayjs";
-import {
-  generateAvailableSlots,
-  formatDateToSlotKey,
-} from "../utils/appointmentUtils.js";
+import { generateAvailableSlots } from "../utils/appointmentUtils.js";
 
 // API for doctor Login
 const loginDoctor = async (req, res) => {
@@ -36,9 +33,28 @@ const loginDoctor = async (req, res) => {
 const appointmentsDoctor = async (req, res) => {
   try {
     const { docId } = req.body;
-    const appointments = await appointmentModel.find({ docId });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 7;
+    const skip = (page - 1) * limit;
 
-    res.json({ success: true, appointments });
+    const totalAppointments = await appointmentModel.countDocuments({ docId });
+
+    const appointments = await appointmentModel
+      .find({ docId })
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      appointments,
+      pagination: {
+        total: totalAppointments,
+        currentPage: page,
+        totalPages: Math.ceil(totalAppointments / limit),
+        pageSize: limit,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });

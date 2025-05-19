@@ -30,8 +30,28 @@ const loginAdmin = async (req, res) => {
 // API to get all appointments list
 const appointmentsAdmin = async (req, res) => {
   try {
-    const appointments = await appointmentModel.find({});
-    res.json({ success: true, appointments });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 7; // Default limit is now 7
+    const skip = (page - 1) * limit;
+
+    const totalAppointments = await appointmentModel.countDocuments();
+
+    const appointments = await appointmentModel
+      .find({})
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      appointments,
+      pagination: {
+        total: totalAppointments,
+        currentPage: page,
+        totalPages: Math.ceil(totalAppointments / limit),
+        pageSize: limit,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
