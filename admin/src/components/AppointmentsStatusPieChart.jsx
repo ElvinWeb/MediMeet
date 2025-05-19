@@ -5,6 +5,7 @@ import {
   renderCustomizedLabel,
 } from "../utils/statusUtils.jsx";
 import { COLORS } from "../constants/chartConstants.js";
+import StatusIcon from "./StatusIcon.jsx";
 
 const AppointmentsStatusPieChart = ({ appointments }) => {
   const chartData = getAppointmentStatusCounts(appointments);
@@ -12,6 +13,7 @@ const AppointmentsStatusPieChart = ({ appointments }) => {
   return (
     <div className="w-full sm:w-1/2 bg-white rounded-lg shadow">
       <div className="flex items-center gap-2.5 px-4 py-4 rounded-t border">
+        <StatusIcon />
         <p className="font-semibold">Booking Status Activity</p>
       </div>
       <ResponsiveContainer width="100%" height={250}>

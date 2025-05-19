@@ -1,40 +1,15 @@
-import { useContext, useEffect, useMemo } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { AdminContext } from "../../context/AdminContext";
+import { useContext, useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { SPEACIALITY_LIST } from "../../constants/specialityConstants";
+import { AdminContext } from "../../context/AdminContext";
 
 import axios from "axios";
 import { toast } from "react-toastify";
 import { API_ENDPOINTS, BACKEND_URL } from "../../constants/apiEndpoints";
-
-const updateFormSchema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup.string().min(6).required("Password is required"),
-  experience: yup.string().required("Experience is required"),
-  fees: yup
-    .number()
-    .typeError("Fees must be a number")
-    .positive("Fees must be greater than zero")
-    .required("Fees is required"),
-  speciality: yup.string().required("Speciality is required"),
-  degree: yup.string().required("Degree is required"),
-  address1: yup.string().required("Address line 1 is required"),
-  address2: yup.string().required("Address line 2 is required"),
-  about: yup.string().required("About is required"),
-  image: yup
-    .mixed()
-    .test("fileRequiredOnCreate", "Image is required", function (value) {
-      const isFileList =
-        value instanceof FileList ||
-        (Array.isArray(value) && value[0] instanceof File);
-      return !value || isFileList || typeof value === "string";
-    }),
-});
+import { doctorUpdateFormValidationSchema } from "../../validation/doctorValidationSchema";
 
 const UpdateDoctor = () => {
   const { getAllDoctors, aToken } = useContext(AdminContext);
@@ -49,7 +24,7 @@ const UpdateDoctor = () => {
     watch,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: yupResolver(updateFormSchema),
+    resolver: yupResolver(doctorUpdateFormValidationSchema),
     defaultValues: {
       name: "",
       email: "",

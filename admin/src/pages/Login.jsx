@@ -4,15 +4,10 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import * as yup from "yup";
 import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
 import { AdminContext } from "../context/AdminContext";
 import { DoctorContext } from "../context/DoctorContext";
-
-const loginSchema = yup.object().shape({
-  email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup.string().required("Password is required"),
-});
+import { loginValidationSchema } from "../validation/loginValidationSchema";
 
 const Login = () => {
   const [state, setState] = useState("Admin");
@@ -26,7 +21,11 @@ const Login = () => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver(loginSchema),
+    resolver: yupResolver(loginValidationSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
     mode: "all",
   });
 

@@ -4,34 +4,11 @@ import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import * as yup from "yup";
 import { assets } from "../../assets/assets";
 import { API_ENDPOINTS, BACKEND_URL } from "../../constants/apiEndpoints";
 import { SPEACIALITY_LIST } from "../../constants/specialityConstants";
 import { AdminContext } from "../../context/AdminContext";
-
-const submitFormSchema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup.string().min(6).required("Password is required"),
-  experience: yup.string().required("Experience is required"),
-  fees: yup
-    .number()
-    .typeError("Fees must be a number")
-    .positive("Fees must be greater than zero")
-    .required("Fees is required"),
-  speciality: yup.string().required("Speciality is required"),
-  degree: yup.string().required("Degree is required"),
-  address1: yup.string().required("Address line 1 is required"),
-  address2: yup.string().required("Address line 2 is required"),
-  about: yup.string().required("About is required"),
-  image: yup
-    .mixed()
-    .required("Image is required")
-    .test("fileExist", "Image is required", (value) => {
-      return value instanceof File;
-    }),
-});
+import { doctorSubmitFormValidationSchema } from "../../validation/doctorValidationSchema";
 
 const AddDoctor = () => {
   const { aToken } = useContext(AdminContext);
@@ -46,7 +23,7 @@ const AddDoctor = () => {
     clearErrors,
     formState: { errors, isSubmitting },
   } = useForm({
-    resolver: yupResolver(submitFormSchema),
+    resolver: yupResolver(doctorSubmitFormValidationSchema),
     defaultValues: {
       experience: "1 Year",
       speciality: "General physician",

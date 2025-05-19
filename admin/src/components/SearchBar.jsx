@@ -1,8 +1,27 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import PropTypes from "prop-types";
+import { useForm } from "react-hook-form";
+import { searchValidationSchema } from "../validation/searchValidationSchema";
 
-function SearchBar({ searchInput, setSearchInput, onSearchSubmit }) {
+function SearchBar({ onSearchSubmit }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(searchValidationSchema),
+    defaultValues: {
+      search: "",
+    },
+    mode: "all",
+  });
+
+  const onSubmit = async (data) => {
+    onSearchSubmit(data.search);
+  };
+
   return (
-    <form className="max-w-md my-5" onSubmit={onSearchSubmit}>
+    <form className="max-w-md my-5" onSubmit={handleSubmit(onSubmit)}>
       <label
         htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -28,13 +47,10 @@ function SearchBar({ searchInput, setSearchInput, onSearchSubmit }) {
           </svg>
         </div>
         <input
-          type="search"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          id="default-search"
+          id="search"
           className="block w-full p-4 ps-10 text-sm outline-none text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:bg-primary"
           placeholder="Search appointments"
-          required
+          {...register("search")}
         />
         <button
           type="submit"
@@ -43,13 +59,16 @@ function SearchBar({ searchInput, setSearchInput, onSearchSubmit }) {
           Search
         </button>
       </div>
+      {errors.search && (
+        <p className="text-red-500 text-xs mt-1 ps-1">
+          {errors.search.message}
+        </p>
+      )}
     </form>
   );
 }
 
 SearchBar.propTypes = {
-  searchInput: PropTypes.string.isRequired,
-  setSearchInput: PropTypes.func.isRequired,
   onSearchSubmit: PropTypes.func.isRequired,
 };
 
