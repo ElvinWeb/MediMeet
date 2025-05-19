@@ -21,8 +21,8 @@ const AllAppointments = () => {
     const patientName = item.userData.name.toLowerCase();
     const doctorName = item.docData.name.toLowerCase();
     return (
-      patientName.includes(searchTerm.toLowerCase()) ||
-      doctorName.includes(searchTerm.toLowerCase())
+      patientName.includes(searchTerm.trim().toLowerCase()) ||
+      doctorName.includes(searchTerm.trim().toLowerCase())
     );
   });
 

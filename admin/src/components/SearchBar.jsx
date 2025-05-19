@@ -21,7 +21,7 @@ function SearchBar({ onSearchSubmit }) {
   };
 
   return (
-    <form className="max-w-md my-5" onSubmit={handleSubmit(onSubmit)}>
+    <form className="max-w-md" onSubmit={handleSubmit(onSubmit)}>
       <label
         htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
