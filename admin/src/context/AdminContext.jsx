@@ -11,6 +11,7 @@ const AdminContextProvider = ({ children }) => {
     localStorage.getItem("aToken") ? localStorage.getItem("aToken") : ""
   );
   const [appointments, setAppointments] = useState([]);
+  const [totalAppointments, setTotalAppointments] = useState(0);
   const [doctors, setDoctors] = useState([]);
   const [dashData, setDashData] = useState(false);
   const isAppoinmentAvailable = !appointments || appointments.length === 0;
@@ -55,24 +56,30 @@ const AdminContextProvider = ({ children }) => {
   };
 
   // Getting all appointment data from Database using API
-  const getAllAppointments = useCallback(async () => {
-    try {
-      const { data } = await axios.get(
-        BACKEND_URL + API_ENDPOINTS.ADMIN.APPOINTMENTS,
-        {
-          headers: { aToken },
+  const getAllAppointments = useCallback(
+    async (page = 1, limit = 7) => {
+      try {
+        const { data } = await axios.get(
+          `${
+            BACKEND_URL + API_ENDPOINTS.ADMIN.APPOINTMENTS
+          }?page=${page}&limit=${limit}`,
+          {
+            headers: { aToken },
+          }
+        );
+        if (data.success) {
+          setAppointments(data.appointments.reverse());
+          setTotalAppointments(data.pagination.total);
+        } else {
+          toast.error(data.message);
         }
-      );
-      if (data.success) {
-        setAppointments(data.appointments.reverse());
-      } else {
-        toast.error(data.message);
+      } catch (error) {
+        toast.error(error.message);
+        console.log(error);
       }
-    } catch (error) {
-      toast.error(error.message);
-      console.log(error);
-    }
-  }, [aToken]);
+    },
+    [aToken]
+  );
 
   // Function to cancel appointment using API
   const cancelAppointment = async (appointmentId) => {
@@ -122,6 +129,7 @@ const AdminContextProvider = ({ children }) => {
     appointments,
     dashData,
     isAppoinmentAvailable,
+    totalAppointments,
     setAToken,
     getAllDoctors,
     changeAvailability,

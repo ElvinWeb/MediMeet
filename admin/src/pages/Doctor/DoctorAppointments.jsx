@@ -6,6 +6,7 @@ import { CURRENCY_SYMBOL } from "../../constants/currencySymbol";
 import { DoctorContext } from "../../context/DoctorContext";
 import { calculateAge } from "../../utils/ageUtils";
 import { slotDateFormat } from "../../utils/dateUtils";
+import TablePagination from "../../components/TablePagination";
 
 const DoctorAppointments = () => {
   const {
@@ -15,8 +16,11 @@ const DoctorAppointments = () => {
     cancelAppointment,
     completeAppointment,
     isAppoinmentAvailable,
+    totalAppointments,
   } = useContext(DoctorContext);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
 
   const filteredAppointments = appointments.filter((item) => {
     const patientName = item.userData.name.toLowerCase();
@@ -134,6 +138,12 @@ const DoctorAppointments = () => {
             </div>
           ))
         )}
+        <TablePagination
+          currentPage={currentPage}
+          totalItems={totalAppointments}
+          itemsPerPage={itemsPerPage}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </div>
     </div>
   );

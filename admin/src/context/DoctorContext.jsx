@@ -11,28 +11,35 @@ const DoctorContextProvider = ({ children }) => {
     localStorage.getItem("dToken") ? localStorage.getItem("dToken") : ""
   );
   const [appointments, setAppointments] = useState([]);
+  const [totalAppointments, setTotalAppointments] = useState(0);
   const [dashData, setDashData] = useState(false);
   const [profileData, setProfileData] = useState(false);
   const isAppoinmentAvailable = !appointments || appointments.length === 0;
 
   // Getting Doctor appointment data from Database using API
-  const getAppointments = useCallback(async () => {
-    try {
-      const { data } = await axios.get(
-        BACKEND_URL + API_ENDPOINTS.DOCTOR.APPOINTMENTS,
-        { headers: { dToken } }
-      );
+  const getAppointments = useCallback(
+    async (page = 1, limit = 7) => {
+      try {
+        const { data } = await axios.get(
+          `${
+            BACKEND_URL + API_ENDPOINTS.DOCTOR.APPOINTMENTS
+          }?page=${page}&limit=${limit}`,
+          { headers: { dToken } }
+        );
 
-      if (data.success) {
-        setAppointments(data.appointments.reverse());
-      } else {
-        toast.error(data.message);
+        if (data.success) {
+          setAppointments(data.appointments.reverse());
+          setTotalAppointments(data.pagination.total);
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.message);
-    }
-  }, [dToken]);
+    },
+    [dToken]
+  );
 
   // Getting Doctor profile data from Database using API
   const getProfileData = useCallback(async () => {
@@ -121,6 +128,7 @@ const DoctorContextProvider = ({ children }) => {
     dashData,
     profileData,
     isAppoinmentAvailable,
+    totalAppointments,
     setDToken,
     getAppointments,
     cancelAppointment,

@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { assets } from "../assets/assets";
+import { COLORS } from "../constants/chartConstants.js";
 import {
   getAppointmentStatusCounts,
   renderCustomizedLabel,
 } from "../utils/statusUtils.jsx";
-import { COLORS } from "../constants/chartConstants.js";
-import StatusIcon from "./StatusIcon.jsx";
 
 const AppointmentsStatusPieChart = ({ appointments }) => {
   const chartData = getAppointmentStatusCounts(appointments);
@@ -13,7 +13,12 @@ const AppointmentsStatusPieChart = ({ appointments }) => {
   return (
     <div className="w-full sm:w-1/2 bg-white rounded-lg shadow">
       <div className="flex items-center gap-2.5 px-4 py-4 rounded-t border">
-        <StatusIcon />
+        <img
+          src={assets.pie_chart_icon}
+          alt="calendar image"
+          width={20}
+          height={20}
+        />
         <p className="font-semibold">Booking Status Activity</p>
       </div>
       <ResponsiveContainer width="100%" height={250}>

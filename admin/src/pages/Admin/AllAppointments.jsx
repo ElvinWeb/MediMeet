@@ -6,6 +6,7 @@ import { CURRENCY_SYMBOL } from "../../constants/currencySymbol";
 import { AdminContext } from "../../context/AdminContext";
 import { calculateAge } from "../../utils/ageUtils";
 import { slotDateFormat } from "../../utils/dateUtils";
+import TablePagination from "../../components/TablePagination";
 
 const AllAppointments = () => {
   const {
@@ -14,8 +15,11 @@ const AllAppointments = () => {
     cancelAppointment,
     getAllAppointments,
     isAppoinmentAvailable,
+    totalAppointments,
   } = useContext(AdminContext);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
 
   const filteredAppointments = appointments.filter((item) => {
     const patientName = item.userData.name.toLowerCase();
@@ -36,9 +40,9 @@ const AllAppointments = () => {
 
   useEffect(() => {
     if (aToken) {
-      getAllAppointments();
+      getAllAppointments(currentPage, itemsPerPage);
     }
-  }, [aToken, appointments, getAllAppointments]);
+  }, [aToken, appointments, currentPage, getAllAppointments]);
 
   return (
     <div className="w-full max-w-6xl m-5">
@@ -134,6 +138,12 @@ const AllAppointments = () => {
             </div>
           ))
         )}
+        <TablePagination
+          currentPage={currentPage}
+          totalItems={totalAppointments}
+          itemsPerPage={itemsPerPage}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
       </div>
     </div>
   );

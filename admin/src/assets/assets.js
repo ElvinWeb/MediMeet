@@ -12,6 +12,8 @@ import appointments_icon from "./appointments_icon.svg";
 import earning_icon from "./earning_icon.svg";
 import patients_icon from "./patients_icon.svg";
 import calendar_icon from "./calender_icon.svg";
+import pie_chart_icon from "./pie_chart_icon.svg";
+import change_icon from "./change_icon.svg";
 
 export const assets = {
   add_icon,
@@ -28,4 +30,6 @@ export const assets = {
   appointments_icon,
   earning_icon,
   calendar_icon,
+  pie_chart_icon,
+  change_icon,
 };
