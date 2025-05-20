@@ -22,7 +22,9 @@ const AdminContextProvider = ({ children }) => {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.ADMIN.ALL_DOCTORS,
         {
-          headers: { aToken },
+          headers: {
+            Authorization: `Bearer ${aToken}`,
+          },
         }
       );
       if (data.success) {
@@ -41,7 +43,11 @@ const AdminContextProvider = ({ children }) => {
       const { data } = await axios.post(
         BACKEND_URL + API_ENDPOINTS.ADMIN.CHANGE_AVAILABILITY,
         { docId },
-        { headers: { aToken } }
+        {
+          headers: {
+            Authorization: `Bearer ${aToken}`,
+          },
+        }
       );
       if (data.success) {
         toast.success(data.message);
@@ -64,7 +70,9 @@ const AdminContextProvider = ({ children }) => {
             BACKEND_URL + API_ENDPOINTS.ADMIN.APPOINTMENTS
           }?page=${page}&limit=${limit}`,
           {
-            headers: { aToken },
+            headers: {
+              Authorization: `Bearer ${aToken}`,
+            },
           }
         );
         if (data.success) {
@@ -87,7 +95,11 @@ const AdminContextProvider = ({ children }) => {
       const { data } = await axios.post(
         BACKEND_URL + API_ENDPOINTS.ADMIN.CANCEL_APPOINMENT,
         { appointmentId },
-        { headers: { aToken } }
+        {
+          headers: {
+            Authorization: `Bearer ${aToken}`,
+          },
+        }
       );
 
       if (data.success) {
@@ -108,7 +120,9 @@ const AdminContextProvider = ({ children }) => {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.ADMIN.DASHBOARD,
         {
-          headers: { aToken },
+          headers: {
+            Authorization: `Bearer ${aToken}`,
+          },
         }
       );
 

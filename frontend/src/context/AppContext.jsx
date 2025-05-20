@@ -18,7 +18,11 @@ const AppContextProvider = ({ children }) => {
 
   const getDoctosData = useCallback(async () => {
     try {
-      const { data } = await axios.get(backendUrl + API_ENDPOINTS.DOCTOR.LIST);
+      const { data } = await axios.get(backendUrl + API_ENDPOINTS.DOCTOR.LIST, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (data.success) {
         setDoctors(data.doctors);
       } else {
@@ -28,14 +32,16 @@ const AppContextProvider = ({ children }) => {
       console.log(error);
       toast.error(error.message);
     }
-  }, [backendUrl]);
+  }, [backendUrl, token]);
 
   const loadUserProfileData = useCallback(async () => {
     try {
       const { data } = await axios.get(
         backendUrl + API_ENDPOINTS.USER.GET_PROFILE,
         {
-          headers: { token },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
@@ -51,8 +57,10 @@ const AppContextProvider = ({ children }) => {
   }, [backendUrl, token]);
 
   useEffect(() => {
-    getDoctosData();
-  }, [getDoctosData]);
+    if (token) {
+      getDoctosData();
+    }
+  }, [getDoctosData, token]);
 
   useEffect(() => {
     if (token) {

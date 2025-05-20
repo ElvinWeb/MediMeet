@@ -1,26 +1,34 @@
 import jwt from "jsonwebtoken";
 
-// admin authentication middleware
 const authAdmin = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({
+      success: false,
+      message: "Not authorized. Please log in again.",
+    });
+  }
+
+  const token = authHeader.split(" ")[1];
+
   try {
-    const { atoken } = req.headers;
-    if (!atoken) {
-      return res.json({
-        success: false,
-        message: "Not Authorized Login Again",
-      });
-    }
-    const token_decode = jwt.verify(atoken, process.env.JWT_SECRET);
+    const token_decode = jwt.verify(token, process.env.JWT_SECRET);
+
     if (token_decode !== process.env.ADMIN_EMAIL + process.env.ADMIN_PASSWORD) {
-      return res.json({
+      return res.status(403).json({
         success: false,
-        message: "Not Authorized Login Again",
+        message: "Forbidden: Invalid admin credentials.",
       });
     }
+
     next();
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
+    console.error("Admin auth error:", error);
+    res.status(401).json({
+      success: false,
+      message: "Token is invalid or expired.",
+    });
   }
 };
 

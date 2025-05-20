@@ -48,7 +48,11 @@ const Appointment = () => {
       const { data } = await axios.post(
         backendUrl + API_ENDPOINTS.USER.BOOK_APPOINTMENT,
         { docId, slotDate, slotTime },
-        { headers: { token } }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (data.success) {
         toast.success(data.message);

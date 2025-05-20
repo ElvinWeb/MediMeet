@@ -18,7 +18,11 @@ const Verify = () => {
       const { data } = await axios.post(
         backendUrl + API_ENDPOINTS.USER.STRIPE_VERIFY,
         { success, appointmentId },
-        { headers: { token } }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (data.success) {

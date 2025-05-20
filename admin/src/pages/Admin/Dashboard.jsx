@@ -7,11 +7,12 @@ import AppointmentsStatusPieChart from "../../components/AppointmentsStatusPieCh
 
 const Dashboard = () => {
   const { aToken, getDashData, dashData } = useContext(AdminContext);
+  
   useEffect(() => {
-    if (aToken && !dashData) {
+    if (aToken) {
       getDashData();
     }
-  }, [aToken, dashData, getDashData]);
+  }, [aToken, getDashData]);
 
   return (
     dashData && (

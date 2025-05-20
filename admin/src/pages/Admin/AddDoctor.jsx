@@ -59,7 +59,7 @@ const AddDoctor = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            aToken,
+            Authorization: `Bearer ${aToken}`,
           },
         }
       );

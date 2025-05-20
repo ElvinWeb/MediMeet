@@ -20,7 +20,9 @@ const MyAppointments = () => {
       const { data } = await axios.get(
         backendUrl + API_ENDPOINTS.USER.APPOINTMENTS,
         {
-          headers: { token },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       setAppointments(data.appointments.reverse());
@@ -36,7 +38,11 @@ const MyAppointments = () => {
       const { data } = await axios.post(
         backendUrl + API_ENDPOINTS.USER.CANCEL_APPOINTMENT,
         { appointmentId },
-        { headers: { token } }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (data.success) {
@@ -57,7 +63,11 @@ const MyAppointments = () => {
       const { data } = await axios.post(
         backendUrl + API_ENDPOINTS.USER.STRIPE_PAYMENT,
         { appointmentId },
-        { headers: { token } }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (data.success) {
         const { session_url } = data;

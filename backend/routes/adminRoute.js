@@ -12,21 +12,28 @@ import {
 import { changeAvailablity } from "../controllers/doctorController.js";
 import authAdmin from "../middleware/authAdmin.js";
 import upload from "../middleware/multer.js";
+import rateLimit from "express-rate-limit";
+import authDoctor from "../middleware/authDoctor.js";
+
 const adminRouter = express.Router();
 
-adminRouter.post("/login", loginAdmin);
-adminRouter.post("/add-doctor", authAdmin, upload.single("image"), addDoctor);
-adminRouter.delete("/doctor/:doctorId", authAdmin, deleteDoctor);
-adminRouter.put(
-  "/doctor/:doctorId",
-  authAdmin,
-  upload.single("image"),
-  updateDoctor
-);
-adminRouter.get("/appointments", authAdmin, appointmentsAdmin);
-adminRouter.post("/cancel-appointment", authAdmin, appointmentCancel);
-adminRouter.get("/all-doctors", authAdmin, allDoctors);
-adminRouter.post("/change-availability", authAdmin, changeAvailablity);
-adminRouter.get("/dashboard", authAdmin, adminDashboard);
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: "Too many login attempts, please try again later!",
+});
+
+adminRouter.post("/login", authLimiter, loginAdmin);
+
+adminRouter.use(authAdmin);
+
+adminRouter.post("/add-doctor", upload.single("image"), addDoctor);
+adminRouter.delete("/doctor/:doctorId", deleteDoctor);
+adminRouter.put("/doctor/:doctorId", upload.single("image"), updateDoctor);
+adminRouter.get("/appointments", appointmentsAdmin);
+adminRouter.post("/cancel-appointment", appointmentCancel);
+adminRouter.get("/all-doctors", allDoctors);
+adminRouter.post("/change-availability", changeAvailablity);
+adminRouter.get("/dashboard", adminDashboard);
 
 export default adminRouter;

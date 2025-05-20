@@ -22,7 +22,11 @@ const DoctorProfile = () => {
       const { data } = await axios.post(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.UPDATE_PROFILE,
         updateData,
-        { headers: { dToken } }
+        {
+          headers: {
+            Authorization: `Bearer ${dToken}`,
+          },
+        }
       );
 
       if (data.success) {

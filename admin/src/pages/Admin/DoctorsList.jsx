@@ -27,7 +27,9 @@ const DoctorsList = () => {
       const { data } = await axios.delete(
         BACKEND_URL + API_ENDPOINTS.ADMIN.DELETE_DOCTOR(doctorId),
         {
-          headers: { aToken },
+          headers: {
+            Authorization: `Bearer ${aToken}`,
+          },
         }
       );
 

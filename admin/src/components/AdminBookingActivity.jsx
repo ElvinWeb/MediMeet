@@ -13,10 +13,10 @@ const AdminBookingActivity = () => {
   } = useContext(AdminContext);
 
   useEffect(() => {
-    if (aToken && !dashData) {
+    if (aToken) {
       getDashData();
     }
-  }, [aToken, dashData, getDashData]);
+  }, [aToken, getDashData]);
 
   return (
     <div className="bg-white columns-lg rounded-md shadow">

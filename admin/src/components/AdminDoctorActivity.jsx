@@ -9,11 +9,11 @@ const AdminDoctorActivity = () => {
   const isDoctorAvailable = !doctors || doctors.length === 0;
 
   useEffect(() => {
-    if (aToken && !doctors && !dashData) {
+    if (aToken) {
       getAllDoctors();
       getDashData();
     }
-  }, [aToken, dashData, doctors, getAllDoctors, getDashData]);
+  }, [aToken, getAllDoctors, getDashData]);
   return (
     <div className="bg-white columns-lg rounded-md shadow">
       <div className="flex items-center gap-2.5 px-4 py-4 rounded-t border">

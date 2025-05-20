@@ -24,7 +24,11 @@ const DoctorContextProvider = ({ children }) => {
           `${
             BACKEND_URL + API_ENDPOINTS.DOCTOR.APPOINTMENTS
           }?page=${page}&limit=${limit}`,
-          { headers: { dToken } }
+          {
+            headers: {
+              Authorization: `Bearer ${dToken}`,
+            },
+          }
         );
 
         if (data.success) {
@@ -47,7 +51,9 @@ const DoctorContextProvider = ({ children }) => {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.PROFILE,
         {
-          headers: { dToken },
+          headers: {
+            Authorization: `Bearer ${dToken}`,
+          },
         }
       );
       setProfileData(data.profileData);
@@ -63,7 +69,11 @@ const DoctorContextProvider = ({ children }) => {
       const { data } = await axios.post(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.CANCEL_APPOINMENT,
         { appointmentId },
-        { headers: { dToken } }
+        {
+          headers: {
+            Authorization: `Bearer ${dToken}`,
+          },
+        }
       );
 
       if (data.success) {
@@ -85,7 +95,11 @@ const DoctorContextProvider = ({ children }) => {
       const { data } = await axios.post(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.COMPLETE_APPOINMENT,
         { appointmentId },
-        { headers: { dToken } }
+        {
+          headers: {
+            Authorization: `Bearer ${dToken}`,
+          },
+        }
       );
 
       if (data.success) {
@@ -107,7 +121,9 @@ const DoctorContextProvider = ({ children }) => {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.DASHBOARD,
         {
-          headers: { dToken },
+          headers: {
+            Authorization: `Bearer ${dToken}`,
+          },
         }
       );
 
