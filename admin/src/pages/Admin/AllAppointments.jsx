@@ -18,6 +18,7 @@ const AllAppointments = () => {
     totalAppointments,
   } = useContext(AdminContext);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
@@ -30,6 +31,12 @@ const AllAppointments = () => {
     );
   });
 
+  const processedAppointments =
+    sortOrder === "asc"
+      ? [...filteredAppointments].sort((a, b) => a.amount - b.amount)
+      : sortOrder === "desc"
+      ? [...filteredAppointments].sort((a, b) => b.amount - a.amount)
+      : filteredAppointments;
   const handleSearchSubmit = (value) => {
     setSearchTerm(value);
   };
@@ -58,7 +65,16 @@ const AllAppointments = () => {
           <p>Date & Time</p>
           <p>Doctor</p>
           <p>Payment</p>
-          <p>Fees</p>
+          <p
+            onClick={() =>
+              setSortOrder((prev) =>
+                prev === "" ? "asc" : prev === "asc" ? "desc" : ""
+              )
+            }
+            className="cursor-pointer"
+          >
+            Fees {sortOrder === "asc" ? "↑" : sortOrder === "desc" ? "↓" : null}
+          </p>
           <p>Action</p>
         </div>
         {isAppoinmentAvailable ? (
@@ -80,7 +96,7 @@ const AllAppointments = () => {
             </button>
           </div>
         ) : (
-          filteredAppointments.map((item, index) => (
+          processedAppointments.map((item, index) => (
             <div
               className="flex flex-wrap justify-between max-sm:gap-2 sm:grid sm:grid-cols-[0.5fr_2fr_1fr_2fr_2fr_2fr_1fr_1fr] items-center text-gray-500 py-3 px-6 border-b hover:bg-gray-50"
               key={index}

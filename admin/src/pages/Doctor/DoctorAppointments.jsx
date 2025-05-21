@@ -19,6 +19,7 @@ const DoctorAppointments = () => {
     totalAppointments,
   } = useContext(DoctorContext);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortOrder, setSortOrder] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
@@ -30,6 +31,13 @@ const DoctorAppointments = () => {
       doctorName.includes(searchTerm.toLowerCase())
     );
   });
+
+  const processedAppointments =
+    sortOrder === "asc"
+      ? [...filteredAppointments].sort((a, b) => a.amount - b.amount)
+      : sortOrder === "desc"
+      ? [...filteredAppointments].sort((a, b) => b.amount - a.amount)
+      : filteredAppointments;
 
   const handleSearchSubmit = (value) => {
     setSearchTerm(value);
@@ -58,7 +66,16 @@ const DoctorAppointments = () => {
           <p>Age</p>
           <p>Payment</p>
           <p>Date & Time</p>
-          <p>Fees</p>
+          <p
+            onClick={() =>
+              setSortOrder((prev) =>
+                prev === "" ? "asc" : prev === "asc" ? "desc" : ""
+              )
+            }
+            className="cursor-pointer"
+          >
+            Fees {sortOrder === "asc" ? "↑" : sortOrder === "desc" ? "↓" : null}
+          </p>
           <p>Action</p>
         </div>
         {isAppoinmentAvailable ? (
@@ -80,7 +97,7 @@ const DoctorAppointments = () => {
             </button>
           </div>
         ) : (
-          filteredAppointments.map((item, index) => (
+          processedAppointments.map((item, index) => (
             <div
               className="flex flex-wrap justify-between max-sm:gap-5 max-sm:text-base sm:grid grid-cols-[0.5fr_2fr_1fr_2fr_2fr_1fr_1fr] gap-1 items-center text-gray-500 py-3 px-6 border-b hover:bg-gray-50"
               key={index}

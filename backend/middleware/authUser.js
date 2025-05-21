@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 // user authentication middleware
 const authUser = async (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log("Auth Header:", authHeader);
 
   if (!authHeader) {
     return res.status(401).json({
