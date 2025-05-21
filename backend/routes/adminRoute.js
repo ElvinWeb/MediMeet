@@ -1,19 +1,18 @@
 import express from "express";
+import rateLimit from "express-rate-limit";
 import {
-  loginAdmin,
-  appointmentsAdmin,
-  appointmentCancel,
   addDoctor,
-  allDoctors,
   adminDashboard,
+  allDoctors,
+  appointmentCancel,
+  appointmentsAdmin,
   deleteDoctor,
+  loginAdmin,
   updateDoctor,
 } from "../controllers/adminController.js";
 import { changeAvailablity } from "../controllers/doctorController.js";
 import authAdmin from "../middleware/authAdmin.js";
 import upload from "../middleware/multer.js";
-import rateLimit from "express-rate-limit";
-import authDoctor from "../middleware/authDoctor.js";
 
 const adminRouter = express.Router();
 
