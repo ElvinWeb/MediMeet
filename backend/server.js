@@ -1,15 +1,14 @@
-import express from "express";
 import cors from "cors";
-import helmet from "helmet";
-import mongoSanitize from "express-mongo-sanitize";
-import xss from "xss-clean";
-import rateLimit from "express-rate-limit";
 import "dotenv/config";
-import connectDB from "./config/mongodb.js";
+import express from "express";
+import mongoSanitize from "express-mongo-sanitize";
+import helmet from "helmet";
+import xss from "xss-clean";
 import connectCloudinary from "./config/cloudinary.js";
-import userRouter from "./routes/userRoute.js";
-import doctorRouter from "./routes/doctorRoute.js";
+import connectDB from "./config/mongodb.js";
 import adminRouter from "./routes/adminRoute.js";
+import doctorRouter from "./routes/doctorRoute.js";
+import userRouter from "./routes/userRoute.js";
 
 // app config
 const app = express();
@@ -23,13 +22,6 @@ app.use(cors());
 app.use(helmet()); 
 app.use(mongoSanitize()); 
 app.use(xss()); 
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 mins
-  max: 100,
-  message: "Too many requests from this IP, please try again later.",
-});
-app.use("/api", limiter);
 
 // api endpoints
 app.use("/api/user", userRouter);

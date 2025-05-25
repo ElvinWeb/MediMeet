@@ -12,18 +12,11 @@ import {
 } from "../controllers/userController.js";
 import authUser from "../middleware/authUser.js";
 import upload from "../middleware/multer.js";
-import rateLimit from "express-rate-limit";
 
 const userRouter = express.Router();
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  message: "Too many login attempts, please try again later!",
-});
-
-userRouter.post("/register", authLimiter, registerUser);
-userRouter.post("/login", authLimiter, loginUser);
+userRouter.post("/register", registerUser);
+userRouter.post("/login", loginUser);
 
 userRouter.use(authUser);
 

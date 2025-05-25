@@ -1,27 +1,20 @@
 import express from "express";
 import {
-  loginDoctor,
-  appointmentsDoctor,
   appointmentCancel,
-  doctorList,
-  changeAvailablity,
   appointmentComplete,
+  appointmentsDoctor,
+  changeAvailablity,
   doctorDashboard,
+  doctorList,
   doctorProfile,
+  loginDoctor,
   updateDoctorProfile,
 } from "../controllers/doctorController.js";
 import authDoctor from "../middleware/authDoctor.js";
-import rateLimit from "express-rate-limit";
 
 const doctorRouter = express.Router();
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5,
-  message: "Too many login attempts, please try again later!",
-});
-
-doctorRouter.post("/login", authLimiter, loginDoctor);
+doctorRouter.post("/login", loginDoctor);
 
 doctorRouter.use(authDoctor);
 
