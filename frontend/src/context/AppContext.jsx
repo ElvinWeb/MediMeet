@@ -1,86 +1,83 @@
-import { createContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import axios from "axios";
+import { createContext, useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
+import { toast } from "react-toastify";
 import { API_ENDPOINTS } from "../constants/apiEndpoints";
-import { useCallback } from "react";
 
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [doctors, setDoctors] = useState([]);
-  const [userData, setUserData] = useState(false);
-  const [token, setToken] = useState(
-    localStorage.getItem("token") ? localStorage.getItem("token") : ""
-  );
+  const [userData, setUserData] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
   const isDoctorAvailable = !doctors || doctors.length === 0;
 
+  // Get all doctors
   const getDoctosData = useCallback(async () => {
     try {
-      const { data } = await axios.get(backendUrl + API_ENDPOINTS.DOCTOR.LIST, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const { data } = await axios.get(
+        `${backendUrl}${API_ENDPOINTS.DOCTOR.LIST}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
       if (data.success) {
         setDoctors(data.doctors);
       } else {
-        toast.error(data.message);
+        toast.error(data.message || "Failed to fetch doctors");
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      console.error(error);
+      toast.error("Something went wrong while fetching doctors");
     }
   }, [backendUrl, token]);
 
+  // Get user profile
   const loadUserProfileData = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        backendUrl + API_ENDPOINTS.USER.GET_PROFILE,
+        `${backendUrl}${API_ENDPOINTS.USER.GET_PROFILE}`,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
       if (data.success) {
         setUserData(data.userData);
       } else {
-        toast.error(data.message);
+        toast.error(data.message || "Failed to load user profile");
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      console.error(error);
+      toast.error("Something went wrong while loading user profile");
     }
   }, [backendUrl, token]);
 
   useEffect(() => {
     if (token) {
       getDoctosData();
-    }
-  }, [getDoctosData, token]);
-
-  useEffect(() => {
-    if (token) {
       loadUserProfileData();
     }
-  }, [loadUserProfileData, token]);
+  }, [token, getDoctosData, loadUserProfileData]);
 
-  const value = {
+  const contextValue = {
     doctors,
     backendUrl,
     token,
     userData,
-    isDoctorAvailable,
+    setDoctors,
     setToken,
-    getDoctosData,
     setUserData,
+    isDoctorAvailable,
+    getDoctosData,
     loadUserProfileData,
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>
+  );
 };
 
 AppContextProvider.propTypes = {

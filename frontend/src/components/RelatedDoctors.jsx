@@ -1,23 +1,27 @@
 import PropTypes from "prop-types";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import DoctorCard from "./DoctorCard";
-import { useNavigate } from "react-router-dom";
 import EmptyState from "./EmptyState";
+
 const RelatedDoctors = ({ speciality, docId }) => {
-  const { doctors } = useContext(AppContext);
+  const { doctors, token } = useContext(AppContext);
   const [relDoc, setRelDoc] = useState([]);
-  const isDoctorAvailable = !relDoc || relDoc.length === 0;
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (doctors && speciality && docId) {
-      const doctorsData = doctors.filter(
-        (doc) => doc.speciality === speciality && doc._id !== docId
-      );
-      setRelDoc(doctorsData);
-    }
+  const filteredDoctors = useMemo(() => {
+    if (!doctors || !speciality || !docId) return [];
+    return doctors.filter(
+      (doc) => doc.speciality === speciality && doc._id !== docId
+    );
   }, [doctors, speciality, docId]);
+
+  useEffect(() => {
+    if (token) {
+      setRelDoc(filteredDoctors);
+    }
+  }, [filteredDoctors, token]);
 
   return (
     <div className="flex flex-col items-center gap-4 my-16 text-[#262626]">
@@ -25,7 +29,8 @@ const RelatedDoctors = ({ speciality, docId }) => {
       <p className="sm:w-1/3 text-center text-sm">
         Simply browse through our extensive list of trusted doctors.
       </p>
-      {isDoctorAvailable ? (
+
+      {relDoc.length === 0 ? (
         <EmptyState
           title="No Related Doctors Available"
           subtitle="Please check back later or add some doctors."
@@ -40,11 +45,11 @@ const RelatedDoctors = ({ speciality, docId }) => {
           <button
             onClick={() => {
               navigate("/doctors");
-              scrollTo(0, 0);
+              scrollTo({ top: 0, behavior: "smooth" });
             }}
             className="bg-[#EAEFFF] text-gray-600 px-12 py-3 rounded-full mt-10"
           >
-            more
+            More
           </button>
         </>
       )}

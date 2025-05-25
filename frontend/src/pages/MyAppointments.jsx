@@ -1,111 +1,102 @@
 import axios from "axios";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+
 import AppointmentCard from "../components/AppointmentCard";
-import { API_ENDPOINTS } from "../constants/apiEndpoints";
-import { AppContext } from "../context/AppContext";
 import EmptyState from "../components/EmptyState";
+import { AppContext } from "../context/AppContext";
+import { API_ENDPOINTS } from "../constants/apiEndpoints";
 
 const MyAppointments = () => {
   const { backendUrl, token } = useContext(AppContext);
   const [appointments, setAppointments] = useState([]);
-  const isAppointmentAvailable = !appointments || appointments.length === 0;
 
-  // Getting User Appointments Data Using API
-  const getUserAppointments = useCallback(async () => {
+  const fetchAppointments = useCallback(async () => {
     try {
-      const { data } = await axios.get(
+      const response = await axios.get(
         backendUrl + API_ENDPOINTS.USER.APPOINTMENTS,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setAppointments(data.appointments.reverse());
+      setAppointments(response.data.appointments.reverse());
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      console.error(error);
+      toast.error(
+        error.response?.data?.message || "Failed to fetch appointments."
+      );
     }
   }, [backendUrl, token]);
 
-  // Function to cancel appointment Using API
   const cancelAppointment = async (appointmentId) => {
     try {
-      const { data } = await axios.post(
+      const response = await axios.post(
         backendUrl + API_ENDPOINTS.USER.CANCEL_APPOINTMENT,
         { appointmentId },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      if (data.success) {
-        toast.success(data.message);
-        getUserAppointments();
+      if (response.data.success) {
+        toast.success(response.data.message);
+        fetchAppointments();
       } else {
-        toast.error(data.message);
+        toast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      console.error(error);
+      toast.error(error.response?.data?.message || "Cancellation failed.");
     }
   };
 
-  // Function to pay appointment Using Stripe API
-  const appointmentStripe = async (appointmentId) => {
+  const handleStripePayment = async (appointmentId) => {
     try {
-      const { data } = await axios.post(
+      const response = await axios.post(
         backendUrl + API_ENDPOINTS.USER.STRIPE_PAYMENT,
         { appointmentId },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-      if (data.success) {
-        const { session_url } = data;
-        window.location.replace(session_url);
+
+      if (response.data.success && response.data.session_url) {
+        window.location.replace(response.data.session_url);
       } else {
-        toast.error(data.message);
+        toast.error(response.data.message || "Stripe session failed.");
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      console.error(error);
+      toast.error(error.response?.data?.message || "Payment failed.");
     }
   };
 
   useEffect(() => {
-    if (token) {
-      getUserAppointments();
-    }
-  }, [getUserAppointments, token]);
+    if (token) fetchAppointments();
+  }, [token, fetchAppointments]);
+
+  const noAppointments = !appointments || appointments.length === 0;
 
   return (
     <div>
       <p className="pb-3 mt-12 text-lg font-medium text-gray-600 border-b">
-        My appointments
+        My Appointments
       </p>
 
-      {isAppointmentAvailable ? (
+      {noAppointments ? (
         <EmptyState
           title="No Appointments Yet"
           subtitle="When appointments are made, they’ll appear here."
         />
       ) : (
-        appointments
-          .filter((appointment) => !appointment.cancelled)
-          .map((appointment) => (
-            <AppointmentCard
-              key={appointment._id}
-              appointment={appointment}
-              onCancelAppointment={cancelAppointment}
-              onAppointmentStripe={appointmentStripe}
-            />
-          ))
+        appointments.map((appointment) => (
+          <AppointmentCard
+            key={appointment._id}
+            appointment={appointment}
+            onCancelAppointment={cancelAppointment}
+            onAppointmentStripe={handleStripePayment}
+          />
+        ))
       )}
     </div>
   );

@@ -1,54 +1,40 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import DoctorCard from "../components/DoctorCard";
+import EmptyState from "../components/EmptyState";
+import ExperienceFilter from "../components/ExperienceFilter";
 import PriceRangeFilter from "../components/PriceRangeFilter";
 import SpecialityFilter from "../components/SpecialityFilter";
-import { AppContext } from "../context/AppContext";
 import { MAX_PRICE_RANGE } from "../constants/filterConstants";
-import ExperienceFilter from "../components/ExperienceFilter";
-import EmptyState from "../components/EmptyState";
+import { AppContext } from "../context/AppContext";
 
 const Doctors = () => {
   const { speciality } = useParams();
-  const [filterDoc, setFilterDoc] = useState([]);
   const [showFilter, setShowFilter] = useState(false);
   const [filterPrice, setFilterPrice] = useState(MAX_PRICE_RANGE);
   const [sortExp, setSortExp] = useState("default");
   const { doctors, isDoctorAvailable } = useContext(AppContext);
-  const isFilteredDoctorAvailable = !filterDoc || filterDoc.length === 0;
 
-  const applyFilter = useCallback(() => {
-    let result = doctors;
+  const filteredDoctors = useMemo(() => {
+    let result = [...doctors];
 
-    // speciality filter
     if (speciality) {
       result = result.filter((doc) => doc.speciality === speciality);
     }
 
-    // Filter by fees
     result = result.filter((doc) => doc.fees <= filterPrice);
 
-    // sort by experience
     if (sortExp === "exp-low-high") {
-      result = [...result].sort((a, b) => {
-        const aYears = parseInt(a.experience, 10);
-        const bYears = parseInt(b.experience, 10);
-        return aYears - bYears;
-      });
+      result.sort((a, b) => parseInt(a.experience) - parseInt(b.experience));
     } else if (sortExp === "exp-high-low") {
-      result = [...result].sort((a, b) => {
-        const aYears = parseInt(a.experience, 10);
-        const bYears = parseInt(b.experience, 10);
-        return bYears - aYears;
-      });
+      result.sort((a, b) => parseInt(b.experience) - parseInt(a.experience));
     }
 
-    setFilterDoc(result);
-  }, [doctors, speciality, sortExp, filterPrice]);
+    return result;
+  }, [doctors, speciality, filterPrice, sortExp]);
 
-  useEffect(() => {
-    applyFilter();
-  }, [doctors, speciality, sortExp, applyFilter]);
+  const isFilteredDoctorAvailable =
+    !filteredDoctors || filteredDoctors.length === 0;
 
   return (
     <div className="mt-11">
@@ -88,7 +74,7 @@ const Doctors = () => {
             />
           ) : (
             <div className="w-full grid grid-cols-auto gap-4 gap-y-6">
-              {filterDoc.map((doctor) => (
+              {filteredDoctors.map((doctor) => (
                 <DoctorCard doctor={doctor} key={doctor._id} />
               ))}
             </div>

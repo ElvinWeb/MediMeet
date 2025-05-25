@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import BookingSlots from "../components/BookingSlots";
@@ -16,44 +16,43 @@ const Appointment = () => {
   const { docId } = useParams();
   const { doctors, backendUrl, token, getDoctosData } = useContext(AppContext);
   const [docInfo, setDocInfo] = useState(false);
-  const [docSlots, setDocSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
   const navigate = useNavigate();
 
-  const fetchDocInfo = useCallback(async () => {
-    const docInfo = doctors.find((doc) => doc._id === docId);
-    setDocInfo(docInfo);
+  const fetchDocInfo = useCallback(() => {
+    if (!docId || !doctors.length) return;
+    const foundDoc = doctors.find((doc) => doc._id === docId);
+    setDocInfo(foundDoc || null);
   }, [doctors, docId]);
 
-  const getAvailableSolts = useCallback(() => {
-    if (docInfo) {
-      const slots = generateAvailableSlots(docInfo.slots_booked);
-      setDocSlots(slots);
-    }
+  const docSlots = useMemo(() => {
+    if (!docInfo) return [];
+    return generateAvailableSlots(docInfo.slots_booked);
   }, [docInfo]);
 
   const bookAppointment = async () => {
     if (!token) {
-      toast.warning("Login to book appointment");
+      toast.warning("Please login first.");
       return navigate("/login");
     }
 
     const selectedDate = docSlots?.[slotIndex]?.[0]?.datetime;
-    if (!selectedDate) return;
-
-    const slotDate = formatSlotDate(selectedDate);
+    if (!selectedDate || !slotTime) {
+      toast.error("Please select a valid time slot.");
+      return;
+    }
 
     try {
+      const slotDate = formatSlotDate(selectedDate);
       const { data } = await axios.post(
-        backendUrl + API_ENDPOINTS.USER.BOOK_APPOINTMENT,
+        `${backendUrl}${API_ENDPOINTS.USER.BOOK_APPOINTMENT}`,
         { docId, slotDate, slotTime },
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
+
       if (data.success) {
         toast.success(data.message);
         getDoctosData();
@@ -62,8 +61,7 @@ const Appointment = () => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      toast.error(error?.response?.data?.message || error.message);
     }
   };
 
@@ -72,14 +70,6 @@ const Appointment = () => {
       fetchDocInfo();
     }
   }, [doctors, docId, fetchDocInfo]);
-
-  useEffect(() => {
-    if (docInfo) {
-      getAvailableSolts();
-    }
-  }, [docInfo, getAvailableSolts]);
-
-  console.log("docInfo", docInfo);
 
   return docInfo ? (
     <div>

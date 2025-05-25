@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useCallback, useContext, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
+
+import { AppContext } from "../context/AppContext";
 import { API_ENDPOINTS } from "../constants/apiEndpoints";
 
 const Verify = () => {
@@ -12,10 +13,14 @@ const Verify = () => {
   const { backendUrl, token } = useContext(AppContext);
   const navigate = useNavigate();
 
-  // Function to verify stripe payment
-  const verifyStripe = useCallback(async () => {
+  const verifyStripePayment = useCallback(async () => {
+    if (!success || !appointmentId || !token) {
+      toast.error("Missing verification data.");
+      return navigate("/my-appointments");
+    }
+
     try {
-      const { data } = await axios.post(
+      const response = await axios.post(
         backendUrl + API_ENDPOINTS.USER.STRIPE_VERIFY,
         { success, appointmentId },
         {
@@ -25,24 +30,24 @@ const Verify = () => {
         }
       );
 
-      if (data.success) {
-        toast.success(data.message);
+      if (response.data.success) {
+        toast.success(response.data.message);
       } else {
-        toast.error(data.message);
+        toast.error(response.data.message);
       }
-
-      navigate("/my-appointments");
     } catch (error) {
-      toast.error(error.message);
-      console.log(error);
+      console.error(error);
+      toast.error(error.response?.data?.message || "Verification failed.");
+    } finally {
+      navigate("/my-appointments");
     }
-  }, [appointmentId, backendUrl, navigate, success, token]);
+  }, [appointmentId, success, token, backendUrl, navigate]);
 
   useEffect(() => {
-    if ((token, appointmentId, success)) {
-      verifyStripe();
+    if (token) {
+      verifyStripePayment();
     }
-  }, [appointmentId, success, token, verifyStripe]);
+  }, [verifyStripePayment, token]);
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center">
