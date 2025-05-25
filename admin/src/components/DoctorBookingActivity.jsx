@@ -12,13 +12,15 @@ const DoctorBookingActivity = () => {
     cancelAppointment,
     completeAppointment,
     isAppoinmentAvailable,
+    getAppointments,
   } = useContext(DoctorContext);
 
   useEffect(() => {
     if (dToken) {
       getDashData();
+      getAppointments();
     }
-  }, [dToken, getDashData]);
+  }, [dToken, getAppointments, getDashData]);
 
   return (
     <div className="bg-white shadow columns-xl rounded-md">

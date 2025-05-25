@@ -10,13 +10,15 @@ const AdminBookingActivity = () => {
     getDashData,
     isAppoinmentAvailable,
     cancelAppointment,
+    getAllAppointments,
   } = useContext(AdminContext);
 
   useEffect(() => {
     if (aToken) {
       getDashData();
+      getAllAppointments();
     }
-  }, [aToken, getDashData]);
+  }, [aToken, getAllAppointments, getDashData]);
 
   return (
     <div className="bg-white columns-lg rounded-md shadow">

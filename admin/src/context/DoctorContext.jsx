@@ -63,6 +63,29 @@ const DoctorContextProvider = ({ children }) => {
     }
   }, [dToken]);
 
+  // Getting Doctor dashboard data using API
+  const getDashData = useCallback(async () => {
+    try {
+      const { data } = await axios.get(
+        BACKEND_URL + API_ENDPOINTS.DOCTOR.DASHBOARD,
+        {
+          headers: {
+            Authorization: `Bearer ${dToken}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        setDashData(data.dashData);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  }, [dToken]);
+
   // Function to cancel doctor appointment using API
   const cancelAppointment = async (appointmentId) => {
     try {
@@ -114,29 +137,6 @@ const DoctorContextProvider = ({ children }) => {
       console.log(error);
     }
   };
-
-  // Getting Doctor dashboard data using API
-  const getDashData = useCallback(async () => {
-    try {
-      const { data } = await axios.get(
-        BACKEND_URL + API_ENDPOINTS.DOCTOR.DASHBOARD,
-        {
-          headers: {
-            Authorization: `Bearer ${dToken}`,
-          },
-        }
-      );
-
-      if (data.success) {
-        setDashData(data.dashData);
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.message);
-    }
-  }, [dToken]);
 
   const value = {
     dToken,

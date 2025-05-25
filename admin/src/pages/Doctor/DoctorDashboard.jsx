@@ -5,15 +5,16 @@ import { DoctorContext } from "../../context/DoctorContext";
 import AppointmentsStatusPieChart from "../../components/AppointmentsStatusPieChart";
 
 const DoctorDashboard = () => {
-  const { dToken, dashData, profileData, getDashData, getProfileData } =
+  const { dToken, dashData, profileData, getDashData, getProfileData, getAppointments } =
     useContext(DoctorContext);
 
   useEffect(() => {
     if (dToken) {
       getProfileData();
+      getAppointments()
       getDashData();
     }
-  }, [dToken, getDashData, getProfileData]);
+  }, [dToken, getAppointments, getDashData, getProfileData]);
 
   return (
     dashData && (

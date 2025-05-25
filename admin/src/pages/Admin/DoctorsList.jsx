@@ -65,7 +65,7 @@ const DoctorsList = () => {
           <div className="w-full min-h-[60vh] flex justify-center items-center">
             <EmptyState
               title="No Doctors Available"
-              subtitle="Please check back later or try different filters."
+              subtitle="When doctors are made, they’ll appear here."
             />
           </div>
         ) : filteredDoctors.length === 0 ? (

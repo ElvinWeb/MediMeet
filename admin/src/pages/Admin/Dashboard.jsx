@@ -6,13 +6,16 @@ import { AdminContext } from "../../context/AdminContext";
 import AppointmentsStatusPieChart from "../../components/AppointmentsStatusPieChart";
 
 const Dashboard = () => {
-  const { aToken, getDashData, dashData } = useContext(AdminContext);
-  
+  const { aToken, getDashData, dashData, getAllAppointments, getAllDoctors } =
+    useContext(AdminContext);
+
   useEffect(() => {
     if (aToken) {
       getDashData();
+      getAllAppointments();
+      getAllDoctors();
     }
-  }, [aToken, getDashData]);
+  }, [aToken, getAllAppointments, getAllDoctors, getDashData]);
 
   return (
     dashData && (

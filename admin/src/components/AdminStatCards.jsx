@@ -4,13 +4,16 @@ import { AdminContext } from "../context/AdminContext";
 import { CURRENCY_SYMBOL } from "../constants/currencySymbol";
 
 const AdminStatCards = () => {
-  const { aToken, dashData, getAllDoctors } = useContext(AdminContext);
+  const { aToken, dashData, getAllDoctors, getDashData, getAllAppointments } =
+    useContext(AdminContext);
 
   useEffect(() => {
     if (aToken) {
       getAllDoctors();
+      getDashData();
+      getAllAppointments();
     }
-  }, [aToken, getAllDoctors]);
+  }, [aToken, getAllAppointments, getAllDoctors, getDashData]);
 
   return (
     <div className="flex flex-wrap gap-3">

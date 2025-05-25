@@ -9,10 +9,7 @@ import EmptyState from "../components/EmptyState";
 const MyAppointments = () => {
   const { backendUrl, token } = useContext(AppContext);
   const [appointments, setAppointments] = useState([]);
-  const isAppointmentAvailable =
-    !appointments ||
-    appointments.length === 0 ||
-    appointments.every((appointment) => appointment.cancelled);
+  const isAppointmentAvailable = !appointments || appointments.length === 0;
 
   // Getting User Appointments Data Using API
   const getUserAppointments = useCallback(async () => {

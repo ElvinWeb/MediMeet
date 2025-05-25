@@ -37,21 +37,20 @@ const AdminContextProvider = ({ children }) => {
     }
   }, [aToken]);
 
-  // Function to change doctor availablity using API
-  const changeAvailability = async (docId) => {
+  // Getting Admin Dashboard data from Database using API
+  const getDashData = useCallback(async () => {
     try {
-      const { data } = await axios.post(
-        BACKEND_URL + API_ENDPOINTS.ADMIN.CHANGE_AVAILABILITY,
-        { docId },
+      const { data } = await axios.get(
+        BACKEND_URL + API_ENDPOINTS.ADMIN.DASHBOARD,
         {
           headers: {
             Authorization: `Bearer ${aToken}`,
           },
         }
       );
+
       if (data.success) {
-        toast.success(data.message);
-        getAllDoctors();
+        setDashData(data.dashData);
       } else {
         toast.error(data.message);
       }
@@ -59,7 +58,7 @@ const AdminContextProvider = ({ children }) => {
       console.log(error);
       toast.error(error.message);
     }
-  };
+  }, [aToken]);
 
   // Getting all appointment data from Database using API
   const getAllAppointments = useCallback(
@@ -114,20 +113,21 @@ const AdminContextProvider = ({ children }) => {
     }
   };
 
-  // Getting Admin Dashboard data from Database using API
-  const getDashData = useCallback(async () => {
+  // Function to change doctor availablity using API
+  const changeAvailability = async (docId) => {
     try {
-      const { data } = await axios.get(
-        BACKEND_URL + API_ENDPOINTS.ADMIN.DASHBOARD,
+      const { data } = await axios.post(
+        BACKEND_URL + API_ENDPOINTS.ADMIN.CHANGE_AVAILABILITY,
+        { docId },
         {
           headers: {
             Authorization: `Bearer ${aToken}`,
           },
         }
       );
-
       if (data.success) {
-        setDashData(data.dashData);
+        toast.success(data.message);
+        getAllDoctors();
       } else {
         toast.error(data.message);
       }
@@ -135,7 +135,7 @@ const AdminContextProvider = ({ children }) => {
       console.log(error);
       toast.error(error.message);
     }
-  }, [aToken]);
+  };
 
   const value = {
     aToken,

@@ -104,7 +104,7 @@ const Login = () => {
             <span
               onClick={() => {
                 setState("Doctor");
-                reset(); // reset form when switching
+                reset();
               }}
               className="text-primary underline cursor-pointer"
             >

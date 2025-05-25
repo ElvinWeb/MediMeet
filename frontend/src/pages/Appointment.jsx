@@ -68,7 +68,7 @@ const Appointment = () => {
   };
 
   useEffect(() => {
-    if (doctors.length > 0) {
+    if (doctors && docId) {
       fetchDocInfo();
     }
   }, [doctors, docId, fetchDocInfo]);
@@ -83,10 +83,7 @@ const Appointment = () => {
 
   return docInfo ? (
     <div>
-      {/* ---------- Doctor Details ----------- */}
       <DoctorDetails docInfo={docInfo} />
-
-      {/* Booking slots */}
 
       {docInfo.available && (
         <BookingSlots
@@ -99,7 +96,6 @@ const Appointment = () => {
         />
       )}
 
-      {/* Listing Releated Doctors */}
       <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
     </div>
   ) : null;

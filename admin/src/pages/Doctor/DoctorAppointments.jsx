@@ -23,6 +23,7 @@ const DoctorAppointments = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
+
   const filteredAppointments = appointments.filter((item) => {
     const patientName = item.userData.name.toLowerCase();
     const doctorName = item.docData.name.toLowerCase();

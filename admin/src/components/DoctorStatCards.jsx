@@ -4,13 +4,15 @@ import { CURRENCY_SYMBOL } from "../constants/currencySymbol";
 import { DoctorContext } from "../context/DoctorContext";
 
 const DoctorStatCards = () => {
-  const { dToken, dashData, getDashData } = useContext(DoctorContext);
+  const { dToken, dashData, getDashData, getAppointments } =
+    useContext(DoctorContext);
 
   useEffect(() => {
     if (dToken) {
       getDashData();
+      getAppointments();
     }
-  }, [dToken, getDashData]);
+  }, [dToken, getAppointments, getDashData]);
 
   return (
     <div className="flex flex-wrap gap-3">
@@ -25,7 +27,6 @@ const DoctorStatCards = () => {
           <p className="text-gray-400">Free Slots</p>
         </div>
       </div>
-
       <div className="flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all">
         <img className="w-14" src={assets.appointments_icon} alt="" />
         <div>

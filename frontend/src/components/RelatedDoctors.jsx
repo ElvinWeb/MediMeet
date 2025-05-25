@@ -11,7 +11,7 @@ const RelatedDoctors = ({ speciality, docId }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (doctors.length > 0 && speciality) {
+    if (doctors && speciality && docId) {
       const doctorsData = doctors.filter(
         (doc) => doc.speciality === speciality && doc._id !== docId
       );
