@@ -4,13 +4,13 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { AppContext } from "../context/AppContext";
-import { API_ENDPOINTS } from "../constants/apiEndpoints";
+import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
 
 const Verify = () => {
   const [searchParams] = useSearchParams();
   const success = searchParams.get("success");
   const appointmentId = searchParams.get("appointmentId");
-  const { backendUrl, token } = useContext(AppContext);
+  const { token } = useContext(AppContext);
   const navigate = useNavigate();
 
   const verifyStripePayment = useCallback(async () => {
@@ -20,8 +20,8 @@ const Verify = () => {
     }
 
     try {
-      const response = await axios.post(
-        backendUrl + API_ENDPOINTS.USER.STRIPE_VERIFY,
+      const { data } = await axios.post(
+        BACKEND_URL + API_ENDPOINTS.USER.STRIPE_VERIFY,
         { success, appointmentId },
         {
           headers: {
@@ -30,10 +30,10 @@ const Verify = () => {
         }
       );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
+      if (data.success) {
+        toast.success(data.message);
       } else {
-        toast.error(response.data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.error(error);
@@ -41,7 +41,7 @@ const Verify = () => {
     } finally {
       navigate("/my-appointments");
     }
-  }, [appointmentId, success, token, backendUrl, navigate]);
+  }, [appointmentId, success, token, navigate]);
 
   useEffect(() => {
     if (token) {

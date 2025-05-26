@@ -1,78 +1,78 @@
-import { createContext, useState, useCallback } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
 import PropTypes from "prop-types";
+import {
+  createContext,
+  useCallback,
+  useMemo,
+  useState
+} from "react";
+import { toast } from "react-toastify";
 import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
 
 export const DoctorContext = createContext();
 
 const DoctorContextProvider = ({ children }) => {
-  const [dToken, setDToken] = useState(
-    localStorage.getItem("dToken") ? localStorage.getItem("dToken") : ""
-  );
+  const [dToken, setDToken] = useState(() => localStorage.getItem("dToken") || "");
   const [appointments, setAppointments] = useState([]);
   const [totalAppointments, setTotalAppointments] = useState(0);
-  const [dashData, setDashData] = useState(false);
-  const [profileData, setProfileData] = useState(false);
-  const isAppoinmentAvailable = !appointments || appointments.length === 0;
+  const [dashData, setDashData] = useState(null);
+  const [profileData, setProfileData] = useState(null);
 
-  // Getting Doctor appointment data from Database using API
-  const getAppointments = useCallback(
-    async (page = 1, limit = 7) => {
-      try {
-        const { data } = await axios.get(
-          `${
-            BACKEND_URL + API_ENDPOINTS.DOCTOR.APPOINTMENTS
-          }?page=${page}&limit=${limit}`,
-          {
-            headers: {
-              Authorization: `Bearer ${dToken}`,
-            },
-          }
-        );
-
-        if (data.success) {
-          setAppointments(data.appointments.reverse());
-          setTotalAppointments(data.pagination.total);
-        } else {
-          toast.error(data.message);
-        }
-      } catch (error) {
-        console.log(error);
-        toast.error(error.message);
-      }
-    },
-    [dToken]
+  const isAppoinmentAvailable = useMemo(
+    () => !appointments || appointments.length === 0,
+    [appointments]
   );
 
-  // Getting Doctor profile data from Database using API
+  const authHeader = useMemo(() => ({
+    headers: {
+      Authorization: `Bearer ${dToken}`,
+    },
+  }), [dToken]);
+
+  // Fetch Appointments
+  const getAppointments = useCallback(async (page = 1, limit = 7) => {
+    try {
+      const { data } = await axios.get(
+        `${BACKEND_URL}${API_ENDPOINTS.DOCTOR.APPOINTMENTS}?page=${page}&limit=${limit}`,
+        authHeader
+      );
+
+      if (data.success) {
+        setAppointments(data.appointments.reverse());
+        setTotalAppointments(data.pagination.total);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+      console.error(error);
+    }
+  }, [authHeader]);
+
+  // Fetch Profile
   const getProfileData = useCallback(async () => {
     try {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.PROFILE,
-        {
-          headers: {
-            Authorization: `Bearer ${dToken}`,
-          },
-        }
+        authHeader
       );
-      setProfileData(data.profileData);
+      if (data.success) {
+        setProfileData(data.profileData);
+      } else {
+        toast.error(data.message);
+      }
     } catch (error) {
-      console.log(error);
       toast.error(error.message);
+      console.error(error);
     }
-  }, [dToken]);
+  }, [authHeader]);
 
-  // Getting Doctor dashboard data using API
+  // Fetch Dashboard
   const getDashData = useCallback(async () => {
     try {
       const { data } = await axios.get(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.DASHBOARD,
-        {
-          headers: {
-            Authorization: `Bearer ${dToken}`,
-          },
-        }
+        authHeader
       );
 
       if (data.success) {
@@ -81,22 +81,18 @@ const DoctorContextProvider = ({ children }) => {
         toast.error(data.message);
       }
     } catch (error) {
-      console.log(error);
       toast.error(error.message);
+      console.error(error);
     }
-  }, [dToken]);
+  }, [authHeader]);
 
-  // Function to cancel doctor appointment using API
-  const cancelAppointment = async (appointmentId) => {
+  // Cancel Appointment
+  const cancelAppointment = useCallback(async (appointmentId) => {
     try {
       const { data } = await axios.post(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.CANCEL_APPOINMENT,
         { appointmentId },
-        {
-          headers: {
-            Authorization: `Bearer ${dToken}`,
-          },
-        }
+        authHeader
       );
 
       if (data.success) {
@@ -108,21 +104,17 @@ const DoctorContextProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error(error.message);
-      console.log(error);
+      console.error(error);
     }
-  };
+  }, [authHeader, getAppointments, getDashData]);
 
-  // Function to Mark appointment completed using API
-  const completeAppointment = async (appointmentId) => {
+  // Complete Appointment
+  const completeAppointment = useCallback(async (appointmentId) => {
     try {
       const { data } = await axios.post(
         BACKEND_URL + API_ENDPOINTS.DOCTOR.COMPLETE_APPOINMENT,
         { appointmentId },
-        {
-          headers: {
-            Authorization: `Bearer ${dToken}`,
-          },
-        }
+        authHeader
       );
 
       if (data.success) {
@@ -134,28 +126,43 @@ const DoctorContextProvider = ({ children }) => {
       }
     } catch (error) {
       toast.error(error.message);
-      console.log(error);
+      console.error(error);
     }
-  };
+  }, [authHeader, getAppointments, getDashData]);
 
-  const value = {
+  // Shared context value
+  const contextValue = useMemo(() => ({
     dToken,
+    setDToken,
     appointments,
+    totalAppointments,
+    isAppoinmentAvailable,
     dashData,
     profileData,
-    isAppoinmentAvailable,
-    totalAppointments,
-    setDToken,
     getAppointments,
+    getDashData,
+    getProfileData,
     cancelAppointment,
     completeAppointment,
-    getDashData,
     setProfileData,
+  }), [
+    dToken,
+    appointments,
+    totalAppointments,
+    isAppoinmentAvailable,
+    dashData,
+    profileData,
+    getAppointments,
+    getDashData,
     getProfileData,
-  };
+    cancelAppointment,
+    completeAppointment,
+  ]);
 
   return (
-    <DoctorContext.Provider value={value}>{children}</DoctorContext.Provider>
+    <DoctorContext.Provider value={contextValue}>
+      {children}
+    </DoctorContext.Provider>
   );
 };
 

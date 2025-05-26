@@ -6,11 +6,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 import { AppContext } from "../context/AppContext";
-import { API_ENDPOINTS } from "../constants/apiEndpoints";
+import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
 import { loginSchema, signUpSchema } from "../validation/userValidationSchema";
 
 const Login = () => {
-  const { backendUrl, token, setToken } = useContext(AppContext);
+  const { token, setToken } = useContext(AppContext);
   const [authMode, setAuthMode] = useState("signup");
   const navigate = useNavigate();
   const isSignUp = authMode === "signup";
@@ -34,7 +34,7 @@ const Login = () => {
     try {
       if (isSignUp) {
         const res = await axios.post(
-          `${backendUrl}${API_ENDPOINTS.USER.REGISTER}`,
+          `${BACKEND_URL}${API_ENDPOINTS.USER.REGISTER}`,
           {
             name: data.name,
             email: data.email,
@@ -51,7 +51,7 @@ const Login = () => {
         }
       } else {
         const res = await axios.post(
-          `${backendUrl}${API_ENDPOINTS.USER.LOGIN}`,
+          `${BACKEND_URL}${API_ENDPOINTS.USER.LOGIN}`,
           {
             email: data.email,
             password: data.password,

@@ -20,7 +20,7 @@ export const doctorSubmitFormValidationSchema = yup.object().shape({
     .trim(),
   password: yup
     .string()
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
   experience: yup.string().required("Experience is required"),
   fees: yup
@@ -61,7 +61,7 @@ export const doctorUpdateFormValidationSchema = yup.object().shape({
     .trim(),
   password: yup
     .string()
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
   experience: yup.string().required("Experience is required"),
   fees: yup

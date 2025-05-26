@@ -40,10 +40,10 @@ const DoctorBookingActivity = () => {
         />
       ) : (
         <div className="border border-t-0">
-          {dashData.latestAppointments.map((item, index) => (
+          {dashData.latestAppointments.map((item) => (
             <div
               className="flex items-center px-6 py-3 gap-3 hover:bg-gray-100"
-              key={index}
+              key={item._id}
             >
               <img
                 className="rounded-full w-10"

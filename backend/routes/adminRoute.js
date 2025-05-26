@@ -1,31 +1,38 @@
 import express from "express";
+import upload from "../middleware/multer.js";
+import authAdmin from "../middleware/authAdmin.js";
 import {
-  addDoctor,
-  adminDashboard,
-  allDoctors,
-  appointmentCancel,
-  appointmentsAdmin,
-  deleteDoctor,
   loginAdmin,
+  addDoctor,
+  deleteDoctor,
   updateDoctor,
+  appointmentsAdmin,
+  appointmentCancel,
+  allDoctors,
+  adminDashboard,
 } from "../controllers/adminController.js";
 import { changeAvailablity } from "../controllers/doctorController.js";
-import authAdmin from "../middleware/authAdmin.js";
-import upload from "../middleware/multer.js";
 
-const adminRouter = express.Router();
+const router = express.Router();
 
-adminRouter.post("/login", loginAdmin);
+// ---------- Public Route ----------
+router.post("/login", loginAdmin);
 
-adminRouter.use(authAdmin);
+// ---------- Protected Routes ----------
+router.use(authAdmin);
 
-adminRouter.post("/add-doctor", upload.single("image"), addDoctor);
-adminRouter.delete("/doctor/:doctorId", deleteDoctor);
-adminRouter.put("/doctor/:doctorId", upload.single("image"), updateDoctor);
-adminRouter.get("/appointments", appointmentsAdmin);
-adminRouter.post("/cancel-appointment", appointmentCancel);
-adminRouter.get("/all-doctors", allDoctors);
-adminRouter.post("/change-availability", changeAvailablity);
-adminRouter.get("/dashboard", adminDashboard);
+// Doctor Management
+router.post("/add-doctor", upload.single("image"), addDoctor);
+router.put("/doctor/:doctorId", upload.single("image"), updateDoctor);
+router.delete("/doctor/:doctorId", deleteDoctor);
+router.post("/change-availability", changeAvailablity);
+router.get("/all-doctors", allDoctors);
 
-export default adminRouter;
+// Appointment Management
+router.get("/appointments", appointmentsAdmin);
+router.post("/cancel-appointment", appointmentCancel);
+
+// Dashboard
+router.get("/dashboard", adminDashboard);
+
+export default router;

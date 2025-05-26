@@ -10,22 +10,30 @@ import {
   updateProfile,
   verifyStripe,
 } from "../controllers/userController.js";
+
 import authUser from "../middleware/authUser.js";
 import upload from "../middleware/multer.js";
 
-const userRouter = express.Router();
+const router = express.Router();
 
-userRouter.post("/register", registerUser);
-userRouter.post("/login", loginUser);
+// ---------- Public Routes ----------
+router.post("/register", registerUser);
+router.post("/login", loginUser);
 
-userRouter.use(authUser);
+// ---------- Protected Routes ----------
+router.use(authUser);
 
-userRouter.get("/get-profile", getProfile);
-userRouter.post("/update-profile", upload.single("image"), updateProfile);
-userRouter.post("/book-appointment", bookAppointment);
-userRouter.get("/appointments", listAppointment);
-userRouter.post("/cancel-appointment", cancelAppointment);
-userRouter.post("/payment-stripe", paymentStripe);
-userRouter.post("/verifyStripe", verifyStripe);
+// Profile Management
+router.get("/get-profile", getProfile);
+router.post("/update-profile", upload.single("image"), updateProfile);
 
-export default userRouter;
+// Appointment Handling
+router.post("/book-appointment", bookAppointment);
+router.get("/appointments", listAppointment);
+router.post("/cancel-appointment", cancelAppointment);
+
+// Payments
+router.post("/payment-stripe", paymentStripe);
+router.post("/verifyStripe", verifyStripe);
+
+export default router;

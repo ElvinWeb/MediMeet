@@ -2,12 +2,11 @@ import { createContext, useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { API_ENDPOINTS } from "../constants/apiEndpoints";
+import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
 
 export const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [doctors, setDoctors] = useState([]);
   const [userData, setUserData] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -17,7 +16,7 @@ const AppContextProvider = ({ children }) => {
   const getDoctosData = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `${backendUrl}${API_ENDPOINTS.DOCTOR.LIST}`,
+        `${BACKEND_URL}${API_ENDPOINTS.DOCTOR.LIST}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -32,13 +31,13 @@ const AppContextProvider = ({ children }) => {
       console.error(error);
       toast.error("Something went wrong while fetching doctors");
     }
-  }, [backendUrl, token]);
+  }, [token]);
 
   // Get user profile
   const loadUserProfileData = useCallback(async () => {
     try {
       const { data } = await axios.get(
-        `${backendUrl}${API_ENDPOINTS.USER.GET_PROFILE}`,
+        `${BACKEND_URL}${API_ENDPOINTS.USER.GET_PROFILE}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -53,7 +52,7 @@ const AppContextProvider = ({ children }) => {
       console.error(error);
       toast.error("Something went wrong while loading user profile");
     }
-  }, [backendUrl, token]);
+  }, [token]);
 
   useEffect(() => {
     if (token) {
@@ -64,7 +63,6 @@ const AppContextProvider = ({ children }) => {
 
   const contextValue = {
     doctors,
-    backendUrl,
     token,
     userData,
     setDoctors,

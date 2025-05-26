@@ -1,30 +1,40 @@
 import express from "express";
 import {
+  loginDoctor,
+  appointmentsDoctor,
   appointmentCancel,
   appointmentComplete,
-  appointmentsDoctor,
-  changeAvailablity,
-  doctorDashboard,
   doctorList,
+  doctorDashboard,
   doctorProfile,
-  loginDoctor,
   updateDoctorProfile,
+  changeAvailablity,
 } from "../controllers/doctorController.js";
+
 import authDoctor from "../middleware/authDoctor.js";
 
-const doctorRouter = express.Router();
+const router = express.Router();
 
-doctorRouter.post("/login", loginDoctor);
+// ---------- Public Route ----------
+router.post("/login", loginDoctor);
 
-doctorRouter.use(authDoctor);
+// ---------- Protected Routes ----------
+router.use(authDoctor);
 
-doctorRouter.post("/cancel-appointment", appointmentCancel);
-doctorRouter.get("/appointments", appointmentsDoctor);
-doctorRouter.get("/list", doctorList);
-doctorRouter.post("/change-availability", changeAvailablity);
-doctorRouter.post("/complete-appointment", appointmentComplete);
-doctorRouter.get("/dashboard", doctorDashboard);
-doctorRouter.get("/profile", doctorProfile);
-doctorRouter.post("/update-profile", updateDoctorProfile);
+// Appointment Management
+router.get("/appointments", appointmentsDoctor);
+router.post("/cancel-appointment", appointmentCancel);
+router.post("/complete-appointment", appointmentComplete);
 
-export default doctorRouter;
+// Profile & Availability
+router.get("/profile", doctorProfile);
+router.post("/update-profile", updateDoctorProfile);
+router.post("/change-availability", changeAvailablity);
+
+// Dashboard
+router.get("/dashboard", doctorDashboard);
+
+// Public List
+router.get("/list", doctorList);
+
+export default router;

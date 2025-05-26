@@ -6,7 +6,7 @@ import { slotDateFormat } from "../utils/dateUtils";
 const AppointmentCard = ({
   appointment,
   onCancelAppointment,
-  onAppointmentStripe,
+  onStripePayment,
 }) => {
   const [payment, setPayment] = useState("");
 
@@ -52,7 +52,7 @@ const AppointmentCard = ({
           !appointment.isCompleted &&
           payment === appointment._id && (
             <button
-              onClick={() => onAppointmentStripe(appointment._id)}
+              onClick={() => onStripePayment(appointment._id)}
               className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center"
             >
               <img
@@ -113,7 +113,7 @@ AppointmentCard.propTypes = {
     isCompleted: PropTypes.bool.isRequired,
   }).isRequired,
   onCancelAppointment: PropTypes.func.isRequired,
-  onAppointmentStripe: PropTypes.func.isRequired,
+  onStripePayment: PropTypes.func.isRequired,
 };
 
 export default AppointmentCard;

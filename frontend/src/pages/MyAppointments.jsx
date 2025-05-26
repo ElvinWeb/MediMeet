@@ -5,44 +5,44 @@ import { toast } from "react-toastify";
 import AppointmentCard from "../components/AppointmentCard";
 import EmptyState from "../components/EmptyState";
 import { AppContext } from "../context/AppContext";
-import { API_ENDPOINTS } from "../constants/apiEndpoints";
+import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
 
 const MyAppointments = () => {
-  const { backendUrl, token } = useContext(AppContext);
+  const { token } = useContext(AppContext);
   const [appointments, setAppointments] = useState([]);
 
   const fetchAppointments = useCallback(async () => {
     try {
-      const response = await axios.get(
-        backendUrl + API_ENDPOINTS.USER.APPOINTMENTS,
+      const { data } = await axios.get(
+        BACKEND_URL + API_ENDPOINTS.USER.APPOINTMENTS,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setAppointments(response.data.appointments.reverse());
+      setAppointments(data.appointments.reverse());
     } catch (error) {
       console.error(error);
       toast.error(
         error.response?.data?.message || "Failed to fetch appointments."
       );
     }
-  }, [backendUrl, token]);
+  }, [token]);
 
   const cancelAppointment = async (appointmentId) => {
     try {
-      const response = await axios.post(
-        backendUrl + API_ENDPOINTS.USER.CANCEL_APPOINTMENT,
+      const { data } = await axios.post(
+        BACKEND_URL + API_ENDPOINTS.USER.CANCEL_APPOINTMENT,
         { appointmentId },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      if (response.data.success) {
-        toast.success(response.data.message);
+      if (data.success) {
+        toast.success(data.message);
         fetchAppointments();
       } else {
-        toast.error(response.data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.error(error);
@@ -52,18 +52,18 @@ const MyAppointments = () => {
 
   const handleStripePayment = async (appointmentId) => {
     try {
-      const response = await axios.post(
-        backendUrl + API_ENDPOINTS.USER.STRIPE_PAYMENT,
+      const { data } = await axios.post(
+        BACKEND_URL + API_ENDPOINTS.USER.STRIPE_PAYMENT,
         { appointmentId },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      if (response.data.success && response.data.session_url) {
-        window.location.replace(response.data.session_url);
+      if (data.success && data.session_url) {
+        window.location.replace(data.session_url);
       } else {
-        toast.error(response.data.message || "Stripe session failed.");
+        toast.error(data.message || "Stripe session failed.");
       }
     } catch (error) {
       console.error(error);
@@ -94,7 +94,7 @@ const MyAppointments = () => {
             key={appointment._id}
             appointment={appointment}
             onCancelAppointment={cancelAppointment}
-            onAppointmentStripe={handleStripePayment}
+            onStripePayment={handleStripePayment}
           />
         ))
       )}

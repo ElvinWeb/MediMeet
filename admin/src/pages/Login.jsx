@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -10,10 +10,12 @@ import { DoctorContext } from "../context/DoctorContext";
 import { loginValidationSchema } from "../validation/loginValidationSchema";
 
 const Login = () => {
-  const [state, setState] = useState("Admin");
+  const [userType, setUserType] = useState("Admin");
   const { setAToken } = useContext(AdminContext);
   const { setDToken } = useContext(DoctorContext);
   const navigate = useNavigate();
+
+  const isAdmin = userType === "Admin";
 
   const {
     register,
@@ -22,73 +24,72 @@ const Login = () => {
     reset,
   } = useForm({
     resolver: yupResolver(loginValidationSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
     mode: "all",
   });
 
-  const onSubmit = async (formData) => {
+  const endpoint = useMemo(() => {
+    return (
+      BACKEND_URL +
+      (isAdmin ? API_ENDPOINTS.ADMIN.LOGIN : API_ENDPOINTS.DOCTOR.LOGIN)
+    );
+  }, [isAdmin]);
+
+  const handleLogin = async (formData) => {
     try {
-      const endpoint =
-        state === "Admin"
-          ? API_ENDPOINTS.ADMIN.LOGIN
-          : API_ENDPOINTS.DOCTOR.LOGIN;
+      const { data } = await axios.post(endpoint, formData);
 
-      const { data } = await axios.post(BACKEND_URL + endpoint, formData);
-
-      if (data.success) {
-        if (state === "Admin") {
-          setAToken(data.token);
-          localStorage.setItem("aToken", data.token);
-          navigate("/admin-dashboard");
-          toast.success("Admin login successful!");
-        } else {
-          setDToken(data.token);
-          localStorage.setItem("dToken", data.token);
-          navigate("/doctor-dashboard");
-          toast.success("Doctor login successful!");
-        }
-      } else {
-        toast.error(data.message || "Login failed");
+      if (!data.success) {
+        return toast.error(data.message || "Login failed");
       }
+
+      const tokenKey = isAdmin ? "aToken" : "dToken";
+      const dashboardRoute = isAdmin ? "/admin-dashboard" : "/doctor-dashboard";
+
+      localStorage.setItem(tokenKey, data.token);
+      isAdmin ? setAToken(data.token) : setDToken(data.token);
+      navigate(dashboardRoute);
+      toast.success(`${userType} login successful!`);
     } catch (err) {
-      toast.error("An error occurred during login.");
       console.error(err);
+      toast.error("An error occurred during login.");
     }
   };
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(handleLogin)}
       className="min-h-[80vh] flex items-center"
     >
       <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
         <p className="text-2xl font-semibold m-auto">
-          <span className="text-primary">{state}</span> Login
+          <span className="text-primary">{userType}</span> Login
         </p>
 
         <div className="w-full">
-          <p>Email</p>
+          <label className="block text-sm font-medium">Email</label>
           <input
             {...register("email")}
-            className="border border-[#DADADA] rounded w-full p-2 mt-1"
             type="email"
             placeholder="Enter your email"
+            className="border border-[#DADADA] rounded w-full p-2 mt-1"
           />
-          <p className="text-red-500 text-xs">{errors.email?.message}</p>
+          {errors.email && (
+            <p className="text-red-500 text-xs">{errors.email.message}</p>
+          )}
         </div>
 
         <div className="w-full">
-          <p>Password</p>
+          <label className="block text-sm font-medium">Password</label>
           <input
             {...register("password")}
-            className="border border-[#DADADA] rounded w-full p-2 mt-1"
             type="password"
             placeholder="Enter your password"
+            className="border border-[#DADADA] rounded w-full p-2 mt-1"
           />
-          <p className="text-red-500 text-xs">{errors.password?.message}</p>
+          {errors.password && (
+            <p className="text-red-500 text-xs">{errors.password.message}</p>
+          )}
         </div>
 
         <button
@@ -98,33 +99,18 @@ const Login = () => {
           Login
         </button>
 
-        {state === "Admin" ? (
-          <p>
-            Doctor Login?{" "}
-            <span
-              onClick={() => {
-                setState("Doctor");
-                reset();
-              }}
-              className="text-primary underline cursor-pointer"
-            >
-              Click here
-            </span>
-          </p>
-        ) : (
-          <p>
-            Admin Login?{" "}
-            <span
-              onClick={() => {
-                setState("Admin");
-                reset();
-              }}
-              className="text-primary underline cursor-pointer"
-            >
-              Click here
-            </span>
-          </p>
-        )}
+        <p className="text-center w-full">
+          {isAdmin ? "Doctor" : "Admin"} Login?{" "}
+          <span
+            onClick={() => {
+              setUserType(isAdmin ? "Doctor" : "Admin");
+              reset();
+            }}
+            className="text-primary underline cursor-pointer"
+          >
+            Click here
+          </span>
+        </p>
       </div>
     </form>
   );

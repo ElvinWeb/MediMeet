@@ -97,23 +97,28 @@ const getProfile = async (req, res) => {
 // API to update user profile
 const updateProfile = async (req, res) => {
   try {
-    const { userId, name, phone, address, dob, gender } = req.body;
+    const { name, phone, address, gender, dob, userId } = req.body;
     const imageFile = req.file;
+    const parsedAddress =
+      typeof address === "string" ? JSON.parse(address) : address;
 
-    if (!name || !phone || !dob || !gender) {
+    if (!name || !phone || !dob || !gender || !address) {
       return res.json({ success: false, message: "Data Missing" });
     }
 
-    await userModel.findByIdAndUpdate(userId, {
+    const updateData = {
       name,
       phone,
-      address: JSON.parse(address),
-      dob,
+      address: parsedAddress,
       gender,
+      dob,
+    };
+
+    const updatedUser = await userModel.findByIdAndUpdate(userId, updateData, {
+      new: true,
     });
 
     if (imageFile) {
-      // upload image to cloudinary
       const imageUpload = await cloudinary.uploader.upload(imageFile.path, {
         resource_type: "image",
       });
@@ -122,10 +127,15 @@ const updateProfile = async (req, res) => {
       await userModel.findByIdAndUpdate(userId, { image: imageURL });
     }
 
-    res.json({ success: true, message: "Profile Updated" });
+    return res.status(200).json({
+      success: true,
+      message: "User profile updated successfully",
+      updatedUser,
+    });
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: error.message });
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
   }
 };
 

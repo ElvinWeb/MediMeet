@@ -1,6 +1,5 @@
 import { RADIAN } from "../constants/chartConstants";
 
-// Custom label renderer to show percentage
 export const renderCustomizedLabel = ({
   cx,
   cy,
@@ -27,7 +26,6 @@ export const renderCustomizedLabel = ({
   );
 };
 
-// Convert appointment data into chart-friendly format
 export const getAppointmentStatusCounts = (appointments) => {
   let cancelled = 0;
   let completed = 0;

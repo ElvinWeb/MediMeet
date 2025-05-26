@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import BookingSlots from "../components/BookingSlots";
 import DoctorDetails from "../components/DoctorDetails";
 import RelatedDoctors from "../components/RelatedDoctors";
-import { API_ENDPOINTS } from "../constants/apiEndpoints";
+import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
 import { AppContext } from "../context/AppContext";
 import {
   generateAvailableSlots,
@@ -14,7 +14,7 @@ import {
 
 const Appointment = () => {
   const { docId } = useParams();
-  const { doctors, backendUrl, token, getDoctosData } = useContext(AppContext);
+  const { doctors, token, getDoctosData } = useContext(AppContext);
   const [docInfo, setDocInfo] = useState(false);
   const [slotIndex, setSlotIndex] = useState(0);
   const [slotTime, setSlotTime] = useState("");
@@ -46,7 +46,7 @@ const Appointment = () => {
     try {
       const slotDate = formatSlotDate(selectedDate);
       const { data } = await axios.post(
-        `${backendUrl}${API_ENDPOINTS.USER.BOOK_APPOINTMENT}`,
+        `${BACKEND_URL}${API_ENDPOINTS.USER.BOOK_APPOINTMENT}`,
         { docId, slotDate, slotTime },
         {
           headers: { Authorization: `Bearer ${token}` },

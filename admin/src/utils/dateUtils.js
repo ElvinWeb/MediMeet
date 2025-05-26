@@ -8,7 +8,6 @@ export const slotDateFormat = (slotDate) => {
   );
 };
 
-
 export const formatDate = (dateString, withTime = false) => {
   if (!dateString) return "";
 

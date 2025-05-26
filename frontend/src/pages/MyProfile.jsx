@@ -3,10 +3,10 @@ import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
-import { API_ENDPOINTS } from "../constants/apiEndpoints";
+import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
 
 const MyProfile = () => {
-  const { token, backendUrl, userData, setUserData, loadUserProfileData } =
+  const { token, userData, setUserData, loadUserProfileData } =
     useContext(AppContext);
   const [isEdit, setIsEdit] = useState(false);
   const [image, setImage] = useState(false);
@@ -21,14 +21,16 @@ const MyProfile = () => {
       formData.append("address", JSON.stringify(userData.address));
       formData.append("gender", userData.gender);
       formData.append("dob", userData.dob);
+      formData.append("userId", userData._id);
 
       image && formData.append("image", image);
 
       const { data } = await axios.post(
-        backendUrl + API_ENDPOINTS.USER.UPDATE_PROFILE,
+        BACKEND_URL + API_ENDPOINTS.USER.UPDATE_PROFILE,
         formData,
         {
           headers: {
+            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -95,7 +97,7 @@ const MyProfile = () => {
       <div>
         <p className="text-gray-600 underline mt-3">CONTACT INFORMATION</p>
         <div className="grid grid-cols-[1fr_3fr] gap-y-2.5 mt-3 text-[#363636]">
-          <p className="font-medium">Email id:</p>
+          <p className="font-medium">Email:</p>
           <p className="text-blue-500">{userData.email}</p>
           <p className="font-medium">Phone:</p>
 

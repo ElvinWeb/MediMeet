@@ -1,3 +1,5 @@
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 export const API_ENDPOINTS = {
   USER: {
     GET_PROFILE: "/api/user/get-profile",
