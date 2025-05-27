@@ -14,7 +14,6 @@ const Login = () => {
   const { setAToken } = useContext(AdminContext);
   const { setDToken } = useContext(DoctorContext);
   const navigate = useNavigate();
-
   const isAdmin = userType === "Admin";
 
   const {

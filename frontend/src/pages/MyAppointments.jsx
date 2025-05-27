@@ -2,10 +2,11 @@ import axios from "axios";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import AppointmentCard from "../components/AppointmentCard";
-import EmptyState from "../components/EmptyState";
+import AppointmentCard from "../components/molecules/AppointmentCard";
+import EmptyState from "../components/atoms/EmptyState";
 import { AppContext } from "../context/AppContext";
 import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
+import PageTitle from "../components/atoms/PageTitle";
 
 const MyAppointments = () => {
   const { token } = useContext(AppContext);
@@ -78,11 +79,8 @@ const MyAppointments = () => {
   const noAppointments = !appointments || appointments.length === 0;
 
   return (
-    <div>
-      <p className="pb-3 mt-12 text-lg font-medium text-gray-600 border-b">
-        My Appointments
-      </p>
-
+    <>
+      <PageTitle normalText="MY" boldText="APPOINTMENTS" />
       {noAppointments ? (
         <EmptyState
           title="No Appointments Yet"
@@ -98,7 +96,7 @@ const MyAppointments = () => {
           />
         ))
       )}
-    </div>
+    </>
   );
 };
 

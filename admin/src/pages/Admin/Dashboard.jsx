@@ -1,9 +1,10 @@
-import AdminBookingActivity from "../../components/AdminBookingActivity";
-import AdminDoctorActivity from "../../components/AdminDoctorActivity";
-import AdminStatCards from "../../components/AdminStatCards";
+import AdminBookingActivity from "../../components/molecules/AdminBookingActivity";
+import AdminDoctorActivity from "../../components/molecules/AdminDoctorActivity";
+import AdminStatCards from "../../components/molecules/AdminStatCards";
 import { useContext, useEffect } from "react";
 import { AdminContext } from "../../context/AdminContext";
-import AppointmentsStatusPieChart from "../../components/AppointmentsStatusPieChart";
+import AppointmentsStatusPieChart from "../../components/molecules/AppointmentsStatusPieChart";
+import DashboardTitle from "../../components/atoms/DashboardTitle";
 
 const Dashboard = () => {
   const { aToken, getDashData, dashData, getAllAppointments, getAllDoctors } =
@@ -20,14 +21,7 @@ const Dashboard = () => {
   return (
     dashData && (
       <div className="m-5">
-        <div className="flex flex-col items-start gap-3 mb-5">
-          <h1 className="text-4xl font-semibold text-primary">
-            Welcome back, Admin!
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Here’s a quick overview of today’s activity in MediMeet.
-          </p>
-        </div>
+        <DashboardTitle isAdmin={true} />
 
         <AdminStatCards />
 

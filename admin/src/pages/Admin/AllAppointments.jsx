@@ -1,12 +1,9 @@
 import { useContext, useEffect, useState } from "react";
-import { assets } from "../../assets/assets";
-import EmptyState from "../../components/EmptyState";
-import SearchBar from "../../components/SearchBar";
-import { CURRENCY_SYMBOL } from "../../constants/currencySymbol";
+import EmptyState from "../../components/atoms/EmptyState";
+import SearchBar from "../../components/molecules/SearchBar";
+import TablePagination from "../../components/molecules/TablePagination";
+import AdminTableRow from "../../components/molecules/AdminTableRow";
 import { AdminContext } from "../../context/AdminContext";
-import { calculateAge } from "../../utils/ageUtils";
-import { slotDateFormat } from "../../utils/dateUtils";
-import TablePagination from "../../components/TablePagination";
 
 const AllAppointments = () => {
   const {
@@ -58,7 +55,7 @@ const AllAppointments = () => {
       <SearchBar onSearchSubmit={handleSearchSubmit} />
 
       <div className="bg-white border rounded text-sm max-h-[80vh] overflow-y-scroll">
-        <div className="hidden sm:grid grid-cols-[0.5fr_2fr_1fr_2fr_2fr_2fr_1fr_1fr] grid-flow-col py-3 px-6 border-b">
+        <div className="hidden sm:grid grid-cols-[0.5fr_2fr_1fr_2fr_2fr_2fr_1fr_1fr] grid-flow-col gap-1 py-3 px-6 border-b font-semibold text-gray-700">
           <p>#</p>
           <p>Patient</p>
           <p>Age</p>
@@ -97,61 +94,12 @@ const AllAppointments = () => {
           </div>
         ) : (
           processedAppointments.map((item, index) => (
-            <div
-              className="flex flex-wrap justify-between max-sm:gap-2 sm:grid sm:grid-cols-[0.5fr_2fr_1fr_2fr_2fr_2fr_1fr_1fr] items-center text-gray-500 py-3 px-6 border-b hover:bg-gray-50"
-              key={index}
-            >
-              <p className="max-sm:hidden">{index + 1}</p>
-              <div className="flex items-center gap-2">
-                <img
-                  src={item.userData.image}
-                  className="w-8 rounded-full"
-                  alt=""
-                />{" "}
-                <p>{item.userData.name}</p>
-              </div>
-              <p className="max-sm:hidden">{calculateAge(item.userData.dob)}</p>
-              <p>
-                {slotDateFormat(item.slotDate)}, {item.slotTime}
-              </p>
-              <div className="flex items-center gap-2">
-                <img
-                  src={item.docData.image}
-                  className="w-8 rounded-full bg-gray-200"
-                  alt=""
-                />{" "}
-                <p>{item.docData.name}</p>
-              </div>
-              <div>
-                {item.payment ? (
-                  <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-                    <span className="w-2 h-2 me-1 bg-green-500 rounded-full"></span>
-                    Paid
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
-                    <span className="w-2 h-2 me-1 bg-red-500 rounded-full"></span>
-                    Not Paid
-                  </span>
-                )}
-              </div>
-              <p>
-                {CURRENCY_SYMBOL}
-                {item.amount}
-              </p>
-              {item.cancelled ? (
-                <p className="text-red-400 text-xs font-medium">Cancelled</p>
-              ) : item.isCompleted ? (
-                <p className="text-green-500 text-xs font-medium">Completed</p>
-              ) : (
-                <img
-                  onClick={() => cancelAppointment(item._id)}
-                  className="w-10 cursor-pointer"
-                  src={assets.cancel_icon}
-                  alt=""
-                />
-              )}
-            </div>
+            <AdminTableRow
+              key={item._id}
+              index={index}
+              cancelAppointment={cancelAppointment}
+              item={item}
+            />
           ))
         )}
         <TablePagination

@@ -1,10 +1,10 @@
 import { useContext, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import DoctorCard from "../components/DoctorCard";
-import EmptyState from "../components/EmptyState";
-import ExperienceFilter from "../components/ExperienceFilter";
-import PriceRangeFilter from "../components/PriceRangeFilter";
-import SpecialityFilter from "../components/SpecialityFilter";
+import DoctorCard from "../components/molecules/DoctorCard";
+import EmptyState from "../components/atoms/EmptyState";
+import ExperienceFilter from "../components/molecules/ExperienceFilter";
+import PriceRangeFilter from "../components/molecules/PriceRangeFilter";
+import SpecialityFilter from "../components/molecules/SpecialityFilter";
 import { MAX_PRICE_RANGE } from "../constants/filterConstants";
 import { AppContext } from "../context/AppContext";
 

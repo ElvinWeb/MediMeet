@@ -2,9 +2,9 @@ import axios from "axios";
 import { useCallback, useContext, useEffect, useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import BookingSlots from "../components/BookingSlots";
-import DoctorDetails from "../components/DoctorDetails";
-import RelatedDoctors from "../components/RelatedDoctors";
+import BookingSlots from "../components/molecules/BookingSlots";
+import DoctorDetails from "../components/molecules/DoctorDetails";
+import RelatedDoctors from "../components/organisms/RelatedDoctors";
 import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
 import { AppContext } from "../context/AppContext";
 import {
@@ -71,8 +71,10 @@ const Appointment = () => {
     }
   }, [doctors, docId, fetchDocInfo]);
 
-  return docInfo ? (
-    <div>
+  if (!docInfo) return null;
+
+  return (
+    <>
       <DoctorDetails docInfo={docInfo} />
 
       {docInfo.available && (
@@ -87,8 +89,8 @@ const Appointment = () => {
       )}
 
       <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
-    </div>
-  ) : null;
+    </>
+  );
 };
 
 export default Appointment;

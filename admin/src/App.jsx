@@ -5,10 +5,10 @@ import { DoctorContext } from "./context/DoctorContext";
 import { AdminContext } from "./context/AdminContext";
 import { Suspense, lazy } from "react";
 import "react-toastify/dist/ReactToastify.css";
-import LoadingSpinner from "../../frontend/src/components/LoadingSpinner";
+import LoadingSpinner from "./components/atoms/LoadingSpinner";
 import Login from "./pages/Login";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
+import Navbar from "./components/organisms/Navbar";
+import Sidebar from "./components/organisms/Sidebar";
 
 
 const Dashboard = lazy(() => import("./pages/Admin/Dashboard"));

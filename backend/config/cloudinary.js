@@ -6,7 +6,7 @@ const connectCloudinary = async () => {
 
   if (!CLOUDINARY_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_SECRET_KEY) {
     console.error(
-      "❌ Missing Cloudinary credentials in environment variables."
+      "❌ Missing Cloudinary credentials in environment variables.",
     );
     process.exit(1);
   }

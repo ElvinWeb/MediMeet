@@ -1,8 +1,9 @@
 import { useContext, useEffect } from "react";
-import DoctorBookingActivity from "../../components/DoctorBookingActivity";
-import DoctorStatCards from "../../components/DoctorStatCards";
+import DoctorBookingActivity from "../../components/molecules/DoctorBookingActivity";
+import DoctorStatCards from "../../components/molecules/DoctorStatCards";
 import { DoctorContext } from "../../context/DoctorContext";
-import AppointmentsStatusPieChart from "../../components/AppointmentsStatusPieChart";
+import AppointmentsStatusPieChart from "../../components/molecules/AppointmentsStatusPieChart";
+import DashboardTitle from "../../components/atoms/DashboardTitle";
 
 const DoctorDashboard = () => {
   const {
@@ -26,14 +27,7 @@ const DoctorDashboard = () => {
 
   return (
     <div className="m-5">
-      <header className="flex flex-col items-start gap-3 mb-5">
-        <h1 className="text-4xl font-semibold text-primary">
-          Welcome back, Dr. {profileData?.name || ""}
-        </h1>
-        <p className="text-gray-600 text-lg">
-          Here’s a quick overview of today’s activity in MediMeet.
-        </p>
-      </header>
+      <DashboardTitle isAdmin={false} profileData={profileData} />
 
       <DoctorStatCards />
 

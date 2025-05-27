@@ -1,14 +1,16 @@
-import express from "express";
 import cors from "cors";
+import "dotenv/config";
+import express from "express";
+import mongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import xss from "xss-clean";
-import mongoSanitize from "express-mongo-sanitize";
-import "dotenv/config";
-import connectDB from "./config/mongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
+import connectDB from "./config/mongodb.js";
 import adminRouter from "./routes/adminRoute.js";
 import doctorRouter from "./routes/doctorRoute.js";
 import userRouter from "./routes/userRoute.js";
+import logger from "./utils/logger.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 // App instance
 const app = express();
@@ -40,7 +42,10 @@ app.all("*", (_, res) => {
   res.status(404).json({ success: false, message: "Route not found" });
 });
 
+// Central error handler LAST
+app.use(errorHandler);
+
 // ---------- Server ----------
 app.listen(PORT, () =>
-  console.log(`🚀 Server running on http://localhost:${PORT}`)
+  logger.info(`🚀 Server running on http://localhost:${PORT}`)
 );

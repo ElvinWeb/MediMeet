@@ -68,7 +68,7 @@ const doctorSchema = new mongoose.Schema(
   {
     minimize: false,
     timestamps: true,
-  }
+  },
 );
 
 const doctorModel =
