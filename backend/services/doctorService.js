@@ -118,10 +118,13 @@ export const doctorDashboard = async ({ docId }) => {
   const totalSlots = generateAvailableSlots();
   const todayKey = dayjs().format("D_M_YYYY");
   const todayBookedSlots = doctor.slots_booked?.[todayKey] || [];
-  const freeSlotsToday = totalSlots[0].length - todayBookedSlots.length;
+  const freeSlotsToday = Math.max(
+    0,
+    totalSlots[0].length - todayBookedSlots.length
+  );
 
   const todayAppointments = appointments.filter(
-    (app) => app.slotDate === todayKey,
+    (app) => app.slotDate === todayKey
   );
 
   const dashData = {
