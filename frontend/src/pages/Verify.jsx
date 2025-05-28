@@ -1,10 +1,10 @@
-import axios from "axios";
 import { useCallback, useContext, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { API_ENDPOINTS } from "../constants/apiEndpoints";
 import { AppContext } from "../context/AppContext";
-import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
+import api from "../utils/api";
 
 const Verify = () => {
   const [searchParams] = useSearchParams();
@@ -20,15 +20,10 @@ const Verify = () => {
     }
 
     try {
-      const { data } = await axios.post(
-        BACKEND_URL + API_ENDPOINTS.USER.STRIPE_VERIFY,
-        { success, appointmentId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const { data } = await api.post(API_ENDPOINTS.USER.STRIPE_VERIFY, {
+        success,
+        appointmentId,
+      });
 
       if (data.success) {
         toast.success(data.message);

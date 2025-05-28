@@ -1,13 +1,12 @@
 import { useContext, useState } from "react";
-import { AppContext } from "../context/AppContext";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
-import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
+import { API_ENDPOINTS } from "../constants/apiEndpoints";
+import { AppContext } from "../context/AppContext";
+import api from "../utils/api";
 
 const MyProfile = () => {
-  const { token, userData, setUserData, loadUserProfileData } =
-    useContext(AppContext);
+  const { userData, setUserData, loadUserProfileData } = useContext(AppContext);
   const [isEdit, setIsEdit] = useState(false);
   const [image, setImage] = useState(false);
 
@@ -25,15 +24,9 @@ const MyProfile = () => {
 
       image && formData.append("image", image);
 
-      const { data } = await axios.post(
-        BACKEND_URL + API_ENDPOINTS.USER.UPDATE_PROFILE,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const { data } = await api.post(
+        API_ENDPOINTS.USER.UPDATE_PROFILE,
+        formData
       );
 
       if (data.success) {

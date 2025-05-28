@@ -2,11 +2,12 @@ import axios from "axios";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-import AppointmentCard from "../components/molecules/AppointmentCard";
 import EmptyState from "../components/atoms/EmptyState";
-import { AppContext } from "../context/AppContext";
-import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
 import PageTitle from "../components/atoms/PageTitle";
+import AppointmentCard from "../components/molecules/AppointmentCard";
+import { API_ENDPOINTS } from "../constants/apiEndpoints";
+import { AppContext } from "../context/AppContext";
+import api from "../utils/api";
 
 const MyAppointments = () => {
   const { token } = useContext(AppContext);
@@ -14,12 +15,7 @@ const MyAppointments = () => {
 
   const fetchAppointments = useCallback(async () => {
     try {
-      const { data } = await axios.get(
-        BACKEND_URL + API_ENDPOINTS.USER.APPOINTMENTS,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.get(API_ENDPOINTS.USER.APPOINTMENTS);
       setAppointments(data.appointments.reverse());
     } catch (error) {
       console.error(error);
@@ -27,17 +23,13 @@ const MyAppointments = () => {
         error.response?.data?.message || "Failed to fetch appointments."
       );
     }
-  }, [token]);
+  }, []);
 
   const cancelAppointment = async (appointmentId) => {
     try {
-      const { data } = await axios.post(
-        BACKEND_URL + API_ENDPOINTS.USER.CANCEL_APPOINTMENT,
-        { appointmentId },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.post(API_ENDPOINTS.USER.CANCEL_APPOINTMENT, {
+        appointmentId,
+      });
 
       if (data.success) {
         toast.success(data.message);
@@ -53,13 +45,9 @@ const MyAppointments = () => {
 
   const handleStripePayment = async (appointmentId) => {
     try {
-      const { data } = await axios.post(
-        BACKEND_URL + API_ENDPOINTS.USER.STRIPE_PAYMENT,
-        { appointmentId },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await axios.post(API_ENDPOINTS.USER.STRIPE_PAYMENT, {
+        appointmentId,
+      });
 
       if (data.success && data.session_url) {
         window.location.replace(data.session_url);

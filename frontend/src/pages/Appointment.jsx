@@ -1,15 +1,15 @@
-import axios from "axios";
-import { useCallback, useContext, useEffect, useState, useMemo } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import BookingSlots from "../components/molecules/BookingSlots";
 import DoctorDetails from "../components/molecules/DoctorDetails";
 import RelatedDoctors from "../components/organisms/RelatedDoctors";
-import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
+import { API_ENDPOINTS } from "../constants/apiEndpoints";
 import { AppContext } from "../context/AppContext";
+import api from "../utils/api";
 import {
-  generateAvailableSlots,
   formatSlotDate,
+  generateAvailableSlots,
 } from "../utils/appointmentUtils";
 
 const Appointment = () => {
@@ -45,13 +45,11 @@ const Appointment = () => {
 
     try {
       const slotDate = formatSlotDate(selectedDate);
-      const { data } = await axios.post(
-        `${BACKEND_URL}${API_ENDPOINTS.USER.BOOK_APPOINTMENT}`,
-        { docId, slotDate, slotTime },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await api.post(API_ENDPOINTS.USER.BOOK_APPOINTMENT, {
+        docId,
+        slotDate,
+        slotTime,
+      });
 
       if (data.success) {
         toast.success(data.message);
@@ -66,10 +64,10 @@ const Appointment = () => {
   };
 
   useEffect(() => {
-    if (doctors && docId) {
+    if (doctors && docId && token) {
       fetchDocInfo();
     }
-  }, [doctors, docId, fetchDocInfo]);
+  }, [doctors, docId, fetchDocInfo, token]);
 
   if (!docInfo) return null;
 

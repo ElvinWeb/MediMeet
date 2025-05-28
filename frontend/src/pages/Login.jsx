@@ -1,12 +1,12 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
 
+import { API_ENDPOINTS } from "../constants/apiEndpoints";
 import { AppContext } from "../context/AppContext";
-import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
+import api from "../utils/api";
 import { loginSchema, signUpSchema } from "../validation/userValidationSchema";
 
 const Login = () => {
@@ -30,17 +30,14 @@ const Login = () => {
     reset();
   };
 
-  const onSubmit = async (data) => {
+  const onAuthSubmit = async (data) => {
     try {
       if (isSignUp) {
-        const res = await axios.post(
-          `${BACKEND_URL}${API_ENDPOINTS.USER.REGISTER}`,
-          {
-            name: data.name,
-            email: data.email,
-            password: data.password,
-          }
-        );
+        const res = await api.post(API_ENDPOINTS.USER.REGISTER, {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+        });
 
         if (res.data.success) {
           toast.success("Account created successfully. Please log in.");
@@ -50,13 +47,10 @@ const Login = () => {
           toast.error(res.data.message || "Account creation failed.");
         }
       } else {
-        const res = await axios.post(
-          `${BACKEND_URL}${API_ENDPOINTS.USER.LOGIN}`,
-          {
-            email: data.email,
-            password: data.password,
-          }
-        );
+        const res = await api.post(API_ENDPOINTS.USER.LOGIN, {
+          email: data.email,
+          password: data.password,
+        });
 
         if (res.data.success) {
           localStorage.setItem("token", res.data.token);
@@ -77,7 +71,7 @@ const Login = () => {
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onAuthSubmit)}
       className="min-h-[80vh] flex items-center"
     >
       <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
