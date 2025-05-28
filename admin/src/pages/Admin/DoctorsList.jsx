@@ -1,14 +1,13 @@
-import axios from "axios";
-import { useContext, useEffect, useState, useMemo } from "react";
+import { Fragment, useContext, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "react-toastify";
-import ConfirmationModal from "../../components/molecules/ConfirmationModal";
 import EmptyState from "../../components/atoms/EmptyState";
+import ConfirmationModal from "../../components/molecules/ConfirmationModal";
 import DoctorCard from "../../components/molecules/DoctorCard";
 import SearchBar from "../../components/molecules/SearchBar";
-import { API_ENDPOINTS, BACKEND_URL } from "../../constants/apiEndpoints";
+import { API_ENDPOINTS } from "../../constants/apiEndpoints";
 import { AdminContext } from "../../context/AdminContext";
-import MiniLoadingSpinner from "../../components/atoms/MiniLoadingSpinner";
+import api from "../../utils/api";
 const DoctorsList = () => {
   const {
     doctors,
@@ -39,8 +38,8 @@ const DoctorsList = () => {
 
   const deleteDoctor = async (doctorId) => {
     try {
-      const { data } = await axios.delete(
-        BACKEND_URL + API_ENDPOINTS.ADMIN.DELETE_DOCTOR(doctorId),
+      const { data } = await api.delete(
+        API_ENDPOINTS.ADMIN.DELETE_DOCTOR(doctorId),
         {
           headers: {
             Authorization: `Bearer ${aToken}`,
@@ -82,9 +81,7 @@ const DoctorsList = () => {
       <SearchBar onSearchSubmit={setSearchValue} />
 
       <div className="w-full flex flex-wrap gap-3 pt-5 gap-y-6">
-        {isLoading ? (
-          <MiniLoadingSpinner />
-        ) : isDoctorAvailable ? (
+        {isDoctorAvailable ? (
           <div className="w-full min-h-[60vh] flex justify-center items-center">
             <EmptyState
               title="No Doctors Available"
@@ -106,14 +103,15 @@ const DoctorsList = () => {
           </div>
         ) : (
           filteredDoctors.map((item) => (
-            <div key={item._id}>
+            <Fragment key={item._id}>
               <DoctorCard
                 key={item._id}
                 setShowModal={() => handleDeleteClick(item._id)}
                 item={item}
                 changeAvailability={changeAvailability}
+                isLoading={isLoading}
               />
-            </div>
+            </Fragment>
           ))
         )}
       </div>

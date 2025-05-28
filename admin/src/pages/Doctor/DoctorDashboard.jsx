@@ -44,7 +44,7 @@ const DoctorDashboard = () => {
     <div className="m-5">
       <DashboardTitle isAdmin={false} profileData={profileData} />
 
-      <DoctorStatCards />
+      <DoctorStatCards isLoading={isLoading} />
 
       <section className="flex flex-col lg:flex-row gap-5 mt-10">
         <DoctorBookingActivity isLoading={isLoading} />

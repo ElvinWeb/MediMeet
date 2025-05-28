@@ -1,15 +1,15 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { assets } from "../../assets/assets";
-import { API_ENDPOINTS, BACKEND_URL } from "../../constants/apiEndpoints";
+import { API_ENDPOINTS } from "../../constants/apiEndpoints";
 import { SPEACIALITY_LIST } from "../../constants/specialityConstants";
-import { AdminContext } from "../../context/AdminContext";
-import { doctorUpdateFormValidationSchema } from "../../validation/doctorValidationSchema";
 import { EXPERIENCE_OPTIONS } from "../../constants/yearsConstants";
+import { AdminContext } from "../../context/AdminContext";
+import api from "../../utils/api";
+import { doctorUpdateFormValidationSchema } from "../../validation/doctorValidationSchema";
 
 const UpdateDoctor = () => {
   const { getAllDoctors, aToken } = useContext(AdminContext);
@@ -82,8 +82,8 @@ const UpdateDoctor = () => {
     }
 
     try {
-      const { data } = await axios.put(
-        BACKEND_URL + API_ENDPOINTS.ADMIN.UPDATE_DOCTOR(doctorData._id),
+      const { data } = await api.put(
+        API_ENDPOINTS.ADMIN.UPDATE_DOCTOR(doctorData._id),
         formData,
         {
           headers: {

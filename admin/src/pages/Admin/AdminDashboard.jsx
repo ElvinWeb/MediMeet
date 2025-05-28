@@ -12,14 +12,6 @@ const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (aToken) {
-      getDashData();
-      getAllAppointments();
-      getAllDoctors();
-    }
-  }, [aToken, getAllAppointments, getAllDoctors, getDashData]);
-
-  useEffect(() => {
     const fetchData = async () => {
       if (aToken) {
         setIsLoading(true);
@@ -47,12 +39,15 @@ const AdminDashboard = () => {
     <div className="m-5">
       <DashboardTitle isAdmin={true} />
 
-      <AdminStatCards />
+      <AdminStatCards isLoading={isLoading} />
 
       <div className="flex flex-row gap-5 mt-10">
-        <AdminBookingActivity isLoading={isLoading}/>
-        <AdminDoctorActivity isLoading={isLoading}/>
-        <AppointmentsStatusPieChart appointments={allAppointments} isLoading={isLoading}/>
+        <AdminBookingActivity isLoading={isLoading} />
+        <AdminDoctorActivity isLoading={isLoading} />
+        <AppointmentsStatusPieChart
+          appointments={allAppointments}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

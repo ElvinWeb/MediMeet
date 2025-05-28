@@ -1,12 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import { useContext, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
+import { API_ENDPOINTS } from "../constants/apiEndpoints";
 import { AdminContext } from "../context/AdminContext";
 import { DoctorContext } from "../context/DoctorContext";
+import api from "../utils/api";
 import { loginValidationSchema } from "../validation/loginValidationSchema";
 
 const Login = () => {
@@ -28,15 +28,12 @@ const Login = () => {
   });
 
   const endpoint = useMemo(() => {
-    return (
-      BACKEND_URL +
-      (isAdmin ? API_ENDPOINTS.ADMIN.LOGIN : API_ENDPOINTS.DOCTOR.LOGIN)
-    );
+    return isAdmin ? API_ENDPOINTS.ADMIN.LOGIN : API_ENDPOINTS.DOCTOR.LOGIN;
   }, [isAdmin]);
 
   const handleLogin = async (formData) => {
     try {
-      const { data } = await axios.post(endpoint, formData);
+      const { data } = await api.post(endpoint, formData);
 
       if (!data.success) {
         return toast.error(data.message || "Login failed");

@@ -1,15 +1,15 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { assets } from "../../assets/assets";
-import { API_ENDPOINTS, BACKEND_URL } from "../../constants/apiEndpoints";
+import { API_ENDPOINTS } from "../../constants/apiEndpoints";
 import { SPEACIALITY_LIST } from "../../constants/specialityConstants";
-import { AdminContext } from "../../context/AdminContext";
-import { doctorSubmitFormValidationSchema } from "../../validation/doctorValidationSchema";
 import { EXPERIENCE_OPTIONS } from "../../constants/yearsConstants";
+import { AdminContext } from "../../context/AdminContext";
+import api from "../../utils/api";
+import { doctorSubmitFormValidationSchema } from "../../validation/doctorValidationSchema";
 
 const AddDoctor = () => {
   const { aToken } = useContext(AdminContext);
@@ -55,16 +55,12 @@ const AddDoctor = () => {
     );
 
     try {
-      const res = await axios.post(
-        BACKEND_URL + API_ENDPOINTS.ADMIN.ADD_DOCTOR,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${aToken}`,
-          },
-        }
-      );
+      const res = await api.post(API_ENDPOINTS.ADMIN.ADD_DOCTOR, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${aToken}`,
+        },
+      });
 
       if (res.data.success) {
         toast.success(res.data.message);
@@ -125,7 +121,6 @@ const AddDoctor = () => {
 
         <div className="flex flex-col lg:flex-row items-start gap-10 text-gray-600">
           <div className="w-full lg:flex-1 flex flex-col gap-4">
-            
             <div className="flex-1 flex flex-col gap-1">
               <p>Doctor name</p>
               <input
@@ -166,7 +161,9 @@ const AddDoctor = () => {
                 className="border rounded px-2 py-2"
               >
                 {EXPERIENCE_OPTIONS.map((opt, idx) => (
-                  <option key={idx} value={opt}>{opt}</option>
+                  <option key={idx} value={opt}>
+                    {opt}
+                  </option>
                 ))}
               </select>
               <p className="text-sm text-red-500">

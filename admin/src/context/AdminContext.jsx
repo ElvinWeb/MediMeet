@@ -1,18 +1,15 @@
-import axios from "axios";
 import PropTypes from "prop-types";
-import {
-  createContext,
-  useCallback,
-  useMemo,
-  useState
-} from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import { API_ENDPOINTS, BACKEND_URL } from "../constants/apiEndpoints";
+import { API_ENDPOINTS } from "../constants/apiEndpoints";
+import api from "../utils/api";
 
 export const AdminContext = createContext();
 
 const AdminContextProvider = ({ children }) => {
-  const [aToken, setAToken] = useState(() => localStorage.getItem("aToken") || "");
+  const [aToken, setAToken] = useState(
+    () => localStorage.getItem("aToken") || ""
+  );
   const [appointments, setAppointments] = useState([]);
   const [totalAppointments, setTotalAppointments] = useState(0);
   const [doctors, setDoctors] = useState([]);
@@ -24,17 +21,20 @@ const AdminContextProvider = ({ children }) => {
     [appointments]
   );
 
-  const authHeader = useMemo(() => ({
-    headers: {
-      Authorization: `Bearer ${aToken}`,
-    },
-  }), [aToken]);
+  const authHeader = useMemo(
+    () => ({
+      headers: {
+        Authorization: `Bearer ${aToken}`,
+      },
+    }),
+    [aToken]
+  );
 
   // Fetch all doctors
   const getAllDoctors = useCallback(async () => {
     try {
-      const { data } = await axios.get(
-        BACKEND_URL + API_ENDPOINTS.ADMIN.ALL_DOCTORS,
+      const { data } = await api.get(
+        API_ENDPOINTS.ADMIN.ALL_DOCTORS,
         authHeader
       );
       if (data.success) {
@@ -50,10 +50,7 @@ const AdminContextProvider = ({ children }) => {
   // Fetch admin dashboard stats
   const getDashData = useCallback(async () => {
     try {
-      const { data } = await axios.get(
-        BACKEND_URL + API_ENDPOINTS.ADMIN.DASHBOARD,
-        authHeader
-      );
+      const { data } = await api.get(API_ENDPOINTS.ADMIN.DASHBOARD, authHeader);
       if (data.success) {
         setDashData(data.dashData);
       } else {
@@ -68,8 +65,8 @@ const AdminContextProvider = ({ children }) => {
   const getAllAppointments = useCallback(
     async (page = 1, limit = 7) => {
       try {
-        const { data } = await axios.get(
-          `${BACKEND_URL + API_ENDPOINTS.ADMIN.APPOINTMENTS}?page=${page}&limit=${limit}`,
+        const { data } = await api.get(
+          API_ENDPOINTS.ADMIN.APPOINTMENTS(page, limit),
           authHeader
         );
         if (data.success) {
@@ -86,73 +83,82 @@ const AdminContextProvider = ({ children }) => {
   );
 
   // Cancel appointment
-  const cancelAppointment = useCallback(async (appointmentId) => {
-    try {
-      const { data } = await axios.post(
-        BACKEND_URL + API_ENDPOINTS.ADMIN.CANCEL_APPOINMENT,
-        { appointmentId },
-        authHeader
-      );
-      if (data.success) {
-        toast.success(data.message);
-        getAllAppointments(); // Refresh list
-      } else {
-        toast.error(data.message);
+  const cancelAppointment = useCallback(
+    async (appointmentId) => {
+      try {
+        const { data } = await api.post(
+          API_ENDPOINTS.ADMIN.CANCEL_APPOINMENT,
+          { appointmentId },
+          authHeader
+        );
+        if (data.success) {
+          toast.success(data.message);
+          getAllAppointments(); // Refresh list
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error(error.message);
       }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }, [authHeader, getAllAppointments]);
+    },
+    [authHeader, getAllAppointments]
+  );
 
   // Toggle doctor availability
-  const changeAvailability = useCallback(async (docId) => {
-    try {
-      const { data } = await axios.post(
-        BACKEND_URL + API_ENDPOINTS.ADMIN.CHANGE_AVAILABILITY,
-        { docId },
-        authHeader
-      );
-      if (data.success) {
-        toast.success(data.message);
-        getAllDoctors();
-      } else {
-        toast.error(data.message);
+  const changeAvailability = useCallback(
+    async (docId) => {
+      try {
+        const { data } = await api.post(
+          API_ENDPOINTS.ADMIN.CHANGE_AVAILABILITY,
+          { docId },
+          authHeader
+        );
+        if (data.success) {
+          toast.success(data.message);
+          getAllDoctors();
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error(error.message);
       }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  }, [authHeader, getAllDoctors]);
+    },
+    [authHeader, getAllDoctors]
+  );
 
   const isDoctorAvailable = !doctors || doctors.length === 0;
 
-  const contextValue = useMemo(() => ({
-    aToken,
-    setAToken,
-    doctors,
-    appointments,
-    dashData,
-    isAppoinmentAvailable,
-    isDoctorAvailable,
-    totalAppointments,
-    getAllDoctors,
-    getDashData,
-    getAllAppointments,
-    cancelAppointment,
-    changeAvailability,
-  }), [
-    aToken,
-    doctors,
-    appointments,
-    dashData,
-    isAppoinmentAvailable,
-    isDoctorAvailable,
-    totalAppointments,
-    getAllDoctors,
-    getDashData,
-    getAllAppointments,
-    cancelAppointment,
-    changeAvailability,
-  ]);
+  const contextValue = useMemo(
+    () => ({
+      aToken,
+      setAToken,
+      doctors,
+      appointments,
+      dashData,
+      isAppoinmentAvailable,
+      isDoctorAvailable,
+      totalAppointments,
+      getAllDoctors,
+      getDashData,
+      getAllAppointments,
+      cancelAppointment,
+      changeAvailability,
+    }),
+    [
+      aToken,
+      doctors,
+      appointments,
+      dashData,
+      isAppoinmentAvailable,
+      isDoctorAvailable,
+      totalAppointments,
+      getAllDoctors,
+      getDashData,
+      getAllAppointments,
+      cancelAppointment,
+      changeAvailability,
+    ]
+  );
 
   return (
     <AdminContext.Provider value={contextValue}>
