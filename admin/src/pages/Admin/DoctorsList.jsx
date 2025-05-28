@@ -8,6 +8,7 @@ import SearchBar from "../../components/molecules/SearchBar";
 import { API_ENDPOINTS } from "../../constants/apiEndpoints";
 import { AdminContext } from "../../context/AdminContext";
 import api from "../../utils/api";
+import DoctorCardSkeleton from "../../components/atoms/DoctorCardSkeleton";
 const DoctorsList = () => {
   const {
     doctors,
@@ -104,13 +105,17 @@ const DoctorsList = () => {
         ) : (
           filteredDoctors.map((item) => (
             <Fragment key={item._id}>
-              <DoctorCard
-                key={item._id}
-                setShowModal={() => handleDeleteClick(item._id)}
-                item={item}
-                changeAvailability={changeAvailability}
-                isLoading={isLoading}
-              />
+              {isLoading ? (
+                <DoctorCardSkeleton />
+              ) : (
+                <DoctorCard
+                  key={item._id}
+                  setShowModal={() => handleDeleteClick(item._id)}
+                  item={item}
+                  changeAvailability={changeAvailability}
+                  isLoading={isLoading}
+                />
+              )}
             </Fragment>
           ))
         )}

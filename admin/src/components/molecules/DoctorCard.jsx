@@ -1,12 +1,8 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import DoctorCardSkeleton from "../atoms/DoctorCardSkeleton";
 
-const DoctorCard = ({ item, changeAvailability, setShowModal, isLoading }) => {
+const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
   const navigate = useNavigate();
-
-  if (isLoading) <DoctorCardSkeleton />;
-
   return (
     <div className="border border-[#C9D8FF] rounded-xl max-w-56 overflow-hidden cursor-pointer group">
       <img
@@ -64,7 +60,6 @@ DoctorCard.propTypes = {
   }).isRequired,
   changeAvailability: PropTypes.func.isRequired,
   setShowModal: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool.isRequired,
 };
 
 export default DoctorCard;
