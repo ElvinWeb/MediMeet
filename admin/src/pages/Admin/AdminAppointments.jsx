@@ -1,11 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import EmptyState from "../../components/atoms/EmptyState";
 import SearchBar from "../../components/molecules/SearchBar";
 import TablePagination from "../../components/molecules/TablePagination";
 import AdminTableRow from "../../components/molecules/AdminTableRow";
 import { AdminContext } from "../../context/AdminContext";
+import {
+  ITEMS_PER_PAGE,
+  SORT_ORDERS,
+  INITIAL_CURRENT_PAGE,
+} from "../../constants/tableConstants";
+import MiniLoadingSpinner from "../../components/atoms/MiniLoadingSpinner";
 
-const AllAppointments = () => {
+const AdminAppointments = () => {
   const {
     aToken,
     appointments,
@@ -15,38 +21,57 @@ const AllAppointments = () => {
     totalAppointments,
   } = useContext(AdminContext);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const [sortOrder, setSortOrder] = useState(SORT_ORDERS.ASC);
+  const [currentPage, setCurrentPage] = useState(INITIAL_CURRENT_PAGE);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const filteredAppointments = appointments.filter((item) => {
-    const patientName = item.userData.name.toLowerCase();
-    const doctorName = item.docData.name.toLowerCase();
-    return (
-      patientName.includes(searchTerm.trim().toLowerCase()) ||
-      doctorName.includes(searchTerm.trim().toLowerCase())
-    );
-  });
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      if (aToken) {
+        setIsLoading(true);
+        try {
+          await getAllAppointments(currentPage, ITEMS_PER_PAGE);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
 
-  const processedAppointments =
-    sortOrder === "asc"
-      ? [...filteredAppointments].sort((a, b) => a.amount - b.amount)
-      : sortOrder === "desc"
-      ? [...filteredAppointments].sort((a, b) => b.amount - a.amount)
-      : filteredAppointments;
+    fetchAppointments();
+  }, [aToken, currentPage, getAllAppointments]);
+
   const handleSearchSubmit = (value) => {
     setSearchTerm(value);
   };
 
   const handleResetSearch = () => {
     setSearchTerm("");
+    setCurrentPage(INITIAL_CURRENT_PAGE);
   };
 
-  useEffect(() => {
-    if (aToken) {
-      getAllAppointments(currentPage, itemsPerPage);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const filteredAppointments = useMemo(() => {
+    return appointments.filter((item) => {
+      const patientName = item.userData?.name?.toLowerCase();
+      const doctorName = item.docData?.name?.toLowerCase();
+      return (
+        patientName.includes(searchTerm.trim().toLowerCase()) ||
+        doctorName.includes(searchTerm.trim().toLowerCase())
+      );
+    });
+  }, [appointments, searchTerm]);
+
+  const sortedAppointments = useMemo(() => {
+    if (sortOrder === SORT_ORDERS.ASC) {
+      return [...filteredAppointments].sort((a, b) => a.amount - b.amount);
+    } else if (sortOrder === SORT_ORDERS.DESC) {
+      return [...filteredAppointments].sort((a, b) => b.amount - a.amount);
     }
-  }, [aToken, appointments, currentPage, getAllAppointments]);
+    return filteredAppointments;
+  }, [filteredAppointments, sortOrder]);
 
   return (
     <div className="w-full max-w-6xl m-5">
@@ -65,16 +90,27 @@ const AllAppointments = () => {
           <p
             onClick={() =>
               setSortOrder((prev) =>
-                prev === "" ? "asc" : prev === "asc" ? "desc" : ""
+                prev === ""
+                  ? SORT_ORDERS.ASC
+                  : prev === SORT_ORDERS.ASC
+                  ? SORT_ORDERS.DESC
+                  : ""
               )
             }
             className="cursor-pointer"
           >
-            Fees {sortOrder === "asc" ? "↑" : sortOrder === "desc" ? "↓" : null}
+            Fees{" "}
+            {sortOrder === SORT_ORDERS.ASC
+              ? "↑"
+              : sortOrder === SORT_ORDERS.DESC
+              ? "↓"
+              : null}
           </p>
           <p>Action</p>
         </div>
-        {isAppoinmentAvailable ? (
+        {isLoading ? (
+          <MiniLoadingSpinner />
+        ) : isAppoinmentAvailable ? (
           <EmptyState
             title="No Appointments Yet"
             subtitle="When appointments are made, they’ll appear here."
@@ -93,7 +129,7 @@ const AllAppointments = () => {
             </button>
           </div>
         ) : (
-          processedAppointments.map((item, index) => (
+          sortedAppointments.map((item, index) => (
             <AdminTableRow
               key={item._id}
               index={index}
@@ -105,12 +141,12 @@ const AllAppointments = () => {
         <TablePagination
           currentPage={currentPage}
           totalItems={totalAppointments}
-          itemsPerPage={itemsPerPage}
-          onPageChange={(page) => setCurrentPage(page)}
+          itemsPerPage={ITEMS_PER_PAGE}
+          onPageChange={handlePageChange}
         />
       </div>
     </div>
   );
 };
 
-export default AllAppointments;
+export default AdminAppointments;

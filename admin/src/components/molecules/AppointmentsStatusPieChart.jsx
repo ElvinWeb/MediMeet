@@ -6,8 +6,9 @@ import {
   getAppointmentStatusCounts,
   renderCustomizedLabel,
 } from "../../utils/statusUtils.jsx";
+import MiniLoadingSpinner from "../atoms/MiniLoadingSpinner.jsx";
 
-const AppointmentsStatusPieChart = ({ appointments }) => {
+const AppointmentsStatusPieChart = ({ appointments, isLoading }) => {
   const chartData = getAppointmentStatusCounts(appointments);
 
   return (
@@ -21,34 +22,39 @@ const AppointmentsStatusPieChart = ({ appointments }) => {
         />
         <p className="font-semibold">Booking Status Activity</p>
       </div>
-      <ResponsiveContainer width="100%" height={250}>
-        <PieChart margin={{ top: 22 }}>
-          <Pie
-            data={chartData}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            label={renderCustomizedLabel}
-            outerRadius={115}
-            fill="#8884d8"
-            dataKey="value"
-          >
-            {chartData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-          <Tooltip />
-        </PieChart>
-      </ResponsiveContainer>
+      {isLoading ? (
+        <MiniLoadingSpinner />
+      ) : (
+        <ResponsiveContainer width="100%" height={250}>
+          <PieChart margin={{ top: 22 }}>
+            <Pie
+              data={chartData}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={renderCustomizedLabel}
+              outerRadius={115}
+              fill="#8884d8"
+              dataKey="value"
+            >
+              {chartData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
+      )}
     </div>
   );
 };
 
 AppointmentsStatusPieChart.propTypes = {
   appointments: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default AppointmentsStatusPieChart;

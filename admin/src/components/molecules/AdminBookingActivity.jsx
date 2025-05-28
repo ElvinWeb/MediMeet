@@ -3,7 +3,10 @@ import { assets } from "../../assets/assets";
 import { AdminContext } from "../../context/AdminContext";
 import AdminBookingItem from "../atoms/AdminBookingItem";
 import EmptyState from "../atoms/EmptyState";
-const AdminBookingActivity = () => {
+import PropTypes from "prop-types";
+import MiniLoadingSpinner from "../atoms/MiniLoadingSpinner";
+
+const AdminBookingActivity = ({ isLoading }) => {
   const {
     aToken,
     dashData,
@@ -31,7 +34,9 @@ const AdminBookingActivity = () => {
         />
         <p className="font-semibold">Booking Activity</p>
       </div>
-      {isAppoinmentAvailable ? (
+      {isLoading ? (
+        <MiniLoadingSpinner />
+      ) : isAppoinmentAvailable ? (
         <EmptyState
           title="No Appointments Yet"
           subtitle="When appointments are made, they’ll appear here."
@@ -49,6 +54,10 @@ const AdminBookingActivity = () => {
       )}
     </div>
   );
+};
+
+AdminBookingActivity.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default AdminBookingActivity;

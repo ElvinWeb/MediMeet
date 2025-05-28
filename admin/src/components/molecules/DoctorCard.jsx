@@ -14,6 +14,7 @@ const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
             state: { doctor: item },
           })
         }
+        loading="lazy"
       />
       <div className="p-4">
         <p className="text-[#262626] text-lg font-medium">{item.name}</p>

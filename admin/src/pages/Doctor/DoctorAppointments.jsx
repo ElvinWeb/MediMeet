@@ -4,34 +4,55 @@ import SearchBar from "../../components/molecules/SearchBar";
 import TablePagination from "../../components/molecules/TablePagination";
 import DoctorTableRow from "../../components/molecules/DoctorTableRow";
 import { DoctorContext } from "../../context/DoctorContext";
+import {
+  INITIAL_CURRENT_PAGE,
+  ITEMS_PER_PAGE,
+  SORT_ORDERS,
+} from "../../constants/tableConstants";
+import MiniLoadingSpinner from "../../components/atoms/MiniLoadingSpinner";
 
 const DoctorAppointments = () => {
   const {
     dToken,
     appointments,
     getAppointments,
+    totalAppointments,
     cancelAppointment,
     completeAppointment,
     isAppoinmentAvailable,
   } = useContext(DoctorContext);
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
+  const [sortOrder, setSortOrder] = useState(SORT_ORDERS.ASC);
+  const [currentPage, setCurrentPage] = useState(INITIAL_CURRENT_PAGE);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (dToken) getAppointments();
-  }, [dToken, getAppointments]);
+    const fetchAppointments = async () => {
+      if (dToken) {
+        setIsLoading(true);
+        try {
+          await getAppointments(currentPage, ITEMS_PER_PAGE);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchAppointments();
+  }, [dToken, currentPage, getAppointments]);
 
   const handleSearchSubmit = (value) => {
     setSearchTerm(value);
-    setCurrentPage(1);
   };
 
   const handleResetSearch = () => {
     setSearchTerm("");
-    setCurrentPage(1);
+    setCurrentPage(INITIAL_CURRENT_PAGE);
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   const filteredAppointments = useMemo(() => {
@@ -46,19 +67,13 @@ const DoctorAppointments = () => {
   }, [appointments, searchTerm]);
 
   const sortedAppointments = useMemo(() => {
-    if (sortOrder === "asc") {
+    if (sortOrder === SORT_ORDERS.ASC) {
       return [...filteredAppointments].sort((a, b) => a.amount - b.amount);
-    } else if (sortOrder === "desc") {
+    } else if (sortOrder === SORT_ORDERS.DESC) {
       return [...filteredAppointments].sort((a, b) => b.amount - a.amount);
     }
     return filteredAppointments;
   }, [filteredAppointments, sortOrder]);
-
-  const currentAppointments = useMemo(() => {
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return sortedAppointments.slice(start, end);
-  }, [sortedAppointments, currentPage, itemsPerPage]);
 
   return (
     <div className="w-full max-w-6xl m-5">
@@ -76,17 +91,28 @@ const DoctorAppointments = () => {
           <p
             onClick={() =>
               setSortOrder((prev) =>
-                prev === "" ? "asc" : prev === "asc" ? "desc" : ""
+                prev === ""
+                  ? SORT_ORDERS.ASC
+                  : prev === SORT_ORDERS.ASC
+                  ? SORT_ORDERS.DESC
+                  : ""
               )
             }
             className="cursor-pointer"
           >
-            Fees {sortOrder === "asc" ? "↑" : sortOrder === "desc" ? "↓" : ""}
+            Fees{" "}
+            {sortOrder === SORT_ORDERS.ASC
+              ? "↑"
+              : sortOrder === SORT_ORDERS.DESC
+              ? "↓"
+              : ""}
           </p>
           <p>Action</p>
         </div>
 
-        {isAppoinmentAvailable ? (
+        {isLoading ? (
+          <MiniLoadingSpinner />
+        ) : isAppoinmentAvailable ? (
           <EmptyState
             title="No Appointments Yet"
             subtitle="When appointments are made, they’ll appear here."
@@ -105,7 +131,7 @@ const DoctorAppointments = () => {
             </button>
           </div>
         ) : (
-          currentAppointments.map((item, index) => (
+          sortedAppointments.map((item, index) => (
             <DoctorTableRow
               key={item._id}
               item={item}
@@ -119,9 +145,9 @@ const DoctorAppointments = () => {
 
       <TablePagination
         currentPage={currentPage}
-        totalItems={filteredAppointments.length}
-        itemsPerPage={itemsPerPage}
-        onPageChange={setCurrentPage}
+        totalItems={totalAppointments}
+        itemsPerPage={ITEMS_PER_PAGE}
+        onPageChange={handlePageChange}
       />
     </div>
   );

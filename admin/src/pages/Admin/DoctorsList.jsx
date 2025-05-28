@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "react-toastify";
 import ConfirmationModal from "../../components/molecules/ConfirmationModal";
@@ -9,11 +9,16 @@ import SearchBar from "../../components/molecules/SearchBar";
 import { API_ENDPOINTS, BACKEND_URL } from "../../constants/apiEndpoints";
 import { AdminContext } from "../../context/AdminContext";
 const DoctorsList = () => {
-  const { doctors, changeAvailability, aToken, getAllDoctors } =
-    useContext(AdminContext);
+  const {
+    doctors,
+    changeAvailability,
+    aToken,
+    getAllDoctors,
+    isDoctorAvailable,
+  } = useContext(AdminContext);
   const [showModal, setShowModal] = useState(false);
+  const [selectedDoctorId, setSelectedDoctorId] = useState(null);
   const [searchValue, setSearchValue] = useState("");
-  const isDoctorAvailable = !doctors || doctors.length === 0;
 
   useEffect(() => {
     if (aToken) {
@@ -44,13 +49,19 @@ const DoctorsList = () => {
     }
   };
 
-  const filteredDoctors = doctors.filter((doctor) => {
-    const doctorName = doctor.name.toLowerCase();
-    return doctorName.includes(searchValue.trim().toLowerCase());
-  });
+  const filteredDoctors = useMemo(() => {
+    return doctors.filter((doctor) =>
+      doctor.name.toLowerCase().includes(searchValue.trim().toLowerCase())
+    );
+  }, [doctors, searchValue]);
 
   const handleResetSearch = () => {
     setSearchValue("");
+  };
+
+  const handleDeleteClick = (doctorId) => {
+    setSelectedDoctorId(doctorId);
+    setShowModal(true);
   };
 
   return (
@@ -59,7 +70,7 @@ const DoctorsList = () => {
 
       <SearchBar onSearchSubmit={setSearchValue} />
 
-      <div className="w-full flex flex-wrap gap-4 pt-5 gap-y-6">
+      <div className="w-full flex flex-wrap gap-3 pt-5 gap-y-6">
         {isDoctorAvailable ? (
           <div className="w-full min-h-[60vh] flex justify-center items-center">
             <EmptyState
@@ -85,27 +96,26 @@ const DoctorsList = () => {
             <div key={item._id}>
               <DoctorCard
                 key={item._id}
-                setShowModal={setShowModal}
+                setShowModal={() => handleDeleteClick(item._id)}
                 item={item}
                 changeAvailability={changeAvailability}
               />
-
-              {createPortal(
-                <ConfirmationModal
-                  onConfirm={() => {
-                    deleteDoctor(item._id);
-                    setShowModal(false);
-                  }}
-                  onCancel={() => setShowModal(false)}
-                  isOpen={showModal}
-                  actionType={"delete"}
-                />,
-                document.body
-              )}
             </div>
           ))
         )}
       </div>
+      {createPortal(
+        <ConfirmationModal
+          onConfirm={() => {
+            deleteDoctor(selectedDoctorId);
+            setShowModal(false);
+          }}
+          onCancel={() => setShowModal(false)}
+          isOpen={showModal}
+          actionType={"delete"}
+        />,
+        document.body
+      )}
     </div>
   );
 };

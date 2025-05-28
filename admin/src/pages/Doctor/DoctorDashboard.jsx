@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import DoctorBookingActivity from "../../components/molecules/DoctorBookingActivity";
 import DoctorStatCards from "../../components/molecules/DoctorStatCards";
 import { DoctorContext } from "../../context/DoctorContext";
@@ -14,14 +14,29 @@ const DoctorDashboard = () => {
     getProfileData,
     getAppointments,
   } = useContext(DoctorContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!dToken) return;
+    const fetchAppointments = async () => {
+      if (dToken) {
+        setIsLoading(true);
+        try {
+          await getProfileData();
+          await getAppointments();
+          await getDashData();
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
 
-    getProfileData();
-    getAppointments();
-    getDashData();
-  }, [dToken, getAppointments, getDashData, getProfileData]);
+    fetchAppointments();
+  }, [dToken, getAppointments, getProfileData, getDashData]);
+
+  const allAppointments = useMemo(
+    () => dashData?.allAppointments || [],
+    [dashData]
+  );
 
   if (!dashData) return null;
 
@@ -32,8 +47,11 @@ const DoctorDashboard = () => {
       <DoctorStatCards />
 
       <section className="flex flex-col lg:flex-row gap-5 mt-10">
-        <DoctorBookingActivity />
-        <AppointmentsStatusPieChart appointments={dashData.allAppointments} />
+        <DoctorBookingActivity isLoading={isLoading} />
+        <AppointmentsStatusPieChart
+          appointments={allAppointments}
+          isLoading={isLoading}
+        />
       </section>
     </div>
   );

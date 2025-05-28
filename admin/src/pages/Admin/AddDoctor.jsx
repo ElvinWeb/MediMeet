@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -9,10 +9,12 @@ import { API_ENDPOINTS, BACKEND_URL } from "../../constants/apiEndpoints";
 import { SPEACIALITY_LIST } from "../../constants/specialityConstants";
 import { AdminContext } from "../../context/AdminContext";
 import { doctorSubmitFormValidationSchema } from "../../validation/doctorValidationSchema";
+import { EXPERIENCE_OPTIONS } from "../../constants/yearsConstants";
 
 const AddDoctor = () => {
   const { aToken } = useContext(AdminContext);
   const [previewImg, setPreviewImg] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
   const navigate = useNavigate();
 
   const {
@@ -77,6 +79,15 @@ const AddDoctor = () => {
       toast.error("Something went wrong");
     }
   };
+
+  useEffect(() => {
+    if (previewImg) {
+      const objectUrl = URL.createObjectURL(previewImg);
+      setPreviewUrl(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+  }, [previewImg]);
+
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)} className="m-5 w-full">
       <p className="mb-3 text-lg font-medium">Add Doctor</p>
@@ -88,12 +99,9 @@ const AddDoctor = () => {
               className={`w-16 bg-gray-100 rounded-full cursor-pointer ${
                 errors.image && "border-2 border-red-500"
               }`}
-              src={
-                previewImg && typeof previewImg === "object"
-                  ? URL.createObjectURL(previewImg)
-                  : assets.upload_area
-              }
+              src={previewUrl || assets.upload_area}
               alt="doctor profile"
+              loading="lazy"
             />
           </label>
           <input
@@ -156,10 +164,8 @@ const AddDoctor = () => {
                 {...register("experience")}
                 className="border rounded px-2 py-2"
               >
-                {[...Array(10)].map((_, i) => (
-                  <option key={i + 1} value={`${i + 1} Year`}>
-                    {i + 1} Year{i + 1 > 1 ? "s" : ""}
-                  </option>
+                {EXPERIENCE_OPTIONS.map((opt, idx) => (
+                  <option key={idx} value={opt}>{opt}</option>
                 ))}
               </select>
               <p className="text-sm text-red-500">
@@ -239,6 +245,7 @@ const AddDoctor = () => {
         <button
           type="submit"
           className="bg-primary px-10 py-3 mt-4 text-white rounded-full mr-4"
+          disabled={isSubmitting}
         >
           {isSubmitting ? (
             <>
@@ -269,6 +276,7 @@ const AddDoctor = () => {
         <button
           onClick={() => navigate("/doctor-list")}
           className="border-primary border-2 px-10 py-3 mt-4 text-primary rounded-full"
+          disabled={isSubmitting}
         >
           Back
         </button>

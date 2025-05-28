@@ -123,6 +123,8 @@ const AdminContextProvider = ({ children }) => {
     }
   }, [authHeader, getAllDoctors]);
 
+  const isDoctorAvailable = !doctors || doctors.length === 0;
+
   const contextValue = useMemo(() => ({
     aToken,
     setAToken,
@@ -130,6 +132,7 @@ const AdminContextProvider = ({ children }) => {
     appointments,
     dashData,
     isAppoinmentAvailable,
+    isDoctorAvailable,
     totalAppointments,
     getAllDoctors,
     getDashData,
@@ -142,6 +145,7 @@ const AdminContextProvider = ({ children }) => {
     appointments,
     dashData,
     isAppoinmentAvailable,
+    isDoctorAvailable,
     totalAppointments,
     getAllDoctors,
     getDashData,

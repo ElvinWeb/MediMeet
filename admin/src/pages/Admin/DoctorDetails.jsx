@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { SPEACIALITY_LIST } from "../../constants/specialityConstants";
-
+import { EXPERIENCE_OPTIONS } from "../../constants/yearsConstants";
 const DoctorDetails = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -104,9 +104,9 @@ const DoctorDetails = () => {
                 className="border rounded px-3 py-2"
                 disabled
               >
-                {[...Array(10)].map((_, i) => (
-                  <option key={i} value={`${i + 1} Year`}>
-                    {i + 1} Year{i + 1 > 1 ? "s" : ""}
+                {EXPERIENCE_OPTIONS.map((opt, idx) => (
+                  <option key={idx} value={opt}>
+                    {opt}
                   </option>
                 ))}
               </select>

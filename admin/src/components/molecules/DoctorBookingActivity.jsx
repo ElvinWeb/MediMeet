@@ -3,9 +3,10 @@ import { assets } from "../../assets/assets";
 import { DoctorContext } from "../../context/DoctorContext";
 import DoctorBookingItem from "../atoms/DoctorBookingItem";
 import EmptyState from "../atoms/EmptyState";
+import MiniLoadingSpinner from "../atoms/MiniLoadingSpinner";
+import PropTypes from "prop-types";
 
-const DoctorBookingActivity = () => {
-  
+const DoctorBookingActivity = ({ isLoading }) => {
   const {
     dToken,
     dashData,
@@ -34,7 +35,9 @@ const DoctorBookingActivity = () => {
         />
         <p className="font-semibold">Booking Activity</p>
       </div>
-      {isAppoinmentAvailable ? (
+      {isLoading ? (
+        <MiniLoadingSpinner />
+      ) : isAppoinmentAvailable ? (
         <EmptyState
           title="No Appointments Yet"
           subtitle="When appointments are made, they’ll appear here."
@@ -53,6 +56,10 @@ const DoctorBookingActivity = () => {
       )}
     </div>
   );
+};
+
+DoctorBookingActivity.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
 };
 
 export default DoctorBookingActivity;

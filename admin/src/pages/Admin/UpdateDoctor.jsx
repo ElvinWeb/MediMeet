@@ -1,21 +1,22 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useContext, useEffect, useMemo } from "react";
+import axios from "axios";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { assets } from "../../assets/assets";
+import { API_ENDPOINTS, BACKEND_URL } from "../../constants/apiEndpoints";
 import { SPEACIALITY_LIST } from "../../constants/specialityConstants";
 import { AdminContext } from "../../context/AdminContext";
-
-import axios from "axios";
-import { toast } from "react-toastify";
-import { API_ENDPOINTS, BACKEND_URL } from "../../constants/apiEndpoints";
 import { doctorUpdateFormValidationSchema } from "../../validation/doctorValidationSchema";
+import { EXPERIENCE_OPTIONS } from "../../constants/yearsConstants";
 
 const UpdateDoctor = () => {
   const { getAllDoctors, aToken } = useContext(AdminContext);
   const { state } = useLocation();
   const navigate = useNavigate();
   const doctorData = useMemo(() => state.doctor || {}, [state.doctor]);
+  const [previewURL, setPreviewURL] = useState("");
 
   const {
     register,
@@ -58,7 +59,7 @@ const UpdateDoctor = () => {
     }
   }, [doctorData, setValue]);
 
-  const onSubmit = async (data) => {
+  const onUpdateHandler = async (data) => {
     if (!doctorData._id) return;
 
     const formData = new FormData();
@@ -82,8 +83,6 @@ const UpdateDoctor = () => {
       );
     }
 
-    console.log("data updated");
-
     try {
       const { data } = await axios.put(
         BACKEND_URL + API_ENDPOINTS.ADMIN.UPDATE_DOCTOR(doctorData._id),
@@ -99,6 +98,7 @@ const UpdateDoctor = () => {
       if (data.success) {
         toast.success(data.message);
         await getAllDoctors();
+        navigate("/doctor-list");
       } else {
         toast.error(data.message);
       }
@@ -106,11 +106,18 @@ const UpdateDoctor = () => {
       toast.error(error.message);
       console.error(error);
     }
-    navigate("/doctor-list");
   };
 
+  useEffect(() => {
+    if (docImg?.[0]) {
+      const objectUrl = URL.createObjectURL(docImg[0]);
+      setPreviewURL(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    }
+  }, [docImg]);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="m-5 w-full">
+    <form onSubmit={handleSubmit(onUpdateHandler)} className="m-5 w-full">
       <p className="mb-3 text-lg font-medium">Update Doctor</p>
 
       <div className="bg-white px-8 py-8 border rounded w-full max-w-4xl max-h-[80vh] overflow-y-scroll">
@@ -118,12 +125,9 @@ const UpdateDoctor = () => {
           <label htmlFor="doc-img">
             <img
               className="w-16 h-16 rounded-full cursor-pointer object-cover border"
-              src={
-                docImg?.[0]
-                  ? URL.createObjectURL(docImg[0])
-                  : doctorData.image || assets.upload_area
-              }
+              src={previewURL || doctorData.image || assets.upload_area}
               alt="doctor"
+              loading="lazy"
             />
           </label>
           <input {...register("image")} type="file" id="doc-img" hidden />
@@ -173,9 +177,9 @@ const UpdateDoctor = () => {
                 {...register("experience")}
                 className="border rounded px-2 py-2"
               >
-                {[...Array(10)].map((_, i) => (
-                  <option key={i + 1} value={`${i + 1} Year`}>
-                    {i + 1} Year{i + 1 > 1 ? "s" : ""}
+                {EXPERIENCE_OPTIONS.map((opt, idx) => (
+                  <option key={idx} value={opt}>
+                    {opt}
                   </option>
                 ))}
               </select>
@@ -256,6 +260,7 @@ const UpdateDoctor = () => {
         <button
           type="submit"
           className="bg-primary px-10 py-3 mt-4 text-white rounded-full mr-4"
+          disabled={isSubmitting}
         >
           {isSubmitting ? (
             <>
@@ -285,6 +290,7 @@ const UpdateDoctor = () => {
         <button
           onClick={() => navigate("/doctor-list")}
           className="border-primary border-2 px-10 py-3 mt-4 text-primary rounded-full"
+          disabled={isSubmitting}
         >
           Back
         </button>

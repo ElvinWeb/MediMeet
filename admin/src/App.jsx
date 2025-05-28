@@ -11,8 +11,8 @@ import Navbar from "./components/organisms/Navbar";
 import Sidebar from "./components/organisms/Sidebar";
 
 
-const Dashboard = lazy(() => import("./pages/Admin/Dashboard"));
-const AllAppointments = lazy(() => import("./pages/Admin/AllAppointments"));
+const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboard"));
+const AdminAppointments = lazy(() => import("./pages/Admin/AdminAppointments"));
 const AddDoctor = lazy(() => import("./pages/Admin/AddDoctor"));
 const UpdateDoctor = lazy(() => import("./pages/Admin/UpdateDoctor"));
 const DoctorsList = lazy(() => import("./pages/Admin/DoctorsList"));
@@ -42,10 +42,10 @@ const App = () => {
                 <Routes>
                   {aToken && (
                     <>
-                      <Route path="/admin-dashboard" element={<Dashboard />} />
+                      <Route path="/admin-dashboard" element={<AdminDashboard />} />
                       <Route
                         path="/all-appointments"
-                        element={<AllAppointments />}
+                        element={<AdminAppointments />}
                       />
                       <Route path="/add-doctor" element={<AddDoctor />} />
                       <Route path="/update-doctor" element={<UpdateDoctor />} />
