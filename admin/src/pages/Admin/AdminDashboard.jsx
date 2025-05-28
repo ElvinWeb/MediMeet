@@ -20,7 +20,7 @@ const AdminDashboard = () => {
   }, [aToken, getAllAppointments, getAllDoctors, getDashData]);
 
   useEffect(() => {
-    const fetchAppointments = async () => {
+    const fetchData = async () => {
       if (aToken) {
         setIsLoading(true);
         try {
@@ -33,7 +33,7 @@ const AdminDashboard = () => {
       }
     };
 
-    fetchAppointments();
+    fetchData();
   }, [getDashData, aToken, getAllAppointments, getAllDoctors]);
 
   const allAppointments = useMemo(

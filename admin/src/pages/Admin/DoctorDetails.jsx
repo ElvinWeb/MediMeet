@@ -13,7 +13,6 @@ const DoctorDetails = () => {
     defaultValues: {
       name: "",
       email: "",
-      password: "",
       experience: "1 Year",
       fees: "",
       speciality: "General physician",
@@ -81,17 +80,6 @@ const DoctorDetails = () => {
                 {...register("email")}
                 type="email"
                 placeholder="Email"
-                className="border rounded px-3 py-2"
-                disabled
-              />
-            </div>
-
-            <div className="flex-1 flex flex-col gap-1">
-              <p>Password</p>
-              <input
-                {...register("password")}
-                type="password"
-                placeholder="New Password"
                 className="border rounded px-3 py-2"
                 disabled
               />

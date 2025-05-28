@@ -29,7 +29,6 @@ const UpdateDoctor = () => {
     defaultValues: {
       name: "",
       email: "",
-      password: "",
       experience: "1 Year",
       fees: "",
       speciality: "General physician",
@@ -48,7 +47,6 @@ const UpdateDoctor = () => {
     if (doctorData) {
       setValue("name", doctorData.name);
       setValue("email", doctorData.email);
-      setValue("password", doctorData.password);
       setValue("experience", doctorData.experience);
       setValue("fees", doctorData.fees);
       setValue("speciality", doctorData.speciality);
@@ -158,17 +156,6 @@ const UpdateDoctor = () => {
                 type="email"
               />
               <p className="text-red-500 text-sm">{errors.email?.message}</p>
-            </div>
-
-            <div className="flex-1 flex flex-col gap-1">
-              <p>Set Password</p>
-              <input
-                {...register("password")}
-                className="border rounded px-3 py-2"
-                placeholder="Password"
-                type="password"
-              />
-              <p className="text-red-500 text-sm">{errors.password?.message}</p>
             </div>
 
             <div className="flex-1 flex flex-col gap-1">

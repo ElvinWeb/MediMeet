@@ -10,6 +10,10 @@ import {
   INITIAL_CURRENT_PAGE,
 } from "../../constants/tableConstants";
 import MiniLoadingSpinner from "../../components/atoms/MiniLoadingSpinner";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
 
 const AdminAppointments = () => {
   const {
@@ -21,12 +25,13 @@ const AdminAppointments = () => {
     totalAppointments,
   } = useContext(AdminContext);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortOrder, setSortOrder] = useState(SORT_ORDERS.ASC);
+  const [feesSortOrder, setFeesSortOrder] = useState("");
+  const [dateSortOrder, setDateSortOrder] = useState("");
   const [currentPage, setCurrentPage] = useState(INITIAL_CURRENT_PAGE);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchAppointments = async () => {
+    const fetchData = async () => {
       if (aToken) {
         setIsLoading(true);
         try {
@@ -37,7 +42,7 @@ const AdminAppointments = () => {
       }
     };
 
-    fetchAppointments();
+    fetchData();
   }, [aToken, currentPage, getAllAppointments]);
 
   const handleSearchSubmit = (value) => {
@@ -53,6 +58,28 @@ const AdminAppointments = () => {
     setCurrentPage(page);
   };
 
+  const handleFeesSortClick = () => {
+    setFeesSortOrder((prev) =>
+      prev === ""
+        ? SORT_ORDERS.ASC
+        : prev === SORT_ORDERS.ASC
+        ? SORT_ORDERS.DESC
+        : ""
+    );
+    setDateSortOrder("");
+  };
+
+  const handleDateSortClick = () => {
+    setDateSortOrder((prev) =>
+      prev === ""
+        ? SORT_ORDERS.ASC
+        : prev === SORT_ORDERS.ASC
+        ? SORT_ORDERS.DESC
+        : ""
+    );
+    setFeesSortOrder("");
+  };
+
   const filteredAppointments = useMemo(() => {
     return appointments.filter((item) => {
       const patientName = item.userData?.name?.toLowerCase();
@@ -65,13 +92,60 @@ const AdminAppointments = () => {
   }, [appointments, searchTerm]);
 
   const sortedAppointments = useMemo(() => {
-    if (sortOrder === SORT_ORDERS.ASC) {
-      return [...filteredAppointments].sort((a, b) => a.amount - b.amount);
-    } else if (sortOrder === SORT_ORDERS.DESC) {
-      return [...filteredAppointments].sort((a, b) => b.amount - a.amount);
+    let sorted = [...filteredAppointments];
+
+    if (feesSortOrder) {
+      if (feesSortOrder === SORT_ORDERS.ASC) {
+        sorted = sorted.sort((a, b) => a.amount - b.amount);
+      } else if (feesSortOrder === SORT_ORDERS.DESC) {
+        sorted = sorted.sort((a, b) => b.amount - a.amount);
+      }
+    } else if (dateSortOrder) {
+      if (dateSortOrder === SORT_ORDERS.ASC) {
+        sorted.sort((a, b) => {
+          const dateTimeA = dayjs(
+            `${a.slotDate} ${a.slotTime}`,
+            "D_M_YYYY hh:mm A"
+          );
+          const dateTimeB = dayjs(
+            `${b.slotDate} ${b.slotTime}`,
+            "D_M_YYYY hh:mm A"
+          );
+          return dateTimeA - dateTimeB;
+        });
+      } else if (dateSortOrder === SORT_ORDERS.DESC) {
+        sorted.sort((a, b) => {
+          const dateTimeA = dayjs(
+            `${a.slotDate} ${a.slotTime}`,
+            "D_M_YYYY hh:mm A"
+          );
+          const dateTimeB = dayjs(
+            `${b.slotDate} ${b.slotTime}`,
+            "D_M_YYYY hh:mm A"
+          );
+          return dateTimeB - dateTimeA;
+        });
+      }
     }
-    return filteredAppointments;
-  }, [filteredAppointments, sortOrder]);
+
+    return sorted;
+  }, [dateSortOrder, feesSortOrder, filteredAppointments]);
+
+  const feesSortIcon =
+    feesSortOrder === SORT_ORDERS.ASC
+      ? "↑"
+      : feesSortOrder === SORT_ORDERS.DESC
+      ? "↓"
+      : null;
+
+  const dateSortIcon =
+    dateSortOrder === SORT_ORDERS.ASC
+      ? "↑"
+      : dateSortOrder === SORT_ORDERS.DESC
+      ? "↓"
+      : null;
+
+  console.log("Appointments:", appointments);
 
   return (
     <div className="w-full max-w-6xl m-5">
@@ -84,27 +158,19 @@ const AdminAppointments = () => {
           <p>#</p>
           <p>Patient</p>
           <p>Age</p>
-          <p>Date & Time</p>
+          <p
+            onClick={handleDateSortClick}
+            className="cursor-pointer select-none hover:text-primary transition-colors"
+          >
+            Date & Time {dateSortIcon}
+          </p>
           <p>Doctor</p>
           <p>Payment</p>
           <p
-            onClick={() =>
-              setSortOrder((prev) =>
-                prev === ""
-                  ? SORT_ORDERS.ASC
-                  : prev === SORT_ORDERS.ASC
-                  ? SORT_ORDERS.DESC
-                  : ""
-              )
-            }
-            className="cursor-pointer"
+            onClick={handleFeesSortClick}
+            className="cursor-pointer select-none hover:text-primary transition-colors"
           >
-            Fees{" "}
-            {sortOrder === SORT_ORDERS.ASC
-              ? "↑"
-              : sortOrder === SORT_ORDERS.DESC
-              ? "↓"
-              : null}
+            Fees {feesSortIcon}
           </p>
           <p>Action</p>
         </div>

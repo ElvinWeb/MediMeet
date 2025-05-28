@@ -125,8 +125,9 @@ const AddDoctor = () => {
 
         <div className="flex flex-col lg:flex-row items-start gap-10 text-gray-600">
           <div className="w-full lg:flex-1 flex flex-col gap-4">
+            
             <div className="flex-1 flex flex-col gap-1">
-              <p>Your name</p>
+              <p>Doctor name</p>
               <input
                 {...register("name")}
                 className="border rounded px-3 py-2"

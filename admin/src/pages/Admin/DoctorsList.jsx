@@ -8,6 +8,7 @@ import DoctorCard from "../../components/molecules/DoctorCard";
 import SearchBar from "../../components/molecules/SearchBar";
 import { API_ENDPOINTS, BACKEND_URL } from "../../constants/apiEndpoints";
 import { AdminContext } from "../../context/AdminContext";
+import MiniLoadingSpinner from "../../components/atoms/MiniLoadingSpinner";
 const DoctorsList = () => {
   const {
     doctors,
@@ -19,11 +20,21 @@ const DoctorsList = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedDoctorId, setSelectedDoctorId] = useState(null);
   const [searchValue, setSearchValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (aToken) {
-      getAllDoctors();
-    }
+    const fetchData = async () => {
+      if (aToken) {
+        setIsLoading(true);
+        try {
+          await getAllDoctors();
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchData();
   }, [aToken, getAllDoctors]);
 
   const deleteDoctor = async (doctorId) => {
@@ -71,7 +82,9 @@ const DoctorsList = () => {
       <SearchBar onSearchSubmit={setSearchValue} />
 
       <div className="w-full flex flex-wrap gap-3 pt-5 gap-y-6">
-        {isDoctorAvailable ? (
+        {isLoading ? (
+          <MiniLoadingSpinner />
+        ) : isDoctorAvailable ? (
           <div className="w-full min-h-[60vh] flex justify-center items-center">
             <EmptyState
               title="No Doctors Available"

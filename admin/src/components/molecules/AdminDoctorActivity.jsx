@@ -32,8 +32,8 @@ const AdminDoctorActivity = ({ isLoading }) => {
         />
       ) : (
         <div className="border border-t-0">
-          {dashData.doctorActivity.map((item) => (
-            <AdminDoctorItem key={item._id} item={item} />
+          {dashData.doctorActivity.map((item, index) => (
+            <AdminDoctorItem key={index} item={item} />
           ))}
         </div>
       )}

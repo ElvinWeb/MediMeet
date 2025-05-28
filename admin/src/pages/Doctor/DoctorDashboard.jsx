@@ -17,7 +17,7 @@ const DoctorDashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchAppointments = async () => {
+    const fetchData = async () => {
       if (dToken) {
         setIsLoading(true);
         try {
@@ -30,7 +30,7 @@ const DoctorDashboard = () => {
       }
     };
 
-    fetchAppointments();
+    fetchData();
   }, [dToken, getAppointments, getProfileData, getDashData]);
 
   const allAppointments = useMemo(

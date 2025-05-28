@@ -59,10 +59,6 @@ export const doctorUpdateFormValidationSchema = yup.object().shape({
     )
     .max(30, "Email must be at most 30 characters")
     .trim(),
-  password: yup
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
   experience: yup.string().required("Experience is required"),
   fees: yup
     .number()
