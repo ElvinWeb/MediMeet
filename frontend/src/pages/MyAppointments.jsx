@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -45,7 +44,7 @@ const MyAppointments = () => {
 
   const handleStripePayment = async (appointmentId) => {
     try {
-      const { data } = await axios.post(API_ENDPOINTS.USER.STRIPE_PAYMENT, {
+      const { data } = await api.post(API_ENDPOINTS.USER.STRIPE_PAYMENT, {
         appointmentId,
       });
 
