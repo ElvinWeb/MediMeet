@@ -10,9 +10,10 @@ const DoctorCard = ({ doctor }) => {
         navigate(`/appointment/${doctor._id}`);
         scrollTo(0, 0);
       }}
-      className="border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500"
+      className="border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500 relative"
     >
       <img className="bg-[#EAEFFF]" src={doctor.image} alt="" />
+      <span className="bg-primary py-1 px-2 rounded-md text-white text-xs absolute top-[10px] right-[10px]">{doctor.degree}</span>
       <div className="p-4">
         <div
           className={`flex items-center gap-2 text-sm text-center ${
@@ -40,6 +41,7 @@ DoctorCard.propTypes = {
     available: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
     speciality: PropTypes.string.isRequired,
+    degree: PropTypes.string.isRequired,
   }).isRequired,
 };
 

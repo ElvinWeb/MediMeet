@@ -22,10 +22,10 @@ await connectCloudinary();
 
 // ---------- Middlewares ----------
 app.use(express.json({ limit: "10kb" }));
-app.use(cors());
 app.use(helmet());
 app.use(mongoSanitize());
 app.use(xss());
+app.use(cors());
 
 // ---------- Routes ----------
 app.use("/api/user", userRouter);

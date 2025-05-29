@@ -28,6 +28,8 @@ const DoctorsList = () => {
         setIsLoading(true);
         try {
           await getAllDoctors();
+        } catch {
+          toast.error("Failed to fetch doctors. Please try again later!");
         } finally {
           setIsLoading(false);
         }
@@ -106,7 +108,7 @@ const DoctorsList = () => {
           filteredDoctors.map((item) => (
             <Fragment key={item._id}>
               {isLoading ? (
-                <DoctorCardSkeleton />
+                <DoctorCardSkeleton key={item._id} />
               ) : (
                 <DoctorCard
                   key={item._id}

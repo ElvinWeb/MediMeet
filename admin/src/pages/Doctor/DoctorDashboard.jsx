@@ -4,6 +4,7 @@ import DoctorStatCards from "../../components/molecules/DoctorStatCards";
 import { DoctorContext } from "../../context/DoctorContext";
 import AppointmentsStatusPieChart from "../../components/molecules/AppointmentsStatusPieChart";
 import DashboardTitle from "../../components/atoms/DashboardTitle";
+import { toast } from "react-toastify";
 
 const DoctorDashboard = () => {
   const {
@@ -24,7 +25,10 @@ const DoctorDashboard = () => {
           await getProfileData();
           await getAppointments();
           await getDashData();
+        } catch {
+          toast.error("Failed to fetch doctor dashboard data. Please try again later!");
         } finally {
+          
           setIsLoading(false);
         }
       }

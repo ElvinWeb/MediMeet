@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 const DoctorCardSkeleton = () => {
   return (
     <div className="border border-[#C9D8FF] rounded-xl max-w-56 overflow-hidden cursor-pointer group bg-white">
-      <Skeleton height={220} baseColor="#F5F7FF" />
+      <Skeleton height={220} width={220} baseColor="#F5F7FF" />
       <div className="p-4">
         <p className="mb-1">
           <Skeleton width={120} height={24} baseColor="#F5F7FF" />
@@ -22,13 +22,13 @@ const DoctorCardSkeleton = () => {
         </div>
         <div className="flex gap-2 mt-2">
           <Skeleton
-            width={75}
+            width={90}
             height={38}
             style={{ borderRadius: 8 }}
             baseColor="#F5F7FF"
           />
           <Skeleton
-            width={75}
+            width={90}
             height={38}
             style={{ borderRadius: 8 }}
             baseColor="#F5F7FF"

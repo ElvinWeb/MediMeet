@@ -69,7 +69,12 @@ const Navbar = () => {
           } right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}
         >
           <div className="flex items-center justify-between px-5 py-6">
-            <img src={assets.logo} className="w-36" alt="" />
+            <h3
+              className="text-primary text-4xl font-medium cursor-pointer"
+              onClick={() => navigate("/")}
+            >
+              MediMeet
+            </h3>
             <img
               onClick={() => setShowMenu(false)}
               src={assets.cross_icon}

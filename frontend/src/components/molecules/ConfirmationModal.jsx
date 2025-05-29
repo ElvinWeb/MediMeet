@@ -3,14 +3,13 @@ import PropTypes from "prop-types";
 const ConfirmationModal = ({ isOpen, onCancel, onConfirm, actionType }) => {
   const buttonContent = actionType === "logout" ? "Logout" : "Delete";
   const modalContent = actionType === "logout" ? "logout" : "delete";
-
+  
   if (!isOpen) return null;
-
   return (
     <div
       className={`${
         isOpen ? "fixed" : "hidden"
-      } z-50 flex items-center justify-center bg-black/30 w-full md:inset-0 max-h-full`}
+      } z-50 flex items-center justify-center bg-black/30 w-full inset-0 max-h-full`}
     >
       <div className="relative p-4 w-full max-w-md max-h-full">
         <div className="relative bg-white rounded-lg dark:bg-gray-700">

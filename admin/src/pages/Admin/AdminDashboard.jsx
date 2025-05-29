@@ -5,6 +5,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { AdminContext } from "../../context/AdminContext";
 import AppointmentsStatusPieChart from "../../components/molecules/AppointmentsStatusPieChart";
 import DashboardTitle from "../../components/atoms/DashboardTitle";
+import { toast } from "react-toastify";
 
 const AdminDashboard = () => {
   const { aToken, getDashData, dashData, getAllAppointments, getAllDoctors } =
@@ -19,6 +20,8 @@ const AdminDashboard = () => {
           await getDashData();
           await getAllAppointments();
           await getAllDoctors();
+        } catch {
+          toast.error("Failed to fetch admin dashboard data. Please try again later!");
         } finally {
           setIsLoading(false);
         }

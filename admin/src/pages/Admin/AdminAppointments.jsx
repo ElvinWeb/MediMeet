@@ -12,6 +12,7 @@ import {
 import MiniLoadingSpinner from "../../components/atoms/MiniLoadingSpinner";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import { toast } from "react-toastify";
 
 dayjs.extend(customParseFormat);
 
@@ -36,6 +37,8 @@ const AdminAppointments = () => {
         setIsLoading(true);
         try {
           await getAllAppointments(currentPage, ITEMS_PER_PAGE);
+        } catch {
+          toast.error("Failed to fetch appointments. Please try again later!");
         } finally {
           setIsLoading(false);
         }

@@ -9,6 +9,7 @@ const AppointmentCard = ({
   onStripePayment,
 }) => {
   const [payment, setPayment] = useState("");
+  console.log(appointment);
 
   return (
     <div className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-4 border-b">

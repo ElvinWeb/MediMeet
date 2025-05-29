@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
   const navigate = useNavigate();
   return (
-    <div className="border border-[#C9D8FF] rounded-xl max-w-56 overflow-hidden cursor-pointer group">
+    <div className="border border-[#C9D8FF] rounded-xl max-w-56 overflow-hidden cursor-pointer group relative">
+      <span className="bg-primary py-1 px-2 rounded-md text-white text-xs absolute top-[10px] right-[10px]">
+        {item.degree}
+      </span>
       <img
         className="bg-[#EAEFFF] group-hover:bg-primary transition-all duration-500"
         src={item.image}
@@ -52,11 +55,12 @@ const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
 
 DoctorCard.propTypes = {
   item: PropTypes.shape({
-    image: PropTypes.string,
-    name: PropTypes.string,
-    speciality: PropTypes.string,
     _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    available: PropTypes.bool,
+    image: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    speciality: PropTypes.string.isRequired,
+    available: PropTypes.bool.isRequired,
+    degree: PropTypes.string.isRequired,
   }).isRequired,
   changeAvailability: PropTypes.func.isRequired,
   setShowModal: PropTypes.func.isRequired,

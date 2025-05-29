@@ -7,13 +7,15 @@ import { generateAvailableSlots } from "../utils/appointmentUtils.js";
 
 // Doctor login
 export const loginDoctor = async ({ email, password }) => {
-  const user = await doctorModel.findOne({ email });
-  if (!user) {
+  const doctor = await doctorModel.findOne({ email });
+  if (!doctor) {
     return { success: false, message: "Invalid credentials" };
   }
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(password, doctor.password);
   if (isMatch) {
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
     return { success: true, token };
   } else {
     return { success: false, message: "Invalid credentials" };
