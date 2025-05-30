@@ -1,15 +1,12 @@
-import { useContext } from "react";
-import { Route, Routes } from "react-router-dom";
+import AuthenticatedLayout from "./layout/AuthenticatedLayout";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import PublicRoute from "./routes/PublicRoute";
+import RootRoute from "./routes/RootRoute";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import { DoctorContext } from "./context/DoctorContext";
-import { AdminContext } from "./context/AdminContext";
-import { Suspense, lazy } from "react";
-import "react-toastify/dist/ReactToastify.css";
-import LoadingSpinner from "./components/atoms/LoadingSpinner";
+import { lazy } from "react";
 import Login from "./pages/Login";
-import Navbar from "./components/organisms/Navbar";
-import Sidebar from "./components/organisms/Sidebar";
-
+import "react-toastify/dist/ReactToastify.css";
 
 const AdminDashboard = lazy(() => import("./pages/Admin/AdminDashboard"));
 const AdminAppointments = lazy(() => import("./pages/Admin/AdminAppointments"));
@@ -22,64 +19,71 @@ const DoctorAppointments = lazy(() =>
   import("./pages/Doctor/DoctorAppointments")
 );
 const DoctorProfile = lazy(() => import("./pages/Doctor/DoctorProfile"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+const adminRoutes = [
+  { path: "/admin-dashboard", component: AdminDashboard },
+  { path: "/all-appointments", component: AdminAppointments },
+  { path: "/add-doctor", component: AddDoctor },
+  { path: "/update-doctor", component: UpdateDoctor },
+  { path: "/doctor-details", component: DoctorDetails },
+  { path: "/doctor-list", component: DoctorsList },
+];
+
+const doctorRoutes = [
+  { path: "/doctor-dashboard", component: DoctorDashboard },
+  { path: "/doctor-appointments", component: DoctorAppointments },
+  { path: "/doctor-profile", component: DoctorProfile },
+];
 
 const App = () => {
-  const { dToken } = useContext(DoctorContext);
-  const { aToken } = useContext(AdminContext);
-
-  const isAuthenticated = dToken || aToken;
-
   return (
     <div className="bg-[#F8F9FD] min-h-screen">
       <ToastContainer />
-      {isAuthenticated ? (
-        <>
-          <Navbar />
-          <div className="flex">
-            <Sidebar />
-            <main className="flex-1 p-4">
-              <Suspense fallback={<LoadingSpinner />}>
-                <Routes>
-                  {aToken && (
-                    <>
-                      <Route path="/admin-dashboard" element={<AdminDashboard />} />
-                      <Route
-                        path="/all-appointments"
-                        element={<AdminAppointments />}
-                      />
-                      <Route path="/add-doctor" element={<AddDoctor />} />
-                      <Route path="/update-doctor" element={<UpdateDoctor />} />
-                      <Route
-                        path="/doctor-details"
-                        element={<DoctorDetails />}
-                      />
-                      <Route path="/doctor-list" element={<DoctorsList />} />
-                    </>
-                  )}
-                  {dToken && (
-                    <>
-                      <Route
-                        path="/doctor-dashboard"
-                        element={<DoctorDashboard />}
-                      />
-                      <Route
-                        path="/doctor-appointments"
-                        element={<DoctorAppointments />}
-                      />
-                      <Route
-                        path="/doctor-profile"
-                        element={<DoctorProfile />}
-                      />
-                    </>
-                  )}
-                </Routes>
-              </Suspense>
-            </main>
-          </div>
-        </>
-      ) : (
-        <Login />
-      )}
+
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+
+        <Route path="/" element={<RootRoute />} />
+
+        {adminRoutes.map(({ path, component: Component }) => (
+          <Route
+            key={path}
+            path={path}
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AuthenticatedLayout>
+                  <Component />
+                </AuthenticatedLayout>
+              </ProtectedRoute>
+            }
+          />
+        ))}
+
+        {doctorRoutes.map(({ path, component: Component }) => (
+          <Route
+            key={path}
+            path={path}
+            element={
+              <ProtectedRoute requiredRole="doctor">
+                <AuthenticatedLayout>
+                  <Component />
+                </AuthenticatedLayout>
+              </ProtectedRoute>
+            }
+          />
+        ))}
+
+        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
+      </Routes>
     </div>
   );
 };

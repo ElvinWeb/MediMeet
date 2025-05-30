@@ -12,9 +12,7 @@ export const loginAdmin = async ({ email, password }) => {
     email === process.env.ADMIN_EMAIL &&
     password === process.env.ADMIN_PASSWORD
   ) {
-    const token = jwt.sign(email + password, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign(email + password, process.env.JWT_SECRET);
     return { success: true, token };
   } else {
     return { success: false, message: "Invalid credentials" };
