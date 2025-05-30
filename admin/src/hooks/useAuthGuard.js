@@ -20,7 +20,7 @@ export const useAuthGuard = (requiredRole = null, showMessages = true) => {
 
       if (!isAuthenticated) {
         if (showMessages && location.pathname !== "/login") {
-          toast.warn("Please login to access this page");
+          toast.warn("Please login to get access for other pages");
         }
         setTimeout(
           () => {
