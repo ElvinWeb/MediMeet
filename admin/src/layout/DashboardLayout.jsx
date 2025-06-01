@@ -4,7 +4,7 @@ import Sidebar from "../components/organisms/Sidebar";
 import { Suspense } from "react";
 import LoadingSpinner from "../components/atoms/LoadingSpinner";
 
-const AuthenticatedLayout = ({ children }) => {
+const DashboardLayout = ({ children }) => {
   return (
     <>
       <Navbar />
@@ -18,8 +18,8 @@ const AuthenticatedLayout = ({ children }) => {
   );
 };
 
-AuthenticatedLayout.propTypes = {
+DashboardLayout.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default AuthenticatedLayout;
+export default DashboardLayout;

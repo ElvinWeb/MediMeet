@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AuthenticatedLayout from "./layout/AuthenticatedLayout";
+import DashboardLayout from "./layout/DashboardLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 import {
@@ -18,7 +18,6 @@ const App = () => {
       <ToastContainer />
 
       <Routes>
-
         {publicRoutes.map(({ path, component: Component }) => (
           <Route
             key={path}
@@ -31,7 +30,6 @@ const App = () => {
           />
         ))}
 
-
         {rootRoutes.map(({ path, component: Component }) => (
           <Route key={path} path={path} element={<Component />} />
         ))}
@@ -42,9 +40,9 @@ const App = () => {
             path={path}
             element={
               <ProtectedRoute requiredRole="admin">
-                <AuthenticatedLayout>
+                <DashboardLayout>
                   <Component />
-                </AuthenticatedLayout>
+                </DashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -56,9 +54,9 @@ const App = () => {
             path={path}
             element={
               <ProtectedRoute requiredRole="doctor">
-                <AuthenticatedLayout>
+                <DashboardLayout>
                   <Component />
-                </AuthenticatedLayout>
+                </DashboardLayout>
               </ProtectedRoute>
             }
           />
@@ -67,7 +65,7 @@ const App = () => {
         {errorRoutes.map(({ path, component: Component }) => (
           <Route key={path} path={path} element={<Component />} />
         ))}
-        
+
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </div>
