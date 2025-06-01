@@ -48,7 +48,6 @@ const ProtectedRoute = ({
   }
 
   if (requireAuth && !isAuthenticated) {
-    
     if (showToast && location.pathname !== redirectTo) {
       toast.warn("Please login to get access for other pages");
     }

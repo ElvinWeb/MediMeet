@@ -48,7 +48,7 @@ export const useAuthCheck = (tokenKey = "token", redirectPath = "/login") => {
       if (currentToken && !validateToken(currentToken)) {
         clearAuthAndRedirect();
       }
-    }, 5 * 60 * 1000); 
+    }, 5 * 60 * 1000);
 
     return () => clearInterval(intervalId);
   }, [tokenKey, validateToken, clearAuthAndRedirect]);
