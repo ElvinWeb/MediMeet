@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Block admin areas if you have them
+Disallow: /admin/
+
+# Block API endpoints from crawling
+Disallow: /api/
+
+# Allow specific important pages
+Allow: /
+Allow: /about
+Allow: /contact
+Allow: /doctors
+Allow: /login
+Allow: /privacy-policy
+
+# Sitemap location (add this when you create one)
+Sitemap: https://medimeet.com/sitemap.xml
