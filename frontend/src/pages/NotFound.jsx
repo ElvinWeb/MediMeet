@@ -24,33 +24,38 @@ const NotFound = () => {
       />
 
       <main
+        id="main-content"
         role="main"
         className="flex items-center justify-center min-h-screen px-4"
+        tabIndex="-1"
         aria-labelledby="error-heading"
         aria-describedby="error-description"
       >
-        <div role="alert" aria-live="assertive" className="text-center">
-          <h1
-            id="error-heading"
-            className="text-9xl font-bold text-primary mb-4"
-            aria-label="Error 404"
+        <div className="text-center">
+          <div role="alert" aria-live="assertive">
+            <h1
+              id="error-heading"
+              className="text-9xl font-bold text-primary mb-4"
+              aria-label="Error 404 - Page not found"
+            >
+              404
+            </h1>
+          </div>
+
+          <h2 className="text-gray-800 mb-4 text-2xl">Page Not Found</h2>
+          
+          <p 
+            id="error-description" 
+            className="text-gray-700 mb-6 text-lg"
           >
-            404
-          </h1>
-          <h2 className="text-gray-600 mb-4 text-2xl">Page Not Found</h2>
-          <p className="text-gray-500 mb-6 text-lg">
             Sorry, the page you are looking for does not exist or has been
             moved.
           </p>
 
-          <div
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-            role="group"
-            aria-labelledby="navigation-options"
-          >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={handleGoBack}
-              className="px-6 py-3 bg-primary text-white rounded focus:outline-none transition-colors"
+              className="px-6 py-3 bg-primary text-white rounded focus:outline-none "
               type="button"
               aria-label="Go back to previous page"
             >
@@ -59,7 +64,7 @@ const NotFound = () => {
 
             <button
               onClick={handleGoHome}
-              className="px-6 py-3 border border-primary text-primary rounded focus:outline-none transition-colors"
+              className="px-6 py-3 border border-primary text-primary rounded focus:outline-none "
               type="button"
               aria-label="Go to home page"
             >

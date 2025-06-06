@@ -79,19 +79,32 @@ const Appointment = () => {
         description={`Schedule appointment with Dr. ${docInfo.name}, ${docInfo.speciality} specialist. ${docInfo.experience} years experience. Book online with MediMeet.`}
         keywords={`${docInfo.speciality} doctor, book appointment, Dr ${docInfo.name}, medical consultation`}
       />
-      <main>
-        <h1 className="sr-only">Book Appointment with Dr. {docInfo.name}</h1>
+      <main id="main-content" tabIndex="-1">
+        <h1 className="sr-only">
+          Book Appointment with Dr. {docInfo.name}, {docInfo.speciality}{" "}
+          Specialist
+        </h1>
 
-        <section aria-labelledby="doctor-info">
-          <h2 id="doctor-info" className="sr-only">
+        <div
+          aria-live="polite"
+          aria-atomic="true"
+          className="sr-only"
+          role="status"
+        >
+          {slotTime && `Selected appointment time: ${slotTime}`}
+          {!docInfo.available && "Doctor is currently unavailable for booking"}
+        </div>
+
+        <section aria-labelledby="doctor-info-heading" className="mt-4">
+          <h2 id="doctor-info-heading" className="sr-only">
             Doctor Information
           </h2>
           <DoctorDetails docInfo={docInfo} />
         </section>
 
         {docInfo.available && (
-          <section aria-labelledby="booking-section">
-            <h2 id="booking-section" className="sr-only">
+          <section aria-labelledby="booking-section-heading">
+            <h2 id="booking-section-heading" className="sr-only">
               Select Appointment Time
             </h2>
             <BookingSlots
@@ -105,12 +118,7 @@ const Appointment = () => {
           </section>
         )}
 
-        <section aria-labelledby="related-doctors">
-          <h2 id="related-doctors" className="sr-only">
-            Related {docInfo.speciality} Doctors
-          </h2>
-          <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
-        </section>
+        <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
       </main>
     </>
   );

@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const BannerButton = ({ path, content }) => {
+const BannerButton = ({ path, content, ariaLabel }) => {
   const navigate = useNavigate();
   return (
     <button
       type="button"
-      aria-label="Banner button"
+      aria-label={ariaLabel}
       onClick={() => {
         navigate(path);
         scrollTo({ top: 0, behavior: "smooth" });
@@ -21,6 +21,7 @@ const BannerButton = ({ path, content }) => {
 BannerButton.propTypes = {
   path: PropTypes.string.isRequired,
   content: PropTypes.node.isRequired,
+  ariaLabel: PropTypes.string,
 };
 
 export default BannerButton;

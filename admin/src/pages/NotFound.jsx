@@ -1,17 +1,66 @@
+import { useNavigate } from "react-router-dom";
+
 const NotFound = () => {
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      navigate("/");
+    }
+  };
+
+  const handleGoHome = () => {
+    navigate("/");
+  };
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <main
+      id="main-content"
+      role="main"
+      className="flex items-center justify-center min-h-screen px-4"
+      tabIndex="-1"
+      aria-labelledby="error-heading"
+      aria-describedby="error-description"
+    >
       <div className="text-center">
-        <h1 className="text-9xl font-bold text-gray-800 mb-4">404</h1>
-        <p className="text-gray-600 mb-4 text-2xl">Page not found</p>
-        <button
-          onClick={() => window.history.back()}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Go Back
-        </button>
+        <div role="alert" aria-live="assertive">
+          <h1
+            id="error-heading"
+            className="text-9xl font-bold text-primary mb-4"
+            aria-label="Error 404 - Page not found"
+          >
+            404
+          </h1>
+        </div>
+
+        <h2 className="text-gray-800 mb-4 text-2xl">Page Not Found</h2>
+
+        <p id="error-description" className="text-gray-700 mb-6 text-lg">
+          Sorry, the page you are looking for does not exist or has been moved.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            onClick={handleGoBack}
+            className="px-6 py-3 bg-primary text-white rounded focus:outline-none "
+            type="button"
+            aria-label="Go back to previous page"
+          >
+            Go Back
+          </button>
+
+          <button
+            onClick={handleGoHome}
+            className="px-6 py-3 border border-primary text-primary rounded focus:outline-none "
+            type="button"
+            aria-label="Go to home page"
+          >
+            Go Home
+          </button>
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 

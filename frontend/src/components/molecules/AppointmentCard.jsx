@@ -7,110 +7,169 @@ const AppointmentCard = ({
   appointment,
   onCancelAppointment,
   onStripePayment,
+  index = 1,
+  total = 1,
 }) => {
   const [payment, setPayment] = useState("");
 
+  const getAppointmentStatus = () => {
+    if (appointment.cancelled) return "cancelled";
+    if (appointment.isCompleted) return "completed";
+    if (appointment.payment) return "paid";
+    return "pending";
+  };
+
+  const status = getAppointmentStatus();
+
   return (
-    <div className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6 py-4 border-b">
-      <div>
+    <article
+      className="grid grid-cols-[1fr_2fr] gap-4 sm:flex sm:gap-6"
+      aria-labelledby={`appointment-${appointment._id}-doctor`}
+      aria-describedby={`appointment-${appointment._id}-details`}
+    >
+      <div className="flex-shrink-0">
         <img
-          className="w-36 bg-[#EAEFFF]"
+          className="w-36 bg-blue-50 rounded-lg"
           src={appointment.docData.image}
-          alt="Appointment Doctor Image"
+          alt={`Dr. ${appointment.docData.name}, ${appointment.docData.speciality} specialist`}
           loading="lazy"
           decoding="async"
         />
       </div>
-      <div className="flex-1 text-sm text-[#5E5E5E]">
-        <p className="text-[#262626] text-base font-semibold">
-          {appointment.docData.name}
-        </p>
-        <p>{appointment.docData.speciality}</p>
-        <p className="text-[#464646] font-medium mt-1">Address:</p>
-        <p className="">{appointment.docData.address.line1}</p>
-        <p className="">{appointment.docData.address.line2}</p>
-        <p className=" mt-1">
-          <span className="text-sm text-[#3C3C3C] font-medium">
+
+      <div className="flex-1 text-sm text-gray-700">
+        <h3
+          id={`appointment-${appointment._id}-doctor`}
+          className="text-gray-800 text-base font-semibold"
+        >
+          Dr. {appointment.docData.name}
+        </h3>
+
+        <p className="text-gray-600">{appointment.docData.speciality}</p>
+
+        <div className="mt-2">
+          <h4 className="text-gray-800 font-medium">Address:</h4>
+          <address className="not-italic text-gray-600">
+            {appointment.docData.address.line1}
+            {appointment.docData.address.line2 && (
+              <>
+                <br />
+                {appointment.docData.address.line2}
+              </>
+            )}
+          </address>
+        </div>
+
+        <div id={`appointment-${appointment._id}-details`} className="mt-2">
+          <span className="text-sm text-gray-800 font-medium">
             Date & Time:
           </span>{" "}
-          {slotDateFormat(appointment.slotDate)} | {appointment.slotTime}
-        </p>
+          <time dateTime={appointment.slotDate}>
+            {slotDateFormat(appointment.slotDate)} | {appointment.slotTime}
+          </time>
+        </div>
+
+        <div className="sr-only">
+          Appointment {index} of {total}. Status: {status}.
+          {status === "pending" && "Payment required."}
+          {status === "paid" && "Payment completed."}
+          {status === "completed" && "Appointment completed."}
+          {status === "cancelled" && "Appointment cancelled."}
+        </div>
       </div>
+
       <div></div>
+
       <div className="flex flex-col gap-2 justify-end text-sm text-center">
         {!appointment.cancelled &&
           !appointment.payment &&
           !appointment.isCompleted &&
           payment !== appointment._id && (
             <button
-              type="submit"
-              aria-label="Pay online"
+              type="button"
               onClick={() => setPayment(appointment._id)}
-              className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300"
+              className="text-gray-700 sm:min-w-48 py-2 border border-gray-300 rounded hover:bg-primary hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-describedby={`pay-help-${appointment._id}`}
             >
               Pay Online
             </button>
           )}
+
         {!appointment.cancelled &&
           !appointment.payment &&
           !appointment.isCompleted &&
           payment === appointment._id && (
             <button
-              type="submit"
-              aria-label="Stripe payment"
+              type="button"
               onClick={() => onStripePayment(appointment._id)}
-              className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center"
+              className="text-gray-700 sm:min-w-48 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Pay with Stripe"
+              aria-describedby={`stripe-help-${appointment._id}`}
             >
               <img
                 className="max-w-20 max-h-5"
                 src={assets.stripe_logo}
-                alt=""
+                alt="Stripe payment logo"
               />
             </button>
           )}
+
         {!appointment.cancelled &&
           appointment.payment &&
           !appointment.isCompleted && (
-            <button
-              type="button"
-              aria-label="Paid"
-              className="sm:min-w-48 py-2 border rounded text-[#696969]  bg-[#EAEFFF]"
+            <div
+              className="sm:min-w-48 py-2 border border-gray-300 rounded text-gray-700 bg-blue-50 flex items-center justify-center"
+              role="status"
+              aria-label="Payment completed"
             >
-              Paid
-            </button>
+              <span>Paid</span>
+            </div>
           )}
 
         {appointment.isCompleted && (
-          <button
-            type="button"
-            aria-label="Completed"
-            className="sm:min-w-48 py-2 border border-green-500 rounded text-green-500"
+          <div
+            className="sm:min-w-48 py-2 border border-green-500 rounded text-green-600 flex items-center justify-center"
+            role="status"
+            aria-label="Appointment completed"
           >
-            Completed
-          </button>
+            <span>Completed</span>
+          </div>
         )}
 
         {!appointment.cancelled && !appointment.isCompleted && (
           <button
-            type="submit"
-            aria-label="Cancel appointment"
+            type="button"
             onClick={() => onCancelAppointment(appointment._id)}
-            className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300"
+            className="text-gray-700 sm:min-w-48 py-2 border border-gray-300 rounded hover:bg-red-600 hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+            aria-describedby={`cancel-help-${appointment._id}`}
           >
             Cancel appointment
           </button>
         )}
+
         {appointment.cancelled && !appointment.isCompleted && (
-          <button
-            type="button"
-            aria-label="Cancelled"
-            className="sm:min-w-48 py-2 border border-red-500 rounded text-red-500"
+          <div
+            className="sm:min-w-48 py-2 border border-red-500 rounded text-red-600 flex items-center justify-center"
+            role="status"
+            aria-label="Appointment cancelled"
           >
-            Appointment cancelled
-          </button>
+            <span>Appointment cancelled</span>
+          </div>
         )}
+
+        <div className="sr-only">
+          <p id={`pay-help-${appointment._id}`}>
+            Click to proceed with online payment for this appointment
+          </p>
+          <p id={`stripe-help-${appointment._id}`}>
+            Complete payment securely through Stripe payment processor
+          </p>
+          <p id={`cancel-help-${appointment._id}`}>
+            Cancel this appointment. This action cannot be undone.
+          </p>
+        </div>
       </div>
-    </div>
+    </article>
   );
 };
 
@@ -134,6 +193,8 @@ AppointmentCard.propTypes = {
   }).isRequired,
   onCancelAppointment: PropTypes.func.isRequired,
   onStripePayment: PropTypes.func.isRequired,
+  index: PropTypes.number,
+  total: PropTypes.number,
 };
 
 export default AppointmentCard;

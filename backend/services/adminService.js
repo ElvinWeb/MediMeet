@@ -26,8 +26,9 @@ export const appointmentsAdmin = async ({ page = 1, limit = 7 }) => {
 
   const appointments = await appointmentModel
     .find({})
-    .skip(skip)
     .limit(limit)
+    .skip(skip)
+    .lean()
     .sort({ createdAt: -1 });
 
   return {

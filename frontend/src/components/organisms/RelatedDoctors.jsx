@@ -24,30 +24,50 @@ const RelatedDoctors = ({ speciality, docId }) => {
   }, [filteredDoctors, token]);
 
   return (
-    <section aria-labelledby="Related Doctors">
-      <div className="flex flex-col items-center gap-4 my-16 text-[#262626]">
+    <section aria-labelledby="related-doctors-heading">
+      <div className="flex flex-col items-center gap-4 my-16 text-gray-800">
         <SectionTitle
           title="Related Doctors"
           subtitle="Simply browse through our extensive list of trusted doctors."
+          headingId="related-doctors-heading"
         />
 
         {relDoc.length === 0 ? (
-          <section aria-labelledby="Empty state heading">
+          <div role="status" aria-live="polite">
             <EmptyState
               title="No Related Doctors Available"
-              subtitle="Please check back later or add some doctors."
+              subtitle="Please check back later or browse other specialties."
             />
-          </section>
+          </div>
         ) : (
-          <div>
-            <div className="w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-3 sm:px-0">
-              {relDoc.map((doctor) => (
-                <div key={doctor._id} role="listitem">
-                  <DoctorCard doctor={doctor} />
-                </div>
-              ))}
+          <div className="w-full">
+            <div className="sr-only" aria-live="polite">
+              Found {relDoc.length} related {speciality} doctor
+              {relDoc.length !== 1 ? "s" : ""}
             </div>
-            <MoreButton />
+
+            <ul
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-5 px-3 sm:px-0"
+              role="list"
+              aria-label={`${relDoc.length} related ${speciality} doctors`}
+            >
+              {relDoc.map((doctor, index) => (
+                <li
+                  key={doctor._id}
+                  role="listitem"
+                  aria-label={`Doctor ${index + 1} of ${relDoc.length}`}
+                >
+                  <DoctorCard doctor={doctor} />
+                </li>
+              ))}
+            </ul>
+
+            <div className="text-center mt-8">
+              <MoreButton
+                ariaLabel={`View more ${speciality} doctors`}
+                ariaDescribedBy="more-related-help"
+              />
+            </div>
           </div>
         )}
       </div>

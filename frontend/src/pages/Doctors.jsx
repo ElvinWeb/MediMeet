@@ -54,42 +54,81 @@ const Doctors = () => {
         description={pageDescription}
         keywords={pageKeywords}
       />
-      <main className="mt-11">
-        <h1 className="sr-only">{pageTitle}</h1>
+      <main id="main-content" className="mt-11">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            {speciality ? `${speciality} Doctors` : "Find Doctors"}
+          </h1>
+          <p className="text-gray-600">
+            {speciality
+              ? `Browse and book appointments with qualified ${speciality} specialists`
+              : "Browse and book appointments with qualified medical professionals"}
+          </p>
+        </div>
+
+        <div
+          aria-live="polite"
+          aria-atomic="true"
+          className="sr-only"
+          role="status"
+        >
+          {!isDoctorAvailable &&
+            !isFilteredDoctorAvailable &&
+            `Found ${filteredDoctors.length} doctor${
+              filteredDoctors.length !== 1 ? "s" : ""
+            }`}
+        </div>
 
         <div className="flex flex-col sm:flex-row items-start gap-5 mt-5">
           <button
             onClick={() => setShowFilter(!showFilter)}
-            className={`py-1 px-3 border rounded text-sm  transition-all sm:hidden ${
-              showFilter ? "bg-primary text-white" : ""
+            className={`py-2 px-4 border rounded-lg text-sm transition-all lg:hidden focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              showFilter
+                ? "bg-blue-600 text-white border-blue-600"
+                : "border-gray-300 hover:border-gray-400"
             }`}
             aria-expanded={showFilter}
             aria-controls="filter-panel"
-            aria-label={showFilter ? "Hide filters" : "Show filters"}
+            aria-label={
+              showFilter ? "Hide doctor filters" : "Show doctor filters"
+            }
             type="button"
           >
             Filters
           </button>
           <aside
             id="filter-panel"
-            className="flex flex-col sm:flex-column items-start gap-3 w-2xl"
+            className={`w-full lg:w-48 space-y-4 ${
+              showFilter ? "block" : "hidden lg:block"
+            }`}
             aria-label="Doctor search filters"
+            role="complementary"
           >
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+              Filter Doctors
+            </h2>
+
             <SpecialityFilter showFilter={showFilter} speciality={speciality} />
             <PriceRangeFilter
               price={filterPrice}
               onPriceChange={setFilterPrice}
             />
           </aside>
-          <section className="flex-1" aria-labelledby="doctors-section">
-            <div className="flex justify-between mb-4">
-              <h2 id="doctors-section" className="text-2xl text-[#707070]">
-                All <span className="text-gray-700 font-semibold">Doctors</span>
-              </h2>
-              <ExperienceFilter sortValue={sortExp} onSortChange={setSortExp} />
+          <section
+            className="flex-1 min-w-0"
+            aria-labelledby="doctors-results-heading"
+          >
+            <div className="flex justify-end mb-4">
+              <ExperienceFilter
+                sortValue={sortExp}
+                onSortChange={setSortExp}
+                id="experience-sort"
+              />
             </div>
             {isDoctorAvailable || isFilteredDoctorAvailable ? (
               <EmptyState
+                role="status"
+                aria-live="polite"
                 title="No Doctors Available"
                 subtitle={
                   speciality
@@ -98,13 +137,19 @@ const Doctors = () => {
                 }
               />
             ) : (
-              <div 
+              <div
                 className="w-full grid grid-cols-auto gap-4 gap-y-6"
                 role="list"
                 aria-label={`${filteredDoctors.length} doctors found`}
               >
-                {filteredDoctors.map((doctor) => (
-                  <div key={doctor._id} role="listitem">
+                {filteredDoctors.map((doctor, index) => (
+                  <div
+                    key={doctor._id}
+                    role="listitem"
+                    aria-label={`Doctor ${index + 1} of ${
+                      filteredDoctors.length
+                    }`}
+                  >
                     <DoctorCard doctor={doctor} />
                   </div>
                 ))}

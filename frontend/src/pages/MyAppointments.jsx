@@ -87,34 +87,59 @@ const MyAppointments = () => {
         description="Manage your medical appointments with MediMeet. View upcoming and past appointments, cancel or reschedule bookings, and track your healthcare history."
         keywords="my appointments, medical appointments, healthcare bookings, appointment management, patient portal"
       />
-      <main>
+      <main id="main-content" tabIndex="-1">
         <PageTitle normalText="MY" boldText="APPOINTMENTS" />
+
+        <div
+          aria-live="polite"
+          aria-atomic="true"
+          className="sr-only"
+          role="status"
+        >
+          {isLoading && "Loading your appointments"}
+          {!isLoading &&
+            appointments.length > 0 &&
+            `Found ${appointments.length} appointment${
+              appointments.length !== 1 ? "s" : ""
+            }`}
+        </div>
+
         {isLoading ? (
-          <section aria-label="Loading appointments" aria-live="polite">
-            <h2 className="sr-only">Loading your appointments</h2>
-            <AppointmentCardSkeleton />
-            <AppointmentCardSkeleton />
-            <AppointmentCardSkeleton />
-            <AppointmentCardSkeleton />
+          <section aria-labelledby="loading-heading">
+            <h2 id="loading-heading" className="sr-only">
+              Loading your appointments
+            </h2>
+            <div>
+              <AppointmentCardSkeleton />
+              <AppointmentCardSkeleton />
+              <AppointmentCardSkeleton />
+              <AppointmentCardSkeleton />
+            </div>
           </section>
         ) : noAppointments ? (
-          <section aria-labelledby="Empty state heading">
-            <EmptyState
-              title="No Appointments Yet"
-              subtitle="When you book appointments, they'll appear here for easy management."
-            />
-          </section>
+          <EmptyState
+            title="No Appointments Yet"
+            subtitle="When you book appointments, they'll appear here for easy management."
+          />
         ) : (
-          <section aria-label="Your appointments">
-            {appointments.map((appointment) => (
-              <div key={appointment._id} role="listitem">
-                <AppointmentCard
-                  appointment={appointment}
-                  onCancelAppointment={cancelAppointment}
-                  onStripePayment={handleStripePayment}
-                />
-              </div>
-            ))}
+          <section aria-labelledby="appointments-heading">
+            <h2 id="appointments-heading" className="sr-only">
+              Your appointments ({appointments.length} total)
+            </h2>
+
+            <ul className="divide-y divide-gray-200">
+              {appointments.map((appointment, index) => (
+                <li key={appointment._id} className="py-4">
+                  <AppointmentCard
+                    appointment={appointment}
+                    onCancelAppointment={cancelAppointment}
+                    onStripePayment={handleStripePayment}
+                    index={index + 1}
+                    total={appointments.length}
+                  />
+                </li>
+              ))}
+            </ul>
           </section>
         )}
       </main>

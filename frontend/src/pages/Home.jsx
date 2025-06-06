@@ -15,7 +15,8 @@ const Home = () => {
       <main
         id="main-content"
         role="main"
-        aria-label="MediMeet homepage content"
+        tabIndex="-1"
+        aria-label="MediMeet homepage - Book appointments with trusted doctors"
       >
         <Header />
         <SpecialityMenu />

@@ -1,12 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const MoreButton = () => {
+const MoreButton = ({ ariaLabel }) => {
   const navigate = useNavigate();
 
   return (
     <button
       type="button"
-      aria-label="Expand more"
+      aria-label={ariaLabel}
       onClick={() => {
         navigate("/doctors");
         scrollTo({ top: 0, behavior: "smooth" });
@@ -16,6 +17,10 @@ const MoreButton = () => {
       more
     </button>
   );
+};
+
+MoreButton.propTypes = {
+  ariaLabel: PropTypes.string.isRequired,
 };
 
 export default MoreButton;
