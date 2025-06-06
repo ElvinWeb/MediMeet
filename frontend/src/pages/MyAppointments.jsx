@@ -7,6 +7,7 @@ import AppointmentCard from "../components/molecules/AppointmentCard";
 import { API_ENDPOINTS } from "../constants/apiEndpoints";
 import { AppContext } from "../context/AppContext";
 import api from "../utils/api";
+import SEOHelmet from "../components/SEO/SEOHelmet";
 
 const MyAppointments = () => {
   const { token } = useContext(AppContext);
@@ -80,33 +81,40 @@ const MyAppointments = () => {
   const noAppointments = !appointments || appointments.length === 0;
 
   return (
-    <main>
-      <PageTitle normalText="MY" boldText="APPOINTMENTS" />
-      {isLoading ? (
-        <section aria-label="Loading appointments" aria-live="polite">
-          <AppointmentCardSkeleton />
-          <AppointmentCardSkeleton />
-          <AppointmentCardSkeleton />
-          <AppointmentCardSkeleton />
-        </section>
-      ) : noAppointments ? (
-        <EmptyState
-          title="No Appointments Yet"
-          subtitle="When appointments are made, they’ll appear here."
-        />
-      ) : (
-        <section aria-label="Your appointments">
-          {appointments.map((appointment) => (
-            <AppointmentCard
-              key={appointment._id}
-              appointment={appointment}
-              onCancelAppointment={cancelAppointment}
-              onStripePayment={handleStripePayment}
-            />
-          ))}
-        </section>
-      )}
-    </main>
+    <>
+      <SEOHelmet
+        title="My Appointments MediMeet"
+        description="Manage your medical appointments with MediMeet. View upcoming and past appointments, cancel or reschedule bookings, and track your healthcare history."
+        keywords="my appointments, medical appointments, healthcare bookings, appointment management, patient portal"
+      />
+      <main>
+        <PageTitle normalText="MY" boldText="APPOINTMENTS" />
+        {isLoading ? (
+          <section aria-label="Loading appointments" aria-live="polite">
+            <AppointmentCardSkeleton />
+            <AppointmentCardSkeleton />
+            <AppointmentCardSkeleton />
+            <AppointmentCardSkeleton />
+          </section>
+        ) : noAppointments ? (
+          <EmptyState
+            title="No Appointments Yet"
+            subtitle="When appointments are made, they’ll appear here."
+          />
+        ) : (
+          <section aria-label="Your appointments">
+            {appointments.map((appointment) => (
+              <AppointmentCard
+                key={appointment._id}
+                appointment={appointment}
+                onCancelAppointment={cancelAppointment}
+                onStripePayment={handleStripePayment}
+              />
+            ))}
+          </section>
+        )}
+      </main>
+    </>
   );
 };
 

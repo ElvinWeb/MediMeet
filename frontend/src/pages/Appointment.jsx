@@ -11,6 +11,7 @@ import {
   formatSlotDate,
   generateAvailableSlots,
 } from "../utils/appointmentUtils";
+import SEOHelmet from "../components/SEO/SEOHelmet";
 
 const Appointment = () => {
   const { docId } = useParams();
@@ -73,21 +74,28 @@ const Appointment = () => {
 
   return (
     <>
-      <DoctorDetails docInfo={docInfo} />
+      <SEOHelmet
+        title={`Book Appointment with Dr. ${docInfo.name}`}
+        description={`Schedule appointment with Dr. ${docInfo.name}, ${docInfo.speciality} specialist. ${docInfo.experience} years experience. Book online with MediMeet.`}
+        keywords={`${docInfo.speciality} doctor, book appointment, Dr ${docInfo.name}, medical consultation`}
+      />
+      <main>
+        <DoctorDetails docInfo={docInfo} />
 
-      {docInfo.available && (
-        <BookingSlots
-          docSlots={docSlots}
-          onBookAppointment={bookAppointment}
-          slotIndex={slotIndex}
-          slotTime={slotTime}
-          onSlotIndex={setSlotIndex}
-          onSlotTime={setSlotTime}
-          aria-label="Select appointment time slot"
-        />
-      )}
+        {docInfo.available && (
+          <BookingSlots
+            docSlots={docSlots}
+            onBookAppointment={bookAppointment}
+            slotIndex={slotIndex}
+            slotTime={slotTime}
+            onSlotIndex={setSlotIndex}
+            onSlotTime={setSlotTime}
+            aria-label="Select appointment time slot"
+          />
+        )}
 
-      <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
+        <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
+      </main>
     </>
   );
 };
