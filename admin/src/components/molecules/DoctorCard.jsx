@@ -3,59 +3,147 @@ import { useNavigate } from "react-router-dom";
 
 const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
   const navigate = useNavigate();
+
+  const handleImageClick = () => {
+    navigate("/doctor-details", {
+      state: { doctor: item },
+    });
+  };
+
+  const handleImageKeyDown = (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleImageClick();
+    }
+  };
+
+  const handleUpdateClick = () => {
+    navigate("/update-doctor", {
+      state: { doctor: item },
+    });
+  };
+
+  const handleDeleteClick = () => {
+    setShowModal(true);
+  };
+
+  const handleAvailabilityChange = () => {
+    changeAvailability(item._id);
+  };
+
   return (
-    <div className="border border-[#C9D8FF] rounded-xl max-w-56 overflow-hidden cursor-pointer group relative">
-      <span className="bg-primary py-1 px-2 rounded-md text-white text-xs absolute top-[10px] right-[10px]">
+    <article
+      className="border border-blue-300 rounded-xl max-w-56 overflow-hidden group relative bg-white hover:translate-y-[-4px] hover:shadow-lg transition-all duration-300"
+      aria-labelledby={`doctor-name-${item._id}`}
+      aria-describedby={`doctor-details-${item._id}`}
+    >
+      <span
+        className="bg-blue-600 py-1 px-2 rounded-md text-white text-xs absolute top-[10px] right-[10px] z-10 font-medium"
+        aria-label={`Qualification: ${item.degree}`}
+      >
         {item.degree}
       </span>
-      <img
-        className="bg-[#EAEFFF] group-hover:bg-primary transition-all duration-500"
-        src={item.image}
-        alt=""
-        onClick={() =>
-          navigate("/doctor-details", {
-            state: { doctor: item },
-          })
-        }
-        loading="lazy"
-      />
-      <div className="p-4">
-        <p className="text-[#262626] text-lg font-medium">{item.name}</p>
-        <p className="text-[#5C5C5C] text-sm">{item.speciality}</p>
-        <div className="my-2 flex items-center gap-1 text-sm">
-          <input
-            onChange={() => changeAvailability(item._id)}
-            type="checkbox"
-            checked={item.available}
-          />
-          <p>Available</p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setShowModal(true)}
-          className="text-white bg-red-700 hover:bg-red-800 font-medium rounded-md text-sm px-5 py-2.5 me-2 mb-2"
-        >
-          Delete
-        </button>
-        <button
-          type="button"
-          onClick={() =>
-            navigate("/update-doctor", {
-              state: { doctor: item },
-            })
-          }
-          className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-md text-sm px-5 py-2.5 me-2 mb-2"
-        >
-          Update
-        </button>
+
+      <div
+        className="bg-blue-50 group-hover:bg-blue-600 transition-all duration-500 cursor-pointer focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
+        onClick={handleImageClick}
+        onKeyDown={handleImageKeyDown}
+        tabIndex="0"
+        role="button"
+        aria-label={`View details for Dr. ${item.name}`}
+        aria-describedby={`view-details-help-${item._id}`}
+      >
+        <img
+          className="w-full h-auto"
+          src={item.image}
+          alt={`Professional photo of Dr. ${item.name}, ${item.speciality} specialist`}
+          loading="lazy"
+          decoding="async"
+        />
       </div>
-    </div>
+
+      <div className="p-4">
+        <header>
+          <h3
+            id={`doctor-name-${item._id}`}
+            className="text-gray-800 text-lg font-medium mb-1"
+          >
+            Dr. {item.name}
+          </h3>
+          <p className="text-gray-600 text-sm mb-3">{item.speciality}</p>
+        </header>
+
+        <div id={`doctor-details-${item._id}`} className="my-3">
+          <div className="flex items-center gap-2 text-sm">
+            <label
+              htmlFor={`availability-${item._id}`}
+              className="flex items-center gap-2 cursor-pointer text-gray-700"
+            >
+              <input
+                id={`availability-${item._id}`}
+                onChange={handleAvailabilityChange}
+                type="checkbox"
+                checked={item.available}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                aria-describedby={`availability-help-${item._id}`}
+              />
+              <span>Available</span>
+            </label>
+          </div>
+        </div>
+
+        <div
+          className="flex flex-col gap-2 mt-4"
+          role="group"
+          aria-label={`Actions for Dr. ${item.name}`}
+        >
+          <button
+            type="button"
+            onClick={handleDeleteClick}
+            className="text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 font-medium rounded-md text-sm px-5 py-2.5 transition-colors duration-200"
+            aria-describedby={`delete-help-${item._id}`}
+          >
+            Delete Doctor
+          </button>
+
+          <button
+            type="button"
+            onClick={handleUpdateClick}
+            className="text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium rounded-md text-sm px-5 py-2.5 transition-colors duration-200"
+            aria-describedby={`update-help-${item._id}`}
+          >
+            Update Info
+          </button>
+        </div>
+
+        <div className="sr-only">
+          <p id={`view-details-help-${item._id}`}>
+            Click or press Enter to view detailed information about Dr.{" "}
+            {item.name}
+          </p>
+          <p id={`delete-help-${item._id}`}>
+            Remove Dr. {item.name} from the system. This action requires
+            confirmation.
+          </p>
+          <p id={`update-help-${item._id}`}>
+            Edit Dr. {item.name} profile information and settings
+          </p>
+        </div>
+
+        {/* Status for screen readers */}
+        <div className="sr-only">
+          Dr. {item.name} is currently{" "}
+          {item.available ? "available" : "unavailable"} for appointments.
+          Specialization: {item.speciality}. Qualification: {item.degree}.
+        </div>
+      </div>
+    </article>
   );
 };
 
 DoctorCard.propTypes = {
   item: PropTypes.shape({
-    _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    _id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     image: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     speciality: PropTypes.string.isRequired,
