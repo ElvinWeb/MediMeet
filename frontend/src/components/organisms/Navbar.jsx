@@ -60,7 +60,9 @@ const Navbar = () => {
           onClick={() => setShowMenu(true)}
           className="w-6 md:hidden"
           src={assets.menu_icon}
-          alt=""
+          alt="Menu Icon"
+          loading="lazy"
+          decoding="async"
         />
 
         <div

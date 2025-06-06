@@ -17,7 +17,9 @@ const AppointmentCard = ({
         <img
           className="w-36 bg-[#EAEFFF]"
           src={appointment.docData.image}
-          alt=""
+          alt="Appointment Doctor Image"
+          loading="lazy"
+          decoding="async"
         />
       </div>
       <div className="flex-1 text-sm text-[#5E5E5E]">

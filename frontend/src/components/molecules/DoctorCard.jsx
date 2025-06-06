@@ -12,8 +12,16 @@ const DoctorCard = ({ doctor }) => {
       }}
       className="border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500 relative"
     >
-      <img className="bg-[#EAEFFF]" src={doctor.image} alt="" />
-      <span className="bg-primary py-1 px-2 rounded-md text-white text-xs absolute top-[10px] right-[10px]">{doctor.degree}</span>
+      <img
+        className="bg-[#EAEFFF]"
+        src={doctor.image}
+        alt="Doctor Image"
+        loading="lazy"
+        decoding="async"
+      />
+      <span className="bg-primary py-1 px-2 rounded-md text-white text-xs absolute top-[10px] right-[10px]">
+        {doctor.degree}
+      </span>
       <div className="p-4">
         <div
           className={`flex items-center gap-2 text-sm text-center ${

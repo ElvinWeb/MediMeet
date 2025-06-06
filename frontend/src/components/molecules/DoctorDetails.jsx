@@ -9,7 +9,9 @@ const DoctorDetails = ({ docInfo }) => {
         <img
           className="bg-primary w-full sm:max-w-72 rounded-lg"
           src={docInfo.image}
-          alt="doctor image"
+          alt="Doctor Image"
+          loading="lazy"
+          decoding="async"
         />
       </div>
 

@@ -28,7 +28,9 @@ const Banner = () => {
         <img
           className="w-full absolute bottom-0 right-0 max-w-md"
           src={assets.appointment_img}
-          alt=""
+          alt="Appointment Banner Image"
+          loading="lazy"
+          decoding="async"
         />
       </div>
     </div>
