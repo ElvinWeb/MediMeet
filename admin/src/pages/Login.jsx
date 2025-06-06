@@ -39,8 +39,6 @@ const Login = () => {
         return toast.error(data.message || "Login failed");
       }
 
-      console.log("formData:", formData);
-
       const tokenKey = isAdmin ? "aToken" : "dToken";
       const dashboardRoute = isAdmin ? "/admin-dashboard" : "/doctor-dashboard";
 

@@ -4,6 +4,7 @@ import express from "express";
 import mongoSanitize from "express-mongo-sanitize";
 import helmet from "helmet";
 import xss from "xss-clean";
+import session from "express-session";
 import connectCloudinary from "./config/cloudinary.js";
 import connectDB from "./config/mongodb.js";
 import adminRouter from "./routes/adminRoute.js";
@@ -26,6 +27,13 @@ app.use(helmet());
 app.use(mongoSanitize());
 app.use(xss());
 app.use(cors());
+app.use(session({
+  cookie: {
+    sameSite: 'lax',
+    secure: true,
+    httpOnly: true
+  }
+}));
 
 // ---------- Routes ----------
 app.use("/api/user", userRouter);

@@ -13,6 +13,7 @@ const SEOHelmet = ({ title, description, keywords }) => {
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
+      <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
     </Helmet>
   );
 };
