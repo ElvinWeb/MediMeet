@@ -15,6 +15,7 @@ const SEOHelmet = ({ title, description, keywords }) => {
       <meta property="og:type" content="website" />
       <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://res.cloudinary.com data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://res.cloudinary.com;" />
       <meta name="referrer" content="strict-origin-when-cross-origin" />
+      <meta httpEquiv="Set-Cookie" content="SameSite=Strict; Secure" />
     </Helmet>
   );
 };
