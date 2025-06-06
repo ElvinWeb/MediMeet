@@ -24,6 +24,8 @@ const connectDB = async () => {
     await mongoose.connect(`${MONGODB_URI}/prescripto`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
     });
   } catch (error) {
     console.error("❌ Failed to connect to MongoDB:", error.message);

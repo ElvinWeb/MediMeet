@@ -44,6 +44,10 @@ const Doctors = () => {
           className={`py-1 px-3 border rounded text-sm  transition-all sm:hidden ${
             showFilter ? "bg-primary text-white" : ""
           }`}
+          aria-expanded={showFilter}
+          aria-controls="filter-panel"
+          aria-label={showFilter ? "Hide filters" : "Show filters"}
+          type="button"
         >
           Filters
         </button>

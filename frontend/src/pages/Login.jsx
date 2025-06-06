@@ -73,6 +73,8 @@ const Login = () => {
     <form
       onSubmit={handleSubmit(onAuthSubmit)}
       className="min-h-[80vh] flex items-center"
+      noValidate
+      aria-label={isSignUp ? "Create new account" : "Sign in to your account"}
     >
       <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg">
         <h2 className="text-2xl font-semibold">
@@ -82,51 +84,80 @@ const Login = () => {
 
         {isSignUp && (
           <div className="w-full">
-            <label>Full Name</label>
+            <label htmlFor="name" className="block text-sm font-medium">
+              Full Name
+            </label>
             <input
               {...register("name")}
+              id="name"
               type="text"
               className="border border-[#DADADA] rounded w-full p-2 mt-1"
+              aria-describedby={errors.name ? "name-error" : undefined}
+              aria-invalid={errors.name ? "true" : "false"}
+              aria-required="true"
             />
-            <p className="text-red-500 text-xs">{errors.name?.message}</p>
+            <p id="name-error" role="alert" className="text-red-500 text-xs">
+              {errors.name?.message}
+            </p>
           </div>
         )}
 
         <div className="w-full">
-          <label>Email</label>
+          <label htmlFor="email" className="block text-sm font-medium">
+            Email
+          </label>
           <input
             {...register("email")}
+            id="email"
             type="email"
             className="border border-[#DADADA] rounded w-full p-2 mt-1"
+            aria-describedby={errors.email ? "email-error" : undefined}
+            aria-invalid={errors.email ? "true" : "false"}
+            aria-required="true"
           />
-          <p className="text-red-500 text-xs">{errors.email?.message}</p>
+          <p id="email-error" role="alert" className="text-red-500 text-xs">
+            {errors.email?.message}
+          </p>
         </div>
 
         <div className="w-full">
-          <label>Password</label>
+          <label htmlFor="password" className="block text-sm font-medium">
+            Password
+          </label>
           <input
             {...register("password")}
+            id="password"
             type="password"
             className="border border-[#DADADA] rounded w-full p-2 mt-1"
+            aria-describedby={errors.password ? "password-error" : undefined}
+            aria-invalid={errors.password ? "true" : "false"}
+            aria-required="true"
           />
-          <p className="text-red-500 text-xs">{errors.password?.message}</p>
+          <p id="password-error" role="alert" className="text-red-500 text-xs">
+            {errors.password?.message}
+          </p>
         </div>
 
         <button
           type="submit"
           className="bg-primary text-white w-full py-2 my-2 rounded-md text-base"
+          aria-label={isSignUp ? "Create new account" : "Sign in to account"}
         >
           {isSignUp ? "Create Account" : "Login"}
         </button>
 
         <p>
           {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
-          <span
+          <button
+            type="button"
             onClick={handleAuthToggle}
-            className="text-primary underline cursor-pointer"
+            className="text-primary underline cursor-pointer bg-transparent border-none"
+            aria-label={
+              isSignUp ? "Switch to login form" : "Switch to signup form"
+            }
           >
             {isSignUp ? "Login here" : "Sign up"}
-          </span>
+          </button>
         </p>
       </div>
     </form>

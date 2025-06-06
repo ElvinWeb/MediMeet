@@ -5,12 +5,12 @@ import Banner from "../components/organisms/Banner";
 
 const Home = () => {
   return (
-    <>
+    <main role="main">
       <Header />
       <SpecialityMenu />
       <TopDoctors />
       <Banner />
-    </>
+    </main>
   );
 };
 

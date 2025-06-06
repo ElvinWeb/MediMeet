@@ -80,31 +80,33 @@ const MyAppointments = () => {
   const noAppointments = !appointments || appointments.length === 0;
 
   return (
-    <>
+    <main>
       <PageTitle normalText="MY" boldText="APPOINTMENTS" />
       {isLoading ? (
-        <>
+        <section aria-label="Loading appointments" aria-live="polite">
           <AppointmentCardSkeleton />
           <AppointmentCardSkeleton />
           <AppointmentCardSkeleton />
           <AppointmentCardSkeleton />
-        </>
+        </section>
       ) : noAppointments ? (
         <EmptyState
           title="No Appointments Yet"
           subtitle="When appointments are made, they’ll appear here."
         />
       ) : (
-        appointments.map((appointment) => (
-          <AppointmentCard
-            key={appointment._id}
-            appointment={appointment}
-            onCancelAppointment={cancelAppointment}
-            onStripePayment={handleStripePayment}
-          />
-        ))
+        <section aria-label="Your appointments">
+          {appointments.map((appointment) => (
+            <AppointmentCard
+              key={appointment._id}
+              appointment={appointment}
+              onCancelAppointment={cancelAppointment}
+              onStripePayment={handleStripePayment}
+            />
+          ))}
+        </section>
       )}
-    </>
+    </main>
   );
 };
 

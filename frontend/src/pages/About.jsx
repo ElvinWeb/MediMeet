@@ -5,14 +5,14 @@ import { BENEFITS } from "../constants/benefitsConstants";
 
 const About = () => {
   return (
-    <div>
+    <main>
       <PageTitle normalText="ABOUT" boldText="US" />
 
       <div className="my-10 flex flex-col md:flex-row gap-12">
         <img
           className="w-full md:max-w-[360px]"
           src={assets.about_image}
-          alt=""
+          alt="About MediMeet healthcare platform"
         />
         <div className="flex flex-col justify-center gap-6 md:w-2/4 text-sm text-gray-600">
           <p>
@@ -38,18 +38,20 @@ const About = () => {
         </div>
       </div>
 
-      <div className="text-xl my-4">
-        <p>
-          WHY <span className="text-gray-700 font-semibold">CHOOSE US</span>
-        </p>
-      </div>
+      <section aria-labelledby="why-choose-us">
+        <div className="text-xl my-4">
+          <p>
+            WHY <span className="text-gray-700 font-semibold">CHOOSE US</span>
+          </p>
+        </div>
 
-      <div className="flex flex-col md:flex-row mb-20">
-        {BENEFITS.map(({ id, title, description }) => (
-          <BenefitCard key={id} title={title} description={description} />
-        ))}
-      </div>
-    </div>
+        <div className="flex flex-col md:flex-row mb-20">
+          {BENEFITS.map(({ id, title, description }) => (
+            <BenefitCard key={id} title={title} description={description} />
+          ))}
+        </div>
+      </section>
+    </main>
   );
 };
 

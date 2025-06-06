@@ -83,6 +83,7 @@ const Appointment = () => {
           slotTime={slotTime}
           onSlotIndex={setSlotIndex}
           onSlotTime={setSlotTime}
+          aria-label="Select appointment time slot"
         />
       )}
 
