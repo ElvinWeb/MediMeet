@@ -9,12 +9,14 @@ const SEOHelmet = ({ title, description, keywords }) => {
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
-
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
       <meta name="referrer" content="strict-origin-when-cross-origin" />
-      <meta httpEquiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://res.cloudinary.com data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://res.cloudinary.com;" />
+      <meta
+        httpEquiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' https://res.cloudinary.com data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self';"
+      />
     </Helmet>
   );
 };
