@@ -13,10 +13,6 @@ const SEOHelmet = ({ title, description, keywords }) => {
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
       <meta name="referrer" content="strict-origin-when-cross-origin" />
-      <meta
-        httpEquiv="Content-Security-Policy"
-        content="default-src 'self'; img-src 'self' https://res.cloudinary.com data: blob:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self';"
-      />
     </Helmet>
   );
 };
