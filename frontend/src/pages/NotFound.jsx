@@ -25,10 +25,13 @@ const NotFound = () => {
 
       <main
         role="main"
-        className="flex items-center justify-center min-h-screen"
+        className="flex items-center justify-center min-h-screen px-4"
+        aria-labelledby="error-heading"
+        aria-describedby="error-description"
       >
-        <div className="text-center" role="alert">
+        <div role="alert" aria-live="assertive" className="text-center">
           <h1
+            id="error-heading"
             className="text-9xl font-bold text-primary mb-4"
             aria-label="Error 404"
           >
@@ -40,7 +43,11 @@ const NotFound = () => {
             moved.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div
+            className="flex flex-col sm:flex-row gap-4 justify-center"
+            role="group"
+            aria-labelledby="navigation-options"
+          >
             <button
               onClick={handleGoBack}
               className="px-6 py-3 bg-primary text-white rounded focus:outline-none transition-colors"

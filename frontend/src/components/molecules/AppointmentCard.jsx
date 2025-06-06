@@ -43,6 +43,8 @@ const AppointmentCard = ({
           !appointment.isCompleted &&
           payment !== appointment._id && (
             <button
+              type="submit"
+              aria-label="Pay online"
               onClick={() => setPayment(appointment._id)}
               className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-primary hover:text-white transition-all duration-300"
             >
@@ -54,6 +56,8 @@ const AppointmentCard = ({
           !appointment.isCompleted &&
           payment === appointment._id && (
             <button
+              type="submit"
+              aria-label="Stripe payment"
               onClick={() => onStripePayment(appointment._id)}
               className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-gray-100 hover:text-white transition-all duration-300 flex items-center justify-center"
             >
@@ -67,19 +71,29 @@ const AppointmentCard = ({
         {!appointment.cancelled &&
           appointment.payment &&
           !appointment.isCompleted && (
-            <button className="sm:min-w-48 py-2 border rounded text-[#696969]  bg-[#EAEFFF]">
+            <button
+              type="button"
+              aria-label="Paid"
+              className="sm:min-w-48 py-2 border rounded text-[#696969]  bg-[#EAEFFF]"
+            >
               Paid
             </button>
           )}
 
         {appointment.isCompleted && (
-          <button className="sm:min-w-48 py-2 border border-green-500 rounded text-green-500">
+          <button
+            type="button"
+            aria-label="Completed"
+            className="sm:min-w-48 py-2 border border-green-500 rounded text-green-500"
+          >
             Completed
           </button>
         )}
 
         {!appointment.cancelled && !appointment.isCompleted && (
           <button
+            type="submit"
+            aria-label="Cancel appointment"
             onClick={() => onCancelAppointment(appointment._id)}
             className="text-[#696969] sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300"
           >
@@ -87,7 +101,11 @@ const AppointmentCard = ({
           </button>
         )}
         {appointment.cancelled && !appointment.isCompleted && (
-          <button className="sm:min-w-48 py-2 border border-red-500 rounded text-red-500">
+          <button
+            type="button"
+            aria-label="Cancelled"
+            className="sm:min-w-48 py-2 border border-red-500 rounded text-red-500"
+          >
             Appointment cancelled
           </button>
         )}

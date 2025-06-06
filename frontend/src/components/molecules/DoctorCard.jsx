@@ -1,9 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 const DoctorCard = ({ doctor }) => {
   const navigate = useNavigate();
-
   return (
     <div
       onClick={() => {

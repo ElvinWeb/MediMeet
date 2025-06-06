@@ -5,6 +5,8 @@ const BannerButton = ({ path, content }) => {
   const navigate = useNavigate();
   return (
     <button
+      type="button"
+      aria-label="Banner button"
       onClick={() => {
         navigate(path);
         scrollTo({ top: 0, behavior: "smooth" });

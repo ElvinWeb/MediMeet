@@ -5,6 +5,8 @@ const MoreButton = () => {
 
   return (
     <button
+      type="button"
+      aria-label="Expand more"
       onClick={() => {
         navigate("/doctors");
         scrollTo({ top: 0, behavior: "smooth" });

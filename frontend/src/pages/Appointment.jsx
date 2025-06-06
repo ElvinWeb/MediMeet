@@ -80,21 +80,37 @@ const Appointment = () => {
         keywords={`${docInfo.speciality} doctor, book appointment, Dr ${docInfo.name}, medical consultation`}
       />
       <main>
-        <DoctorDetails docInfo={docInfo} />
+        <h1 className="sr-only">Book Appointment with Dr. {docInfo.name}</h1>
+
+        <section aria-labelledby="doctor-info">
+          <h2 id="doctor-info" className="sr-only">
+            Doctor Information
+          </h2>
+          <DoctorDetails docInfo={docInfo} />
+        </section>
 
         {docInfo.available && (
-          <BookingSlots
-            docSlots={docSlots}
-            onBookAppointment={bookAppointment}
-            slotIndex={slotIndex}
-            slotTime={slotTime}
-            onSlotIndex={setSlotIndex}
-            onSlotTime={setSlotTime}
-            aria-label="Select appointment time slot"
-          />
+          <section aria-labelledby="booking-section">
+            <h2 id="booking-section" className="sr-only">
+              Select Appointment Time
+            </h2>
+            <BookingSlots
+              docSlots={docSlots}
+              onBookAppointment={bookAppointment}
+              slotIndex={slotIndex}
+              slotTime={slotTime}
+              onSlotIndex={setSlotIndex}
+              onSlotTime={setSlotTime}
+            />
+          </section>
         )}
 
-        <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
+        <section aria-labelledby="related-doctors">
+          <h2 id="related-doctors" className="sr-only">
+            Related {docInfo.speciality} Doctors
+          </h2>
+          <RelatedDoctors speciality={docInfo.speciality} docId={docId} />
+        </section>
       </main>
     </>
   );

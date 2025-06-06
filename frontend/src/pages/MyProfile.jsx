@@ -1,11 +1,11 @@
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { assets } from "../assets/assets";
+import PageTitle from "../components/atoms/PageTitle";
+import SEOHelmet from "../components/SEO/SEOHelmet";
 import { API_ENDPOINTS } from "../constants/apiEndpoints";
 import { AppContext } from "../context/AppContext";
 import api from "../utils/api";
-import PageTitle from "../components/atoms/PageTitle";
-import SEOHelmet from "../components/SEO/SEOHelmet";
 
 const MyProfile = () => {
   const { userData, setUserData, loadUserProfileData } = useContext(AppContext);
@@ -66,7 +66,7 @@ const MyProfile = () => {
                 />
                 <img
                   className="w-10 absolute bottom-12 right-12"
-                  src={image ? "" : assets.upload_icon}
+                  src={assets.upload_icon}
                   alt="Upload icon"
                 />
               </div>

@@ -37,9 +37,7 @@ const Doctors = () => {
   const isFilteredDoctorAvailable =
     !filteredDoctors || filteredDoctors.length === 0;
 
-  const pageTitle = speciality
-    ? `${speciality} Doctors`
-    : "Find Doctors";
+  const pageTitle = speciality ? `${speciality} Doctors` : "Find Doctors";
 
   const pageDescription = speciality
     ? `Find qualified ${speciality} doctors. Compare experience, fees, and availability. Book appointments online with MediMeet.`
@@ -72,21 +70,22 @@ const Doctors = () => {
           >
             Filters
           </button>
-          <div className="flex flex-col sm:flex-column items-start gap-3 w-2xl">
+          <aside
+            id="filter-panel"
+            className="flex flex-col sm:flex-column items-start gap-3 w-2xl"
+            aria-label="Doctor search filters"
+          >
             <SpecialityFilter showFilter={showFilter} speciality={speciality} />
             <PriceRangeFilter
               price={filterPrice}
               onPriceChange={setFilterPrice}
             />
-          </div>
-          <section className="flex-1">
+          </aside>
+          <section className="flex-1" aria-labelledby="doctors-section">
             <div className="flex justify-between mb-4">
-              <div className="text-2xl text-[#707070]">
-                <p>
-                  All{" "}
-                  <span className="text-gray-700 font-semibold">Doctors</span>
-                </p>
-              </div>
+              <h2 id="doctors-section" className="text-2xl text-[#707070]">
+                All <span className="text-gray-700 font-semibold">Doctors</span>
+              </h2>
               <ExperienceFilter sortValue={sortExp} onSortChange={setSortExp} />
             </div>
             {isDoctorAvailable || isFilteredDoctorAvailable ? (
@@ -99,9 +98,15 @@ const Doctors = () => {
                 }
               />
             ) : (
-              <div className="w-full grid grid-cols-auto gap-4 gap-y-6">
+              <div 
+                className="w-full grid grid-cols-auto gap-4 gap-y-6"
+                role="list"
+                aria-label={`${filteredDoctors.length} doctors found`}
+              >
                 {filteredDoctors.map((doctor) => (
-                  <DoctorCard doctor={doctor} key={doctor._id} />
+                  <div key={doctor._id} role="listitem">
+                    <DoctorCard doctor={doctor} />
+                  </div>
                 ))}
               </div>
             )}

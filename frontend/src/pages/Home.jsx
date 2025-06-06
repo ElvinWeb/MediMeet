@@ -12,7 +12,11 @@ const Home = () => {
         description="Book doctor appointments online with MediMeet. Find qualified healthcare professionals, schedule consultations, and manage your healthcare needs conveniently."
         keywords="doctor appointment, online booking, healthcare, medical consultation, doctors"
       />
-      <main role="main">
+      <main
+        id="main-content"
+        role="main"
+        aria-label="MediMeet homepage content"
+      >
         <Header />
         <SpecialityMenu />
         <TopDoctors />

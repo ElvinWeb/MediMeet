@@ -39,8 +39,10 @@ const BookingSlots = ({
       </div>
 
       <button
+        type="submit"
         onClick={onBookAppointment}
         className="bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6"
+        aria-label="Book appointment"
       >
         Book an appointment
       </button>

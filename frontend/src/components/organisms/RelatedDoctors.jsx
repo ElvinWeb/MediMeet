@@ -24,28 +24,34 @@ const RelatedDoctors = ({ speciality, docId }) => {
   }, [filteredDoctors, token]);
 
   return (
-    <div className="flex flex-col items-center gap-4 my-16 text-[#262626]">
-      <SectionTitle
-        title="Related Doctors"
-        subtitle="Simply browse through our extensive list of trusted doctors."
-      />
-
-      {relDoc.length === 0 ? (
-        <EmptyState
-          title="No Related Doctors Available"
-          subtitle="Please check back later or add some doctors."
+    <section aria-labelledby="Related Doctors">
+      <div className="flex flex-col items-center gap-4 my-16 text-[#262626]">
+        <SectionTitle
+          title="Related Doctors"
+          subtitle="Simply browse through our extensive list of trusted doctors."
         />
-      ) : (
-        <>
-          <div className="w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-3 sm:px-0">
-            {relDoc.map((doctor) => (
-              <DoctorCard doctor={doctor} key={doctor._id} />
-            ))}
+
+        {relDoc.length === 0 ? (
+          <section aria-labelledby="Empty state heading">
+            <EmptyState
+              title="No Related Doctors Available"
+              subtitle="Please check back later or add some doctors."
+            />
+          </section>
+        ) : (
+          <div>
+            <div className="w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-3 sm:px-0">
+              {relDoc.map((doctor) => (
+                <div key={doctor._id} role="listitem">
+                  <DoctorCard doctor={doctor} />
+                </div>
+              ))}
+            </div>
+            <MoreButton />
           </div>
-          <MoreButton />
-        </>
-      )}
-    </div>
+        )}
+      </div>
+    </section>
   );
 };
 

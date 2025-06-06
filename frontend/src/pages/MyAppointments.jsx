@@ -91,25 +91,29 @@ const MyAppointments = () => {
         <PageTitle normalText="MY" boldText="APPOINTMENTS" />
         {isLoading ? (
           <section aria-label="Loading appointments" aria-live="polite">
+            <h2 className="sr-only">Loading your appointments</h2>
             <AppointmentCardSkeleton />
             <AppointmentCardSkeleton />
             <AppointmentCardSkeleton />
             <AppointmentCardSkeleton />
           </section>
         ) : noAppointments ? (
-          <EmptyState
-            title="No Appointments Yet"
-            subtitle="When appointments are made, they’ll appear here."
-          />
+          <section aria-labelledby="Empty state heading">
+            <EmptyState
+              title="No Appointments Yet"
+              subtitle="When you book appointments, they'll appear here for easy management."
+            />
+          </section>
         ) : (
           <section aria-label="Your appointments">
             {appointments.map((appointment) => (
-              <AppointmentCard
-                key={appointment._id}
-                appointment={appointment}
-                onCancelAppointment={cancelAppointment}
-                onStripePayment={handleStripePayment}
-              />
+              <div key={appointment._id} role="listitem">
+                <AppointmentCard
+                  appointment={appointment}
+                  onCancelAppointment={cancelAppointment}
+                  onStripePayment={handleStripePayment}
+                />
+              </div>
             ))}
           </section>
         )}

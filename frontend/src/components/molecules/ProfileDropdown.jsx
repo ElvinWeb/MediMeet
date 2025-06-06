@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
-import PropTypes from "prop-types";
 
 const ProfileDropdown = ({ setShowModal, userData }) => {
   const navigate = useNavigate();
