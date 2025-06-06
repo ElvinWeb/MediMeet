@@ -27,13 +27,19 @@ app.use(helmet());
 app.use(mongoSanitize());
 app.use(xss());
 app.use(cors());
-app.use(session({
-  cookie: {
-    sameSite: 'lax',
-    secure: true,
-    httpOnly: true
-  }
-}));
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: false,
+    name: "sessionId",
+    cookie: {
+      sameSite: "lax",
+      secure: true,
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24,
+    },
+  })
+);
 
 // ---------- Routes ----------
 app.use("/api/user", userRouter);
