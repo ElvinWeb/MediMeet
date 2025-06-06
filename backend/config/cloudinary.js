@@ -16,9 +16,6 @@ const connectCloudinary = async () => {
     api_key: CLOUDINARY_API_KEY,
     api_secret: CLOUDINARY_SECRET_KEY,
     secure: true,
-    analytics: false,
-    use_filename: true,
-    unique_filename: false,
   });
 };
 
