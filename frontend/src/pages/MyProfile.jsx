@@ -115,9 +115,6 @@ const MyProfile = () => {
                   aria-describedby="image-help"
                   className="sr-only"
                 />
-                <p id="image-help" className="text-xs text-gray-600 mt-2">
-                  Supported formats: JPEG, PNG, GIF. Maximum size: 5MB.
-                </p>
               </div>
             ) : (
               <img
@@ -155,9 +152,6 @@ const MyProfile = () => {
                   aria-describedby="name-help"
                   required
                 />
-                <p id="name-help" className="text-xs text-gray-600 mt-1">
-                  Enter your full legal name
-                </p>
               </div>
             ) : (
               <h1 className="font-medium text-3xl text-gray-800 mt-4">
@@ -203,9 +197,6 @@ const MyProfile = () => {
                       aria-describedby="phone-help"
                       placeholder="Enter phone number"
                     />
-                    <p id="phone-help" className="text-xs text-gray-600 mt-1">
-                      Include country code if applicable
-                    </p>
                   </div>
                 ) : (
                   <span className="text-blue-600">
@@ -336,9 +327,6 @@ const MyProfile = () => {
                       max={new Date().toISOString().split("T")[0]}
                       aria-describedby="dob-help"
                     />
-                    <p id="dob-help" className="text-xs text-gray-600 mt-1">
-                      This helps us provide age-appropriate care
-                    </p>
                   </div>
                 ) : (
                   <span className="text-gray-600">
