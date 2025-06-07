@@ -26,9 +26,10 @@ const DoctorDashboard = () => {
           await getAppointments();
           await getDashData();
         } catch {
-          toast.error("Failed to fetch doctor dashboard data. Please try again later!");
+          toast.error(
+            "Failed to fetch doctor dashboard data. Please try again later!"
+          );
         } finally {
-          
           setIsLoading(false);
         }
       }

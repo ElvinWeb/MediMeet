@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { AppContext } from "../../context/AppContext";
@@ -10,7 +10,30 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { token, setToken, userData } = useContext(AppContext);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 100);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (showMenu) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [showMenu]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -18,108 +41,259 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  return (
-    <nav aria-labelledby="Top Navbar">
-      <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-[#ADADAD]">
-        <h3
-          className="text-primary text-4xl font-medium cursor-pointer"
-          onClick={() => navigate("/")}
-        >
-          MediMeet
-        </h3>
-        <ul className="md:flex items-start gap-5 font-medium hidden">
-          <NavLink to="/">
-            <li className="py-1">HOME</li>
-            <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
-          </NavLink>
-          <NavLink to="/doctors">
-            <li className="py-1">ALL DOCTORS</li>
-            <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
-          </NavLink>
-          <NavLink to="/about">
-            <li className="py-1">ABOUT</li>
-            <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
-          </NavLink>
-          <NavLink to="/contact">
-            <li className="py-1">CONTACT</li>
-            <hr className="border-none outline-none h-0.5 bg-primary w-3/5 m-auto hidden" />
-          </NavLink>
-        </ul>
+  const closeMenu = () => setShowMenu(false);
 
-        <div className="flex items-center gap-4 ">
-          {token && userData ? (
-            <ProfileDropdown setShowModal={setShowModal} userData={userData} />
-          ) : (
-            <button
-              type="button"
-              onClick={() => navigate("/login")}
-              className="bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block"
-              aria-label="Create account"
+  return (
+    <>
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all px-6 duration-300 ease-in-out ${
+          isScrolled
+            ? "bg-white/95 backdrop-blur-md shadow-lg py-3"
+            : "bg-white py-5"
+        }`}
+        aria-label="Main navigation"
+      >
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between text-sm mb-0">
+            <div
+              className={`text-primary font-medium cursor-pointer transition-all duration-300 ${
+                isScrolled ? "text-3xl" : "text-4xl"
+              }`}
+              onClick={() => navigate("/")}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === "Enter" && navigate("/")}
+              aria-label="MediMeet home"
             >
-              Create account
-            </button>
-          )}
-          <img
-            onClick={() => setShowMenu(true)}
-            className="w-6 md:hidden"
-            src={assets.menu_icon}
-            alt="Menu Icon"
-            loading="lazy"
-            decoding="async"
+              MediMeet
+            </div>
+
+            <ul className="md:flex items-center gap-8 font-medium hidden">
+              <li>
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    `relative py-2 px-1 transition-all duration-300 hover:text-primary group ${
+                      isActive ? "text-primary" : "text-gray-700"
+                    }`
+                  }
+                >
+                  HOME
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/doctors"
+                  className={({ isActive }) =>
+                    `relative py-2 px-1 transition-all duration-300 hover:text-primary group ${
+                      isActive ? "text-primary" : "text-gray-700"
+                    }`
+                  }
+                >
+                  ALL DOCTORS
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/about"
+                  className={({ isActive }) =>
+                    `relative py-2 px-1 transition-all duration-300 hover:text-primary group ${
+                      isActive ? "text-primary" : "text-gray-700"
+                    }`
+                  }
+                >
+                  ABOUT
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/contact"
+                  className={({ isActive }) =>
+                    `relative py-2 px-1 transition-all duration-300 hover:text-primary group ${
+                      isActive ? "text-primary" : "text-gray-700"
+                    }`
+                  }
+                >
+                  CONTACT
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </NavLink>
+              </li>
+            </ul>
+
+            <div className="flex items-center gap-4">
+              {token && userData ? (
+                <div className="transform transition-all duration-300 hover:scale-105">
+                  <ProfileDropdown
+                    setShowModal={setShowModal}
+                    userData={userData}
+                  />
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => navigate("/login")}
+                  className={`bg-primary text-white rounded-full font-medium hidden md:block transition-all duration-300 focus:outline-none ${
+                    isScrolled ? "px-6 py-2 text-sm" : "px-8 py-3 text-base"
+                  }`}
+                  aria-label="Create account"
+                >
+                  Create account
+                </button>
+              )}
+
+              <button
+                onClick={() => setShowMenu(true)}
+                className="w-6 md:hidden p-1 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                aria-label="Open mobile menu"
+                aria-expanded={showMenu}
+              >
+                <img
+                  src={assets.menu_icon}
+                  alt=""
+                  className="w-full h-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div
+        className={`transition-all duration-300 ${
+          isScrolled ? "h-16" : "h-20"
+        }`}
+      />
+
+      {createPortal(
+        <div
+          className={`md:hidden fixed inset-0 z-[9999] transition-all duration-300 ease-in-out ${
+            showMenu
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+          }`}
+        >
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={closeMenu}
+            aria-hidden="true"
           />
 
           <div
-            className={`md:hidden ${
-              showMenu ? "fixed w-full" : "h-0 w-0"
-            } right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}
+            className={`absolute right-0 top-0 h-full w-80 max-w-full bg-white shadow-2xl transition-all duration-300 ease-in-out transform ${
+              showMenu ? "translate-x-0" : "translate-x-full"
+            }`}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-menu-title"
           >
-            <div className="flex items-center justify-between px-5 py-6">
-              <h3
-                className="text-primary text-4xl font-medium cursor-pointer"
-                onClick={() => navigate("/")}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2
+                id="mobile-menu-title"
+                className="text-primary text-2xl font-medium cursor-pointer"
+                onClick={() => {
+                  navigate("/");
+                  closeMenu();
+                }}
               >
                 MediMeet
-              </h3>
-              <img
-                onClick={() => setShowMenu(false)}
-                src={assets.cross_icon}
-                className="w-7"
-                alt=""
-              />
+              </h2>
+              <button
+                onClick={closeMenu}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-label="Close mobile menu"
+              >
+                <img
+                  src={assets.cross_icon}
+                  className="w-6 h-6"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </button>
             </div>
-            <ul className="flex flex-col items-center gap-2 mt-5 px-5 text-lg font-medium">
-              <NavLink onClick={() => setShowMenu(false)} to="/">
-                <p className="px-4 py-2 rounded full inline-block">HOME</p>
-              </NavLink>
-              <NavLink onClick={() => setShowMenu(false)} to="/doctors">
-                <p className="px-4 py-2 rounded full inline-block">
-                  ALL DOCTORS
-                </p>
-              </NavLink>
-              <NavLink onClick={() => setShowMenu(false)} to="/about">
-                <p className="px-4 py-2 rounded full inline-block">ABOUT</p>
-              </NavLink>
-              <NavLink onClick={() => setShowMenu(false)} to="/contact">
-                <p className="px-4 py-2 rounded full inline-block">CONTACT</p>
-              </NavLink>
-            </ul>
-          </div>
-        </div>
 
-        {createPortal(
-          <ConfirmationModal
-            onConfirm={() => {
-              handleLogout();
-              setShowModal(false);
-            }}
-            onCancel={() => setShowModal(false)}
-            isOpen={showModal}
-            actionType={"logout"}
-          />,
-          document.body
-        )}
-      </div>
-    </nav>
+            <nav className="p-6" aria-label="Mobile navigation">
+              <ul className="space-y-4">
+                {[
+                  { to: "/", label: "HOME" },
+                  { to: "/doctors", label: "ALL DOCTORS" },
+                  { to: "/about", label: "ABOUT" },
+                  { to: "/contact", label: "CONTACT" },
+                ].map((item, index) => (
+                  <li key={item.to}>
+                    <NavLink
+                      to={item.to}
+                      onClick={closeMenu}
+                      className={({ isActive }) =>
+                        `block px-4 py-3 rounded-lg text-lg font-medium transition-all duration-200 transform hover:scale-105 hover:bg-blue-50 hover:text-primary ${
+                          isActive ? "text-primary bg-blue-50" : "text-gray-700"
+                        }`
+                      }
+                      style={{
+                        animationDelay: `${index * 100}ms`,
+                        animation: showMenu
+                          ? "slideInRight 0.3s ease-out forwards"
+                          : "none",
+                      }}
+                    >
+                      {item.label}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+
+              {!token && (
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <button
+                    onClick={() => {
+                      navigate("/login");
+                      closeMenu();
+                    }}
+                    className="w-full bg-primary text-white py-3 px-6 rounded-lg font-medium transition-all duration-300 focus:outline-none"
+                  >
+                    Create Account
+                  </button>
+                </div>
+              )}
+            </nav>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {createPortal(
+        <ConfirmationModal
+          onConfirm={() => {
+            handleLogout();
+            setShowModal(false);
+          }}
+          onCancel={() => setShowModal(false)}
+          isOpen={showModal}
+          actionType={"logout"}
+        />,
+        document.body
+      )}
+
+      <style jsx>{`
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+      `}</style>
+    </>
   );
 };
 
