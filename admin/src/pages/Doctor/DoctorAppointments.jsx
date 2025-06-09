@@ -212,7 +212,7 @@ const DoctorAppointments = () => {
           <div className="flex-1">
             <SearchBar
               onSearchSubmit={handleSearchSubmit}
-              placeholder="Search by patient name..."
+              placeholder="Search appointments..."
               aria-label="Search appointments"
             />
           </div>
@@ -225,7 +225,7 @@ const DoctorAppointments = () => {
               id="status-filter"
               value={filterStatus}
               onChange={(e) => handleStatusFilter(e.target.value)}
-              className="min-w-[140px] px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-700 font-medium transition-colors hover:border-gray-400 cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0iIzZCNzI4MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+')] bg-no-repeat bg-[right_12px_center]"
+              className="min-w-[140px] px-4 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium transition-colors hover:border-gray-400 cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0iIzZCNzI4MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+')] bg-no-repeat bg-[right_12px_center]"
               aria-describedby="status-filter-help"
             >
               <option value="all">All Status</option>
@@ -291,7 +291,7 @@ const DoctorAppointments = () => {
             )}
             <button
               onClick={handleResetSearch}
-              className="text-sm text-blue-600 hover:text-blue-800 underline"
+              className="text-sm text-primary hover:text-blue-800 underline"
             >
               Clear all filters
             </button>
@@ -317,7 +317,7 @@ const DoctorAppointments = () => {
           <span>Payment</span>
           <button
             onClick={handleDateSortClick}
-            className="flex items-center gap-1 hover:text-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+            className="flex items-center gap-1 hover:text-primary transition-colors focus:outline-none rounded"
             aria-label={`Sort by date ${
               dateSortOrder === SORT_ORDERS.ASC
                 ? "descending"
@@ -330,7 +330,7 @@ const DoctorAppointments = () => {
           </button>
           <button
             onClick={handleFeesSortClick}
-            className="flex items-center gap-1 hover:text-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+            className="flex items-center gap-1 hover:text-primary transition-colors focus:outline-none rounded"
             aria-label={`Sort by fees ${
               feesSortOrder === SORT_ORDERS.ASC
                 ? "descending"
@@ -364,7 +364,7 @@ const DoctorAppointments = () => {
               />
               <button
                 onClick={handleResetSearch}
-                className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none"
               >
                 Show All Appointments
               </button>

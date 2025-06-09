@@ -32,7 +32,6 @@ const DoctorProfile = () => {
     },
   });
 
-  // Watch form values for real-time updates
   const watchedValues = watch();
 
   const onSubmit = async (formData) => {
@@ -60,7 +59,6 @@ const DoctorProfile = () => {
 
   const handleCancel = () => {
     setIsEdit(false);
-    // Reset form to original data
     if (profileData && Object.keys(profileData).length > 0) {
       const formData = {
         about: profileData.about || "",
@@ -77,7 +75,6 @@ const DoctorProfile = () => {
 
   const handleEdit = () => {
     setIsEdit(true);
-    // Initialize form with current profile data
     if (profileData && Object.keys(profileData).length > 0) {
       const formData = {
         about: profileData.about || "",
@@ -96,7 +93,6 @@ const DoctorProfile = () => {
     if (dToken) getProfileData();
   }, [dToken, getProfileData]);
 
-  // Initialize form when profile data loads
   useEffect(() => {
     if (profileData && Object.keys(profileData).length > 0) {
       const formData = {

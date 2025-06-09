@@ -15,7 +15,7 @@ const AdminSidebarList = () => {
           }
         >
           <img className="min-w-5" src={icon} alt={name} />
-          <p className="hidden md:block">{name}</p>
+          <p>{name}</p>
         </NavLink>
       ))}
     </ul>

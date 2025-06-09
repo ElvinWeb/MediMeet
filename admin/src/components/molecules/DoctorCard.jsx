@@ -45,7 +45,7 @@ const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
       </span>
 
       <div
-        className="bg-blue-50 group-hover:bg-blue-600 transition-all duration-500 cursor-pointer focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2"
+        className="cursor-pointer"
         onClick={handleImageClick}
         onKeyDown={handleImageKeyDown}
         tabIndex="0"
@@ -100,7 +100,7 @@ const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
           <button
             type="button"
             onClick={handleDeleteClick}
-            className="text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 font-medium rounded-md text-sm px-5 py-2.5 transition-colors duration-200"
+            className="text-white bg-red-600 hover:bg-red-700 focus:outline-none font-medium rounded-md text-sm px-5 py-2.5 transition-colors duration-200"
             aria-describedby={`delete-help-${item._id}`}
           >
             Delete Doctor
@@ -109,7 +109,7 @@ const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
           <button
             type="button"
             onClick={handleUpdateClick}
-            className="text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium rounded-md text-sm px-5 py-2.5 transition-colors duration-200"
+            className="text-white bg-blue-600 hover:bg-blue-700 focus:outline-none font-medium rounded-md text-sm px-5 py-2.5 transition-colors duration-200"
             aria-describedby={`update-help-${item._id}`}
           >
             Update Info
@@ -130,7 +130,6 @@ const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
           </p>
         </div>
 
-        {/* Status for screen readers */}
         <div className="sr-only">
           Dr. {item.name} is currently{" "}
           {item.available ? "available" : "unavailable"} for appointments.

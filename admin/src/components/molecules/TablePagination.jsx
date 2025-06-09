@@ -143,7 +143,7 @@ const TablePagination = ({
         <button
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
-          className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white ${styles.button} font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white`}
+          className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white ${styles.button} font-medium text-gray-700 hover:bg-gray-50 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white`}
           aria-label="Go to previous page"
         >
           Previous
@@ -158,7 +158,7 @@ const TablePagination = ({
         <button
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
-          className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white ${styles.button} font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white`}
+          className={`relative inline-flex items-center rounded-md border border-gray-300 bg-white ${styles.button} font-medium text-gray-700 hover:bg-gray-50 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white`}
           aria-label="Go to next page"
         >
           Next
@@ -176,7 +176,7 @@ const TablePagination = ({
                 id="items-per-page"
                 value={itemsPerPage}
                 onChange={handleItemsPerPageChange}
-                className={`rounded-md border border-gray-300 ${styles.text} text-gray-700 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500`}
+                className={`rounded-md border border-gray-300 ${styles.text} text-gray-700 focus:outline-none`}
               >
                 {itemsPerPageOptions.map((option) => (
                   <option key={option} value={option}>
@@ -211,7 +211,7 @@ const TablePagination = ({
             <button
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
-              className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white`}
+              className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white`}
               aria-label="Go to previous page"
             >
               <span className="sr-only">Previous</span>
@@ -226,8 +226,8 @@ const TablePagination = ({
                   disabled={currentPage === page}
                   className={`relative inline-flex items-center ${styles.button} font-semibold transition-colors duration-150 ${
                     currentPage === page
-                      ? "z-10 bg-indigo-600 text-white focus:z-20 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-default"
-                      : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      ? "z-10 bg-indigo-600 text-white focus:z-20 focus:outline-none cursor-default"
+                      : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-none"
                   }`}
                   aria-label={`Go to page ${page}`}
                   aria-current={currentPage === page ? "page" : undefined}
@@ -248,7 +248,7 @@ const TablePagination = ({
             <button
               onClick={handleNextPage}
               disabled={currentPage === totalPages}
-              className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white`}
+              className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-white`}
               aria-label="Go to next page"
             >
               <span className="sr-only">Next</span>
