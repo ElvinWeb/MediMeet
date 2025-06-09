@@ -19,28 +19,34 @@ const ProtectedRoute = ({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+
     const checkAuth = async () => {
       try {
         if (!token) {
-          setIsAuthenticated(false);
+          if (isMounted) setIsAuthenticated(false);
           return;
         }
 
         const isValid = validateToken(token);
-        setIsAuthenticated(isValid);
+        if (isMounted) setIsAuthenticated(isValid);
 
         if (!isValid && showToast) {
           toast.warn("Your session has expired. Please log in again.");
         }
       } catch (error) {
         console.error("Authentication check failed:", error);
-        setIsAuthenticated(false);
+        if (isMounted) setIsAuthenticated(false);
       } finally {
-        setIsValidating(false);
+        if (isMounted) setIsValidating(false);
       }
     };
 
     checkAuth();
+
+    return () => {
+      isMounted = false;
+    };
   }, [token, validateToken, showToast]);
 
   if (isValidating) {

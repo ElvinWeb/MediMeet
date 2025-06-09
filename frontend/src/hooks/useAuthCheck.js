@@ -26,7 +26,7 @@ export const useAuthCheck = (tokenKey = "token", redirectPath = "/login") => {
 
   const clearAuthAndRedirect = useCallback(
     (message = "Session expired. Please log in again.") => {
-      localStorage.removeItem(tokenKey);
+      sessionStorage.removeItem(tokenKey);
 
       if (window.location.pathname !== redirectPath) {
         toast.warn(message);
@@ -37,14 +37,14 @@ export const useAuthCheck = (tokenKey = "token", redirectPath = "/login") => {
   );
 
   useEffect(() => {
-    const token = localStorage.getItem(tokenKey);
+    const token = sessionStorage.getItem(tokenKey);
 
     if (token && !validateToken(token)) {
       clearAuthAndRedirect();
     }
 
     const intervalId = setInterval(() => {
-      const currentToken = localStorage.getItem(tokenKey);
+      const currentToken = sessionStorage.getItem(tokenKey);
       if (currentToken && !validateToken(currentToken)) {
         clearAuthAndRedirect();
       }

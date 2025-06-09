@@ -9,7 +9,7 @@ export const AppContext = createContext();
 const AppContextProvider = ({ children }) => {
   const [doctors, setDoctors] = useState([]);
   const [userData, setUserData] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [token, setToken] = useState(sessionStorage.getItem("token") || "");
   const isDoctorAvailable = !doctors || doctors.length === 0;
 
   // Get all doctors

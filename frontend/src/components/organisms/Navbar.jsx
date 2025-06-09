@@ -36,7 +36,7 @@ const Navbar = () => {
   }, [showMenu]);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     setToken(false);
     navigate("/login");
   };
@@ -280,19 +280,6 @@ const Navbar = () => {
         />,
         document.body
       )}
-
-      <style jsx>{`
-        @keyframes slideInRight {
-          from {
-            opacity: 0;
-            transform: translateX(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-      `}</style>
     </>
   );
 };
