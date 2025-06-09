@@ -256,33 +256,22 @@ const AdminAppointments = () => {
       tabIndex="-1"
     >
       <div className="mb-6 space-y-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
-          <div className="lg:col-span-2">
-            <SearchBar
-              onSearchSubmit={handleSearchSubmit}
-              placeholder="Search appointments..."
-              aria-label="Search appointments"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="status-filter"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Status
-            </label>
-            <select
-              id="status-filter"
-              value={filterStatus}
-              onChange={(e) => handleStatusFilter(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-700 transition-colors hover:border-gray-400"
-            >
-              <option value="all">All Status</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-          </div>
+        <div className="w-full lg:flex-row flex justify-between items-start">
+          <SearchBar
+            onSearchSubmit={handleSearchSubmit}
+            placeholder="Search appointments..."
+            aria-label="Search appointments"
+          />
+          <select
+            id="status-filter"
+            value={filterStatus}
+            onChange={(e) => handleStatusFilter(e.target.value)}
+            className="w-32 px-3 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-700 transition-colors hover:border-gray-400"
+          >
+            <option value="all">All Status</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
         </div>
 
         {activeFiltersCount > 0 && (

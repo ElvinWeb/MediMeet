@@ -7,6 +7,7 @@ import { API_ENDPOINTS, BACKEND_URL } from "../../constants/apiEndpoints";
 import { CURRENCY_SYMBOL } from "../../constants/currencySymbol";
 import { DoctorContext } from "../../context/DoctorContext";
 import { doctorProfileValidationSchema } from "../../validation/doctorProfileValidationSchema";
+import { assets } from "../../assets/assets";
 
 const DoctorProfile = () => {
   const { dToken, profileData, getProfileData } = useContext(DoctorContext);
@@ -139,12 +140,9 @@ const DoctorProfile = () => {
               <div className="text-center">
                 <div className="relative inline-block">
                   <img
-                    src={image || "/api/placeholder/200/200"}
+                    src={image || assets.upload_area}
                     alt={`Professional photo of Dr. ${name}`}
                     className="w-48 h-48 rounded-full object-cover border-4 border-white shadow-lg"
-                    onError={(e) => {
-                      e.target.src = "/api/placeholder/200/200";
-                    }}
                   />
                   <div
                     className={`absolute bottom-2 right-2 w-6 h-6 rounded-full border-2 border-white ${
@@ -171,9 +169,9 @@ const DoctorProfile = () => {
                   <h2 className="text-2xl font-bold text-gray-800">
                     Dr. {name}
                   </h2>
-                  <p className="text-blue-600 font-medium">{speciality}</p>
+                  <p className="text-primary font-medium">{speciality}</p>
                   <div className="flex items-center justify-center gap-2 mt-2">
-                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                    <span className="bg-blue-100 text-primary px-3 py-1 rounded-full text-sm font-medium">
                       {degree}
                     </span>
                     <span className="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
@@ -189,7 +187,7 @@ const DoctorProfile = () => {
                 <section className="mb-6">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
                     <svg
-                      className="w-5 h-5 mr-2 text-blue-600"
+                      className="w-5 h-5 mr-2 text-primary"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -292,7 +290,7 @@ const DoctorProfile = () => {
                 <section className="mb-6">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
                     <svg
-                      className="w-5 h-5 mr-2 text-blue-600"
+                      className="w-5 h-5 mr-2 text-primary"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -379,7 +377,7 @@ const DoctorProfile = () => {
                 <section className="mb-8">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
                     <svg
-                      className="w-5 h-5 mr-2 text-blue-600"
+                      className="w-5 h-5 mr-2 text-primary"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -466,10 +464,10 @@ const DoctorProfile = () => {
                       <button
                         type="submit"
                         disabled={isSubmitting || !isDirty}
-                        className={`flex-1 py-3 px-6 rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                        className={`py-3 px-6 rounded-lg font-medium transition-all focus:outline-none ${
                           isSubmitting || !isDirty
                             ? "bg-gray-400 text-gray-600 cursor-not-allowed"
-                            : "bg-blue-600 text-white hover:bg-blue-700 hover:scale-105"
+                            : "bg-primary text-white hover:scale-105"
                         }`}
                       >
                         {isSubmitting ? (
@@ -484,7 +482,7 @@ const DoctorProfile = () => {
                         type="button"
                         onClick={handleCancel}
                         disabled={isSubmitting}
-                        className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+                        className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-all focus:outline-none"
                       >
                         Cancel
                       </button>
@@ -493,7 +491,7 @@ const DoctorProfile = () => {
                     <button
                       type="button"
                       onClick={handleEdit}
-                      className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                      className="flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:scale-105 transition-all focus:outline-none"
                     >
                       Edit Profile
                     </button>

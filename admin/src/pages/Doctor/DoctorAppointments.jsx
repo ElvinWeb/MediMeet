@@ -105,8 +105,8 @@ const DoctorAppointments = () => {
 
       if (filterStatus === "completed") return item.isCompleted;
       if (filterStatus === "cancelled") return item.cancelled;
-      
-      return true; 
+
+      return true;
     });
 
     return filtered;
@@ -208,34 +208,23 @@ const DoctorAppointments = () => {
       tabIndex="-1"
     >
       <div className="mb-6 space-y-4">
-        <div className="flex flex-col lg:flex-row gap-4">
-          <div className="flex-1">
-            <SearchBar
-              onSearchSubmit={handleSearchSubmit}
-              placeholder="Search appointments..."
-              aria-label="Search appointments"
-            />
-          </div>
-
-          <div className="flex gap-2">
-            <label htmlFor="status-filter" className="sr-only">
-              Filter by appointment status
-            </label>
-            <select
-              id="status-filter"
-              value={filterStatus}
-              onChange={(e) => handleStatusFilter(e.target.value)}
-              className="min-w-[140px] px-4 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium transition-colors hover:border-gray-400 cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0iIzZCNzI4MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+')] bg-no-repeat bg-[right_12px_center]"
-              aria-describedby="status-filter-help"
-            >
-              <option value="all">All Status</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
-            </select>
-            <p id="status-filter-help" className="sr-only">
-              Filter appointments by their current status
-            </p>
-          </div>
+        <div className="w-full lg:flex-row flex justify-between items-start">
+          <SearchBar
+            onSearchSubmit={handleSearchSubmit}
+            placeholder="Search appointments..."
+            aria-label="Search appointments"
+          />
+          <select
+            id="status-filter"
+            value={filterStatus}
+            onChange={(e) => handleStatusFilter(e.target.value)}
+            className="min-w-[140px] px-4 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium transition-colors hover:border-gray-400 cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0iIzZCNzI4MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+')] bg-no-repeat bg-[right_12px_center]"
+            aria-describedby="status-filter-help"
+          >
+            <option value="all">All Status</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
         </div>
 
         {(searchTerm || filterStatus !== "all") && (

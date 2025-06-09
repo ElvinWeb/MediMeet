@@ -28,7 +28,7 @@ function SearchBar({ onSearchSubmit }) {
       >
         Search
       </label>
-      <div className="relative">
+      <div className="relative w-80">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
           <svg
             className="w-4 h-4 text-gray-500 dark:text-gray-400"
