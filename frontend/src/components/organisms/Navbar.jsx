@@ -149,7 +149,7 @@ const Navbar = () => {
 
               <button
                 onClick={() => setShowMenu(true)}
-                className="w-6 md:hidden p-1 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded"
+                className="w-6 md:hidden p-1 transition-all duration-300 hover:scale-110 focus:outline-none rounded"
                 aria-label="Open mobile menu"
                 aria-expanded={showMenu}
               >
@@ -207,7 +207,7 @@ const Navbar = () => {
               </h2>
               <button
                 onClick={closeMenu}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-primary"
                 aria-label="Close mobile menu"
               >
                 <img

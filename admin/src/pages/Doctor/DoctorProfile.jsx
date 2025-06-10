@@ -214,7 +214,7 @@ const DoctorProfile = () => {
                         {...register("about")}
                         id="about"
                         rows={4}
-                        className={`w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                        className={`w-full border rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary transition-colors ${
                           errors.about
                             ? "border-red-500 bg-red-50"
                             : "border-gray-300"
@@ -261,7 +261,7 @@ const DoctorProfile = () => {
                           min="1"
                           max="10000"
                           step="0.01"
-                          className={`text-2xl font-bold bg-transparent border-b-2 focus:border-blue-500 outline-none transition-colors w-32 ${
+                          className={`text-2xl font-bold bg-transparent border-b-2 focus:border-primary outline-none transition-colors w-32 ${
                             errors.fees ? "border-red-500" : "border-gray-300"
                           }`}
                           placeholder="0.00"
@@ -323,7 +323,7 @@ const DoctorProfile = () => {
                           {...register("address.line1")}
                           id="address.line1"
                           type="text"
-                          className={`w-full border rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                          className={`w-full border rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary transition-colors ${
                             errors.address?.line1
                               ? "border-red-500 bg-red-50"
                               : "border-gray-300"
@@ -357,7 +357,7 @@ const DoctorProfile = () => {
                           {...register("address.line2")}
                           id="address.line2"
                           type="text"
-                          className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                          className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
                           placeholder="Apartment, suite, floor"
                         />
                       </div>

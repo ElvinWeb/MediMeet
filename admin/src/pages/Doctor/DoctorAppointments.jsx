@@ -218,7 +218,7 @@ const DoctorAppointments = () => {
             id="status-filter"
             value={filterStatus}
             onChange={(e) => handleStatusFilter(e.target.value)}
-            className="min-w-[140px] px-4 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium transition-colors hover:border-gray-400 cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0iIzZCNzI4MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+')] bg-no-repeat bg-[right_12px_center]"
+            className="min-w-[140px] px-4 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium transition-colors hover:border-gray-400 cursor-pointer"
             aria-describedby="status-filter-help"
           >
             <option value="all">All Status</option>
@@ -353,7 +353,7 @@ const DoctorAppointments = () => {
               />
               <button
                 onClick={handleResetSearch}
-                className="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none"
+                className="mt-4 px-6 py-2 bg-primary text-white rounded-lg focus:outline-none"
               >
                 Show All Appointments
               </button>

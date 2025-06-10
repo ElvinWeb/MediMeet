@@ -76,7 +76,6 @@ const DoctorDetails = ({ docInfo }) => {
           </div>
         )}
 
-        {/* Availability status for screen readers */}
         <div className="sr-only">
           Doctor availability status:{" "}
           {docInfo.available

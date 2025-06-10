@@ -69,7 +69,7 @@ const Contact = () => {
                 Learn more about our teams and job openings.
               </p>
               <button
-                className="border border-black px-8 py-4 text-sm hover:bg-black hover:text-white focus:bg-black focus:text-white focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 transition-all duration-500 mt-4"
+                className="border border-black px-8 py-4 text-sm hover:bg-black hover:text-white focus:bg-black focus:text-white focus:outline-none transition-all duration-500 mt-4"
                 aria-label="Explore job opportunities at MediMeet"
                 type="button"
               >

@@ -111,7 +111,7 @@ const About = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/login"
-                className="bg-primary text-white px-8 py-3 rounded-lg font-medium transition-colors focus:outline-none"
+                className="bg-primary text-white px-8 py-3 rounded-lg font-medium focus:outline-none"
                 aria-describedby="signup-description"
               >
                 Create Account

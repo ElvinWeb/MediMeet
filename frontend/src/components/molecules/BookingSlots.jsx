@@ -71,7 +71,7 @@ const BookingSlots = ({
         type="button"
         onClick={onBookAppointment}
         disabled={!hasSelectedSlot}
-        className={`text-white text-sm font-medium px-20 py-3 rounded-full my-6 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+        className={`text-white text-sm font-medium px-20 py-3 rounded-full my-6 transition-all focus:outline-none ${
           hasSelectedSlot
             ? "bg-primary cursor-pointer"
             : "bg-gray-400 cursor-not-allowed"

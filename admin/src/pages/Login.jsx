@@ -111,7 +111,7 @@ const Login = () => {
                   type="email"
                   autoComplete="email"
                   placeholder="Enter your email"
-                  className={`border rounded w-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`border rounded w-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
                     errors.email
                       ? "border-red-500 bg-red-50"
                       : "border-gray-300 hover:border-gray-400"
@@ -149,7 +149,7 @@ const Login = () => {
                   type="password"
                   autoComplete="current-password"
                   placeholder="Enter your password"
-                  className={`border rounded w-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                  className={`border rounded w-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
                     errors.password
                       ? "border-red-500 bg-red-50"
                       : "border-gray-300 hover:border-gray-400"
@@ -192,7 +192,7 @@ const Login = () => {
                 <button
                   type="button"
                   onClick={handleUserTypeToggle}
-                  className="text-primary underline cursor-pointer bg-transparent border-none focus:outline-none  rounded px-1"
+                  className="text-primary underline cursor-pointer bg-transparent border-none focus:outline-none rounded px-1"
                   aria-describedby="toggle-help"
                 >
                   Click here

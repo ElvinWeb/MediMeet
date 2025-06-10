@@ -1,5 +1,5 @@
 export const MIN_PRICE_RANGE = 0;
-export const MAX_PRICE_RANGE = 150;
+export const MAX_PRICE_RANGE = 250;
 export const RANGE_STEP = 2;
 
 export const FILTER_LIST = [

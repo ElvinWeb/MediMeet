@@ -143,7 +143,7 @@ const MyProfile = () => {
                 </label>
                 <input
                   id="user-name"
-                  className="bg-gray-50 text-3xl font-medium max-w-60 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                  className="bg-gray-50 text-3xl font-medium max-w-60 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary text-gray-800"
                   type="text"
                   onChange={(e) =>
                     setUserData((prev) => ({ ...prev, name: e.target.value }))
@@ -185,7 +185,7 @@ const MyProfile = () => {
                     </label>
                     <input
                       id="phone"
-                      className="bg-gray-50 max-w-52 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                      className="bg-gray-50 max-w-52 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary text-gray-800"
                       type="tel"
                       onChange={(e) =>
                         setUserData((prev) => ({
@@ -219,7 +219,7 @@ const MyProfile = () => {
                       </label>
                       <input
                         id="address-line1"
-                        className="bg-gray-50 mb-2 w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                        className="bg-gray-50 mb-2 w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary text-gray-800"
                         type="text"
                         onChange={(e) =>
                           setUserData((prev) => ({
@@ -240,7 +240,7 @@ const MyProfile = () => {
                       </label>
                       <input
                         id="address-line2"
-                        className="bg-gray-50 w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                        className="bg-gray-50 w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary text-gray-800"
                         type="text"
                         onChange={(e) =>
                           setUserData((prev) => ({
@@ -285,7 +285,7 @@ const MyProfile = () => {
                     </label>
                     <select
                       id="gender"
-                      className="max-w-32 bg-gray-50 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                      className="max-w-32 bg-gray-50 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary text-gray-800"
                       onChange={(e) =>
                         setUserData((prev) => ({
                           ...prev,
@@ -315,7 +315,7 @@ const MyProfile = () => {
                     </label>
                     <input
                       id="dob"
-                      className="max-w-36 bg-gray-50 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                      className="max-w-36 bg-gray-50 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary text-gray-800"
                       type="date"
                       onChange={(e) =>
                         setUserData((prev) => ({
@@ -348,10 +348,10 @@ const MyProfile = () => {
                   <button
                     onClick={updateUserProfileData}
                     disabled={isUpdating}
-                    className={`border border-blue-600 px-8 py-2 rounded-full transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 ${
+                    className={`border border-primary px-8 py-2 rounded-full transition-all focus:outline-none text-gray-800 ${
                       isUpdating
                         ? "bg-gray-300 cursor-not-allowed border-gray-300"
-                        : "hover:bg-blue-600 hover:text-white"
+                        : "hover:bg-primary hover:text-white"
                     }`}
                     type="button"
                     aria-describedby="save-status"
@@ -362,7 +362,7 @@ const MyProfile = () => {
                   <button
                     onClick={handleCancelEdit}
                     disabled={isUpdating}
-                    className="border border-gray-500 text-gray-700 px-8 py-2 rounded-full hover:bg-gray-100 transition-all focus:outline-none focus:ring-2 focus:ring-gray-500"
+                    className="border border-gray-500 text-gray-700 px-8 py-2 rounded-full hover:bg-gray-100 transition-all focus:outline-none"
                     type="button"
                     aria-label="Cancel editing and discard changes"
                   >
@@ -372,7 +372,7 @@ const MyProfile = () => {
               ) : (
                 <button
                   onClick={() => setIsEdit(true)}
-                  className="border border-blue-600 px-8 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800"
+                  className="border border-primary px-8 py-2 rounded-full hover:text-white transition-all focus:outline-none text-gray-800"
                   type="button"
                   aria-describedby="edit-help"
                 >

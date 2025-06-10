@@ -25,7 +25,7 @@ const Sidebar = ({ isOpen, onClose, isMobile }) => {
               </span>
               <button
                 onClick={onClose}
-                className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none"
                 aria-label="Close sidebar"
               >
                 <svg

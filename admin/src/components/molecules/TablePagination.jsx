@@ -1,57 +1,9 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import PropTypes from "prop-types";
 import { useMemo, useCallback } from "react";
+import { getPageNumbers, getTotalPages } from "../../utils/pageUtils";
 
-// Utility functions (moved inline for better organization)
-const getTotalPages = ({ totalItems, itemsPerPage }) => {
-  return Math.ceil(totalItems / itemsPerPage);
-};
 
-const getPageNumbers = ({ currentPage, totalPages, maxVisiblePages = 7 }) => {
-  if (totalPages <= maxVisiblePages) {
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
-  }
-
-  const pages = [];
-  const halfVisible = Math.floor(maxVisiblePages / 2);
-  
-  // Always show first page
-  pages.push(1);
-  
-  let start = Math.max(2, currentPage - halfVisible);
-  let end = Math.min(totalPages - 1, currentPage + halfVisible);
-  
-  // Adjust range to maintain consistent number of visible pages
-  if (end - start + 1 < maxVisiblePages - 2) {
-    if (start === 2) {
-      end = Math.min(totalPages - 1, start + maxVisiblePages - 3);
-    } else {
-      start = Math.max(2, end - maxVisiblePages + 3);
-    }
-  }
-  
-  // Add ellipsis after first page if needed
-  if (start > 2) {
-    pages.push('...');
-  }
-  
-  // Add middle pages
-  for (let i = start; i <= end; i++) {
-    pages.push(i);
-  }
-  
-  // Add ellipsis before last page if needed
-  if (end < totalPages - 1) {
-    pages.push('...');
-  }
-  
-  // Always show last page (if more than 1 page)
-  if (totalPages > 1) {
-    pages.push(totalPages);
-  }
-  
-  return pages;
-};
 
 const TablePagination = ({
   currentPage = 1,
@@ -226,7 +178,7 @@ const TablePagination = ({
                   disabled={currentPage === page}
                   className={`relative inline-flex items-center ${styles.button} font-semibold transition-colors duration-150 ${
                     currentPage === page
-                      ? "z-10 bg-indigo-600 text-white focus:z-20 focus:outline-none cursor-default"
+                      ? "z-10 bg-primary text-white focus:z-20 focus:outline-none cursor-default"
                       : "text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-none"
                   }`}
                   aria-label={`Go to page ${page}`}

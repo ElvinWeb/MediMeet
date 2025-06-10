@@ -24,7 +24,7 @@ const PriceRangeFilter = ({ price, onPriceChange }) => {
           step={RANGE_STEP}
           value={price}
           onChange={handlePriceChange}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer slider focus:outline-none"
           aria-describedby="price-range-help price-display"
           aria-valuemin={MIN_PRICE_RANGE}
           aria-valuemax={MAX_PRICE_RANGE}

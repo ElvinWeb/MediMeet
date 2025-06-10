@@ -316,17 +316,6 @@ const ConfirmationModal = ({
           </div>
         </div>
       </div>
-
-      {isLoading && (
-        <div className="absolute inset-0 bg-white bg-opacity-50 dark:bg-gray-900 dark:bg-opacity-50 flex items-center justify-center rounded-lg">
-          <div className="flex flex-col items-center gap-2">
-            <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Processing...
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

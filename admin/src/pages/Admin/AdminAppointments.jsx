@@ -37,33 +37,18 @@ const AdminAppointments = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   const [dateRange, setDateRange] = useState("all");
   const [selectedDoctor, setSelectedDoctor] = useState("all");
-  const [refreshing, setRefreshing] = useState(false);
 
-  const fetchAppointments = useCallback(
-    async (showRefreshIndicator = false) => {
-      if (!aToken) return;
+  const fetchAppointments = useCallback(async () => {
+    if (!aToken) return;
 
-      if (showRefreshIndicator) {
-        setRefreshing(true);
-      } else {
-        setIsLoading(true);
-      }
-
-      try {
-        await getAllAppointments(currentPage, ITEMS_PER_PAGE);
-        if (showRefreshIndicator) {
-          toast.success("Appointments refreshed successfully!");
-        }
-      } catch (error) {
-        console.error("Failed to fetch appointments:", error);
-        toast.error("Failed to fetch appointments. Please try again later!");
-      } finally {
-        setIsLoading(false);
-        setRefreshing(false);
-      }
-    },
-    [aToken, currentPage, getAllAppointments]
-  );
+    try {
+      await getAllAppointments(currentPage, ITEMS_PER_PAGE);
+    } catch (error) {
+      toast.error("Failed to fetch appointments. Please try again later!");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [aToken, currentPage, getAllAppointments]);
 
   useEffect(() => {
     fetchAppointments();
@@ -129,11 +114,6 @@ const AdminAppointments = () => {
 
   const handleStatusFilter = useCallback((status) => {
     setFilterStatus(status);
-    setCurrentPage(INITIAL_CURRENT_PAGE);
-  }, []);
-
-  const handleDoctorFilter = useCallback((doctorId) => {
-    setSelectedDoctor(doctorId);
     setCurrentPage(INITIAL_CURRENT_PAGE);
   }, []);
 
@@ -256,29 +236,37 @@ const AdminAppointments = () => {
       tabIndex="-1"
     >
       <div className="mb-6 space-y-4">
-        <div className="w-full lg:flex-row flex justify-between items-start">
-          <SearchBar
-            onSearchSubmit={handleSearchSubmit}
-            placeholder="Search appointments..."
-            aria-label="Search appointments"
-          />
-          <select
-            id="status-filter"
-            value={filterStatus}
-            onChange={(e) => handleStatusFilter(e.target.value)}
-            className="w-32 px-3 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-700 transition-colors hover:border-gray-400"
-          >
-            <option value="all">All Status</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
+        <div className="mb-4 lg:mb-0">
+          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+            All Appointments
+          </h1>
+          <p className="text-gray-600 mt-1">
+            Manage doctor appointments and actions
+          </p>
+        </div>
+        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
+          <div className="w-full lg:flex-row flex justify-between items-start">
+            <SearchBar
+              onSearchSubmit={handleSearchSubmit}
+              placeholder="Search appointments..."
+              aria-label="Search appointments"
+            />
+            <select
+              id="status-filter"
+              value={filterStatus}
+              onChange={(e) => handleStatusFilter(e.target.value)}
+              className="w-48 px-3 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-700 transition-colors hover:border-gray-400"
+            >
+              <option value="all">All Status</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
         </div>
 
         {activeFiltersCount > 0 && (
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm text-gray-600">
-              Active filters ({activeFiltersCount}):
-            </span>
+            <span className="text-sm text-gray-600">Active filters:</span>
             {searchTerm && (
               <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm flex items-center gap-1">
                 Search: "{searchTerm}"
@@ -442,7 +430,7 @@ const AdminAppointments = () => {
               />
               <button
                 onClick={handleResetFilters}
-                className="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none"
+                className="mt-4 px-6 py-2 bg-primary text-white rounded-lg focus:outline-none"
               >
                 Show All Appointments
               </button>

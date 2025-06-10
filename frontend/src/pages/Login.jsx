@@ -87,16 +87,13 @@ const Login = () => {
             : "medimeet login, patient portal, healthcare login, medical platform access"
         }
       />
-      
-      {/* Skip to main content */}
-      <a 
-        href="#main-content" 
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded z-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-      >
-        Skip to main content
-      </a>
 
-      <main id="main-content" role="main" className="min-h-[80vh] flex items-center" tabIndex="-1">
+      <main
+        id="main-content"
+        role="main"
+        className="min-h-[80vh] flex items-center"
+        tabIndex="-1"
+      >
         <div className="container mx-auto px-4">
           <form
             onSubmit={handleSubmit(onAuthSubmit)}
@@ -107,7 +104,10 @@ const Login = () => {
           >
             <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border border-gray-300 rounded-xl text-gray-700 text-sm shadow-lg">
               <header>
-                <h1 id="auth-heading" className="text-2xl font-semibold text-gray-800">
+                <h1
+                  id="auth-heading"
+                  className="text-2xl font-semibold text-gray-800"
+                >
                   {isSignUp ? "Create Account" : "Login"}
                 </h1>
                 <p id="auth-description" className="text-gray-600">
@@ -115,7 +115,6 @@ const Login = () => {
                 </p>
               </header>
 
-              {/* Live region for form status */}
               <div
                 aria-live="polite"
                 aria-atomic="true"
@@ -126,24 +125,31 @@ const Login = () => {
                   `${isSignUp ? "Creating account" : "Signing in"}...`}
               </div>
 
-              {/* Form Fields */}
               <div className="w-full space-y-4">
                 {isSignUp && (
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                      Full Name <span className="text-red-600" aria-label="required">*</span>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Full Name{" "}
+                      <span className="text-red-600" aria-label="required">
+                        *
+                      </span>
                     </label>
                     <input
                       {...register("name")}
                       id="name"
                       type="text"
                       autoComplete="name"
-                      className={`border rounded w-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                        errors.name 
-                          ? 'border-red-500 bg-red-50' 
-                          : 'border-gray-300 hover:border-gray-400'
+                      className={`border rounded w-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+                        errors.name
+                          ? "border-red-500 bg-red-50"
+                          : "border-gray-300 hover:border-gray-400"
                       }`}
-                      aria-describedby={errors.name ? "name-error" : "name-help"}
+                      aria-describedby={
+                        errors.name ? "name-error" : "name-help"
+                      }
                       aria-invalid={errors.name ? "true" : "false"}
                       aria-required="true"
                       placeholder="Enter your full name"
@@ -162,20 +168,28 @@ const Login = () => {
                 )}
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                    Email Address <span className="text-red-600" aria-label="required">*</span>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Email Address{" "}
+                    <span className="text-red-600" aria-label="required">
+                      *
+                    </span>
                   </label>
                   <input
                     {...register("email")}
                     id="email"
                     type="email"
                     autoComplete="email"
-                    className={`border rounded w-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      errors.email 
-                        ? 'border-red-500 bg-red-50' 
-                        : 'border-gray-300 hover:border-gray-400'
+                    className={`border rounded w-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+                      errors.email
+                        ? "border-red-500 bg-red-50"
+                        : "border-gray-300 hover:border-gray-400"
                     }`}
-                    aria-describedby={errors.email ? "email-error" : "email-help"}
+                    aria-describedby={
+                      errors.email ? "email-error" : "email-help"
+                    }
                     aria-invalid={errors.email ? "true" : "false"}
                     aria-required="true"
                     placeholder="Enter your email address"
@@ -193,20 +207,30 @@ const Login = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                    Password <span className="text-red-600" aria-label="required">*</span>
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Password{" "}
+                    <span className="text-red-600" aria-label="required">
+                      *
+                    </span>
                   </label>
                   <input
                     {...register("password")}
                     id="password"
                     type="password"
-                    autoComplete={isSignUp ? "new-password" : "current-password"}
-                    className={`border rounded w-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      errors.password 
-                        ? 'border-red-500 bg-red-50' 
-                        : 'border-gray-300 hover:border-gray-400'
+                    autoComplete={
+                      isSignUp ? "new-password" : "current-password"
+                    }
+                    className={`border rounded w-full p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${
+                      errors.password
+                        ? "border-red-500 bg-red-50"
+                        : "border-gray-300 hover:border-gray-400"
                     }`}
-                    aria-describedby={errors.password ? "password-error" : "password-help"}
+                    aria-describedby={
+                      errors.password ? "password-error" : "password-help"
+                    }
                     aria-invalid={errors.password ? "true" : "false"}
                     aria-required="true"
                     placeholder="Enter your password"
@@ -251,13 +275,16 @@ const Login = () => {
                   <button
                     type="button"
                     onClick={handleAuthToggle}
-                    className="text-blue-600 underline cursor-pointer bg-transparent border-none focus:outline-none rounded px-1"
+                    className="text-primary underline cursor-pointer bg-transparent border-none focus:outline-none rounded px-1"
                     aria-describedby="toggle-help"
                   >
                     {isSignUp ? "Login here" : "Sign up"}
                   </button>
                 </p>
-                <p id="toggle-help" className="text-xs text-gray-600 mt-1 sr-only">
+                <p
+                  id="toggle-help"
+                  className="text-xs text-gray-600 mt-1 sr-only"
+                >
                   Switch between login and signup forms
                 </p>
               </div>

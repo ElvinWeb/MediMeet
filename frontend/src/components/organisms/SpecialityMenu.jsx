@@ -30,7 +30,7 @@ const SpecialityMenu = () => {
                 <Link
                   to={`/doctors/${item.speciality}`}
                   onClick={() => scrollTo(0, 0)}
-                  className="flex flex-col items-center text-xs cursor-pointer hover:translate-y-[-10px] transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-lg p-2"
+                  className="flex flex-col items-center text-xs cursor-pointer hover:translate-y-[-10px] transition-all duration-500 rounded-lg p-2"
                   aria-label={`Browse ${item.speciality} doctors`}
                 >
                   <img

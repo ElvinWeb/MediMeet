@@ -55,7 +55,7 @@ const NotFound = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={handleGoBack}
-              className="px-6 py-3 bg-primary text-white rounded focus:outline-none "
+              className="px-6 py-3 bg-primary text-white rounded focus:outline-none"
               type="button"
               aria-label="Go back to previous page"
             >
@@ -64,7 +64,7 @@ const NotFound = () => {
 
             <button
               onClick={handleGoHome}
-              className="px-6 py-3 border border-primary text-primary rounded focus:outline-none "
+              className="px-6 py-3 border border-primary text-primary rounded focus:outline-none"
               type="button"
               aria-label="Go to home page"
             >

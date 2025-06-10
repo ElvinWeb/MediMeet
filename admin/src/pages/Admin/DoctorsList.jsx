@@ -1,8 +1,4 @@
-import {
-  AdjustmentsHorizontalIcon,
-  PlusIcon,
-  UserGroupIcon,
-} from "@heroicons/react/24/outline";
+import { PlusIcon } from "@heroicons/react/24/outline";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +23,6 @@ const DoctorsList = () => {
     isDoctorAvailable,
   } = useContext(AdminContext);
 
-  // Enhanced state management
   const [showModal, setShowModal] = useState(false);
   const [selectedDoctorId, setSelectedDoctorId] = useState(null);
   const [selectedDoctorName, setSelectedDoctorName] = useState("");
@@ -36,10 +31,8 @@ const DoctorsList = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [sortBy, setSortBy] = useState("name");
   const [filterBy, setFilterBy] = useState("all");
-  const [viewMode, setViewMode] = useState("grid"); // grid or list
   const [specialityFilter, setSpecialityFilter] = useState("all");
 
-  // Fetch doctors data
   useEffect(() => {
     const fetchData = async () => {
       if (aToken) {
@@ -58,7 +51,6 @@ const DoctorsList = () => {
     fetchData();
   }, [aToken, getAllDoctors]);
 
-  // Get unique specialities for filter
   const availableSpecialities = useMemo(() => {
     const specialities = [
       ...new Set(doctors.map((doctor) => doctor.speciality)),
@@ -66,7 +58,6 @@ const DoctorsList = () => {
     return specialities.sort();
   }, [doctors]);
 
-  // Enhanced delete doctor function
   const deleteDoctor = async (doctorId) => {
     setIsDeleting(true);
     try {
@@ -96,27 +87,22 @@ const DoctorsList = () => {
     }
   };
 
-  // Enhanced filtering and sorting
   const filteredAndSortedDoctors = useMemo(() => {
     let filtered = doctors.filter((doctor) => {
-      // Search filter
       const searchMatch = doctor.name
         .toLowerCase()
         .includes(searchValue.trim().toLowerCase());
       if (!searchMatch) return false;
 
-      // Availability filter
       if (filterBy === "available" && !doctor.available) return false;
       if (filterBy === "unavailable" && doctor.available) return false;
 
-      // Speciality filter
       if (specialityFilter !== "all" && doctor.speciality !== specialityFilter)
         return false;
 
       return true;
     });
 
-    // Sort doctors
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "name":
@@ -124,7 +110,7 @@ const DoctorsList = () => {
         case "speciality":
           return a.speciality.localeCompare(b.speciality);
         case "availability":
-          return b.available - a.available; // Available first
+          return b.available - a.available;
         default:
           return 0;
       }
@@ -133,7 +119,6 @@ const DoctorsList = () => {
     return filtered;
   }, [doctors, searchValue, filterBy, specialityFilter, sortBy]);
 
-  // Handlers
   const handleResetFilters = useCallback(() => {
     setSearchValue("");
     setFilterBy("all");
@@ -151,16 +136,6 @@ const DoctorsList = () => {
     navigate("/add-doctor");
   }, [navigate]);
 
-  // Stats calculation
-  const stats = useMemo(() => {
-    const total = doctors.length;
-    const available = doctors.filter((d) => d.available).length;
-    const unavailable = total - available;
-
-    return { total, available, unavailable };
-  }, [doctors]);
-
-  // Active filters count
   const activeFiltersCount = useMemo(() => {
     let count = 0;
     if (searchValue) count++;
@@ -171,11 +146,9 @@ const DoctorsList = () => {
 
   return (
     <main className="max-w-7xl mx-auto p-6" role="main">
-      {/* Header Section */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
         <div className="mb-4 lg:mb-0">
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
-            <UserGroupIcon className="w-8 h-8 text-blue-600" />
             All Doctors
           </h1>
           <p className="text-gray-600 mt-1">
@@ -183,154 +156,37 @@ const DoctorsList = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* Stats Cards */}
-          <div className="hidden sm:flex items-center gap-4 mr-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900">
-                {stats.total}
-              </div>
-              <div className="text-xs text-gray-500">Total</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">
-                {stats.available}
-              </div>
-              <div className="text-xs text-gray-500">Available</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-red-600">
-                {stats.unavailable}
-              </div>
-              <div className="text-xs text-gray-500">Unavailable</div>
-            </div>
-          </div>
-
-          <button
-            onClick={handleAddDoctor}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-          >
-            <PlusIcon className="w-5 h-5" />
-            Add Doctor
-          </button>
-        </div>
+        <button
+          onClick={handleAddDoctor}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg"
+        >
+          <PlusIcon className="w-5 h-5" />
+          Add Doctor
+        </button>
       </div>
 
-      {/* Filters and Controls */}
       <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-          {/* Search */}
-          <div className="lg:col-span-2">
-            <SearchBar
-              onSearchSubmit={setSearchValue}
-              placeholder="Search doctors by name..."
-              aria-label="Search doctors"
-            />
-          </div>
-
-          {/* Availability Filter */}
-          <div>
-            <label
-              htmlFor="availability-filter"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Availability
-            </label>
-            <select
-              id="availability-filter"
-              value={filterBy}
-              onChange={(e) => setFilterBy(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-700"
-            >
-              <option value="all">All Doctors</option>
-              <option value="available">Available Only</option>
-              <option value="unavailable">Unavailable Only</option>
-            </select>
-          </div>
-
-          {/* Speciality Filter */}
-          <div>
-            <label
-              htmlFor="speciality-filter"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              Speciality
-            </label>
-            <select
-              id="speciality-filter"
-              value={specialityFilter}
-              onChange={(e) => setSpecialityFilter(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-700"
-            >
-              <option value="all">All Specialities</option>
-              {availableSpecialities.map((speciality) => (
-                <option key={speciality} value={speciality}>
-                  {speciality}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="w-full lg:flex-row flex justify-between items-center">
+          <SearchBar
+            onSearchSubmit={setSearchValue}
+            placeholder="Search doctors by name..."
+            aria-label="Search doctors"
+          />
+          <select
+            id="speciality-filter"
+            value={specialityFilter}
+            onChange={(e) => setSpecialityFilter(e.target.value)}
+            className="w-48 px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-700"
+          >
+            <option value="all">All Specialities</option>
+            {availableSpecialities.map((speciality) => (
+              <option key={speciality} value={speciality}>
+                {speciality}
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* Secondary Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 pt-4 border-t border-gray-200">
-          <div className="flex items-center gap-4 mb-3 sm:mb-0">
-            {/* Sort By */}
-            <div className="flex items-center gap-2">
-              <AdjustmentsHorizontalIcon className="w-4 h-4 text-gray-500" />
-              <label
-                htmlFor="sort-by"
-                className="text-sm font-medium text-gray-700"
-              >
-                Sort by:
-              </label>
-              <select
-                id="sort-by"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-1 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-sm"
-              >
-                <option value="name">Name</option>
-                <option value="speciality">Speciality</option>
-                <option value="availability">Availability</option>
-              </select>
-            </div>
-
-            {/* View Mode Toggle */}
-            <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
-              <button
-                onClick={() => setViewMode("grid")}
-                className={`px-3 py-1 rounded-md text-sm transition-colors ${
-                  viewMode === "grid"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Grid
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`px-3 py-1 rounded-md text-sm transition-colors ${
-                  viewMode === "list"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                List
-              </button>
-            </div>
-          </div>
-
-          {/* Results Info */}
-          <div className="text-sm text-gray-600">
-            Showing {filteredAndSortedDoctors.length} of {doctors.length}{" "}
-            doctors
-            {activeFiltersCount > 0 &&
-              ` (${activeFiltersCount} filters applied)`}
-          </div>
-        </div>
-
-        {/* Active Filters */}
         {activeFiltersCount > 0 && (
           <div className="flex items-center gap-2 flex-wrap mt-3 pt-3 border-t border-gray-200">
             <span className="text-sm text-gray-600">Active filters:</span>
@@ -416,16 +272,9 @@ const DoctorsList = () => {
         )}
       </div>
 
-      {/* Content Area */}
       <div className="min-h-[400px]">
         {isLoading ? (
-          <div
-            className={`grid gap-6 ${
-              viewMode === "grid"
-                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                : "grid-cols-1"
-            }`}
-          >
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {[...Array(8)].map((_, index) => (
               <DoctorCardSkeleton key={index} />
             ))}
@@ -452,18 +301,14 @@ const DoctorsList = () => {
             />
             <button
               onClick={handleResetFilters}
-              className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="mt-4 px-6 py-3 bg-primary text-white rounded-lg"
             >
-              Clear Filters
+              Show All Doctors
             </button>
           </div>
         ) : (
           <div
-            className={`grid gap-6 ${
-              viewMode === "grid"
-                ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                : "grid-cols-1"
-            }`}
+            className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
             role="grid"
             aria-label="Doctors list"
           >
@@ -472,15 +317,13 @@ const DoctorsList = () => {
                 key={doctor._id}
                 item={doctor}
                 changeAvailability={changeAvailability}
-                onDeleteClick={handleDeleteClick}
-                viewMode={viewMode}
+                onDeleteClick={() => handleDeleteClick(doctor._id, doctor.name)}
               />
             ))}
           </div>
         )}
       </div>
 
-      {/* Confirmation Modal */}
       {createPortal(
         <ConfirmationModal
           onConfirm={() => deleteDoctor(selectedDoctorId)}
@@ -492,9 +335,7 @@ const DoctorsList = () => {
           isOpen={showModal}
           isLoading={isDeleting}
           actionType="delete"
-          title="Delete Doctor"
           message={`Are you sure you want to delete Dr. ${selectedDoctorName}? This action cannot be undone and will remove all associated data.`}
-          variant="destructive"
         />,
         document.body
       )}

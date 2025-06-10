@@ -12,21 +12,44 @@ import doctorRouter from "./routes/doctorRoute.js";
 import userRouter from "./routes/userRoute.js";
 import logger from "./utils/logger.js";
 import errorHandler from "./middleware/errorHandler.js";
+import compression from "compression";
+import rateLimit from "express-rate-limit";
 
-// App instance
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Connect DB and Cloudinary
 await connectDB();
 await connectCloudinary();
 
 // ---------- Middlewares ----------
+app.use(compression());
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { success: false, message: "Too many requests, try again later" },
+});
+app.use(limiter);
 app.use(express.json({ limit: "10kb" }));
-app.use(helmet());
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
 app.use(mongoSanitize());
 app.use(xss());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5174", "http://localhost:5173"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    preflightContinue: false,
+    optionsSuccessStatus: 200,
+  })
+);
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -41,25 +64,29 @@ app.use(
     },
   })
 );
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.path} - ${req.ip}`);
+  next();
+});
+app.disable("x-powered-by");
 
 // ---------- Routes ----------
 app.use("/api/user", userRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/doctor", doctorRouter);
-
 // ---------- Root Endpoint ----------
 app.get("/", (_, res) => {
   res.status(200).json({ message: "Server running successfully ✅" });
 });
-
 // ---------- Not Found & Error Handler ----------
-app.all("*", (_, res) => {
-  res.status(404).json({ success: false, message: "Route not found" });
+app.all("*", (req, res) => {
+  logger.warn(`404 - ${req.method} ${req.originalUrl}`);
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+  });
 });
-
-// Central error handler LAST
 app.use(errorHandler);
-
 // ---------- Server ----------
 app.listen(PORT, () =>
   logger.info(`🚀 Server running on http://localhost:${PORT}`)

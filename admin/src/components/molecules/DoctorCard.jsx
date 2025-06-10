@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
+const DoctorCard = ({ item, changeAvailability, onDeleteClick }) => {
   const navigate = useNavigate();
 
   const handleImageClick = () => {
@@ -21,10 +21,6 @@ const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
     navigate("/update-doctor", {
       state: { doctor: item },
     });
-  };
-
-  const handleDeleteClick = () => {
-    setShowModal(true);
   };
 
   const handleAvailabilityChange = () => {
@@ -84,7 +80,7 @@ const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
                 onChange={handleAvailabilityChange}
                 type="checkbox"
                 checked={item.available}
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2"
                 aria-describedby={`availability-help-${item._id}`}
               />
               <span>Available</span>
@@ -99,7 +95,7 @@ const DoctorCard = ({ item, changeAvailability, setShowModal }) => {
         >
           <button
             type="button"
-            onClick={handleDeleteClick}
+            onClick={onDeleteClick}
             className="text-white bg-red-600 hover:bg-red-700 focus:outline-none font-medium rounded-md text-sm px-5 py-2.5 transition-colors duration-200"
             aria-describedby={`delete-help-${item._id}`}
           >
@@ -150,7 +146,7 @@ DoctorCard.propTypes = {
     degree: PropTypes.string.isRequired,
   }).isRequired,
   changeAvailability: PropTypes.func.isRequired,
-  setShowModal: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
 };
 
 export default DoctorCard;

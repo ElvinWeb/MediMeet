@@ -36,9 +36,9 @@ const SpecialityFilter = ({ showFilter, speciality }) => {
                 <button
                   onClick={() => handleSpecialityClick(name)}
                   onKeyDown={(e) => handleKeyDown(e, name)}
-                  className={`w-full text-left px-4 py-3 border rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 ${
+                  className={`w-full text-left px-4 py-3 border rounded-lg transition-all focus:outline-none ${
                     isSelected
-                      ? "bg-blue-50 border-blue-300 text-blue-800 font-medium"
+                      ? "bg-blue-50 border-primary text-primary font-medium"
                       : "border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50"
                   }`}
                   type="button"

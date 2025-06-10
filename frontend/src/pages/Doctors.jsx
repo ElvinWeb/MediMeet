@@ -82,9 +82,9 @@ const Doctors = () => {
         <div className="flex flex-col sm:flex-row items-start gap-5 mt-5">
           <button
             onClick={() => setShowFilter(!showFilter)}
-            className={`py-2 px-4 border rounded-lg text-sm transition-all lg:hidden focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            className={`py-2 px-4 border rounded-lg text-sm transition-all lg:hidden focus:outline-none focus:ring-2 focus:ring-primary ${
               showFilter
-                ? "bg-blue-600 text-white border-blue-600"
+                ? "bg-primary text-white border-primary"
                 : "border-gray-300 hover:border-gray-400"
             }`}
             aria-expanded={showFilter}

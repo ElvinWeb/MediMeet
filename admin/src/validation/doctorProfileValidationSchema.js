@@ -11,7 +11,7 @@ export const doctorProfileValidationSchema = yup.object().shape({
     .typeError("Fees must be a number")
     .positive("Fees must be greater than zero")
     .required("Fees is required")
-    .max(200, "Fees must be at most $200"),
+    .max(250, "Fees must be at most $250"),
   address: yup.object().shape({
     line1: yup
       .string()

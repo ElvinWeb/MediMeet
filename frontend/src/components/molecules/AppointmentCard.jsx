@@ -16,7 +16,6 @@ const AppointmentCard = ({
     if (appointment.cancelled) return "cancelled";
     if (appointment.isCompleted) return "completed";
     if (appointment.payment) return "paid";
-    return "pending";
   };
 
   const status = getAppointmentStatus();
@@ -71,7 +70,6 @@ const AppointmentCard = ({
 
         <div className="sr-only">
           Appointment {index} of {total}. Status: {status}.
-          {status === "pending" && "Payment required."}
           {status === "paid" && "Payment completed."}
           {status === "completed" && "Appointment completed."}
           {status === "cancelled" && "Appointment cancelled."}
@@ -88,7 +86,7 @@ const AppointmentCard = ({
             <button
               type="button"
               onClick={() => setPayment(appointment._id)}
-              className="text-gray-700 sm:min-w-48 py-2 border border-gray-300 rounded hover:bg-primary hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="text-gray-700 sm:min-w-48 py-2 border border-gray-300 rounded hover:bg-primary hover:text-white transition-all duration-300 focus:outline-none"
               aria-describedby={`pay-help-${appointment._id}`}
             >
               Pay Online
@@ -102,7 +100,7 @@ const AppointmentCard = ({
             <button
               type="button"
               onClick={() => onStripePayment(appointment._id)}
-              className="text-gray-700 sm:min-w-48 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="text-gray-700 sm:min-w-48 py-2 border border-gray-300 rounded hover:bg-gray-100 transition-all duration-300 flex items-center justify-center focus:outline-none"
               aria-label="Pay with Stripe"
               aria-describedby={`stripe-help-${appointment._id}`}
             >
@@ -140,7 +138,7 @@ const AppointmentCard = ({
           <button
             type="button"
             onClick={() => onCancelAppointment(appointment._id)}
-            className="text-gray-700 sm:min-w-48 py-2 border border-gray-300 rounded hover:bg-red-600 hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="text-gray-700 sm:min-w-48 py-2 border border-gray-300 rounded hover:bg-red-600 hover:text-white transition-all duration-300 focus:outline-none"
             aria-describedby={`cancel-help-${appointment._id}`}
           >
             Cancel appointment
