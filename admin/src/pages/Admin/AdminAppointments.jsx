@@ -129,8 +129,6 @@ const AdminAppointments = () => {
 
       if (filterStatus === "completed" && !item.isCompleted) return false;
       if (filterStatus === "cancelled" && !item.cancelled) return false;
-      if (filterStatus === "pending" && (item.isCompleted || item.cancelled))
-        return false;
 
       if (selectedDoctor !== "all" && item.docData?._id !== selectedDoctor)
         return false;
@@ -237,15 +235,15 @@ const AdminAppointments = () => {
     >
       <div className="mb-6 space-y-4">
         <div className="mb-4 lg:mb-0">
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+          <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
             All Appointments
           </h1>
           <p className="text-gray-600 mt-1">
-            Manage doctor appointments and actions
+            Manage all doctor appointments and actions
           </p>
         </div>
         <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
-          <div className="w-full lg:flex-row flex justify-between items-start">
+          <div className="w-full lg:flex-row flex justify-between items-center">
             <SearchBar
               onSearchSubmit={handleSearchSubmit}
               placeholder="Search appointments..."
@@ -255,7 +253,7 @@ const AdminAppointments = () => {
               id="status-filter"
               value={filterStatus}
               onChange={(e) => handleStatusFilter(e.target.value)}
-              className="w-48 px-3 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-700 transition-colors hover:border-gray-400"
+              className="w-48 p-3 border border-gray-300 rounded-lg bg-white text-gray-700 transition-colors hover:border-gray-400"
             >
               <option value="all">All Status</option>
               <option value="completed">Completed</option>

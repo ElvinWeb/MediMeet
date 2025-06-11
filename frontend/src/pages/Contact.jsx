@@ -16,7 +16,7 @@ const Contact = () => {
 
         <div className="my-10 flex flex-col justify-center md:flex-row gap-10 mb-28 text-sm">
           <img
-            className="w-full md:max-w-[360px]"
+            className="w-full md:max-w-[360px] rounded-lg shadow-sm"
             src={assets.contact_image}
             alt="MediMeet Office Contact Information"
             loading="lazy"

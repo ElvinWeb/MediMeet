@@ -20,8 +20,8 @@ const Sidebar = ({ isOpen, onClose, isMobile }) => {
         <div className="flex flex-col h-full">
           {isMobile && (
             <div className="flex items-center justify-between p-4 border-b border-gray-200 lg:hidden">
-              <span className="text-lg font-semibold text-gray-900">
-                Navigation
+              <span className="text-lg font-semibold text-primary">
+                MediMeet
               </span>
               <button
                 onClick={onClose}

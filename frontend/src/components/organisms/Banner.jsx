@@ -8,7 +8,7 @@ const Banner = () => {
 
   return (
     <section aria-labelledby="cta-banner-heading">
-      <div className="flex bg-primary rounded-lg pt-4 px-6 sm:px-10 md:px-14 lg:px-20 my-20 md:mx-10">
+      <div className="flex bg-primary rounded-lg shadow-sm pt-4 px-6 sm:px-10 md:px-14 lg:px-20 my-20 md:mx-10">
         <div className="flex-1 py-8 sm:py-10 md:py-16 lg:py-24 lg:pl-5">
           <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-white">
             <h2 id="cta-banner-heading" className="mb-4">

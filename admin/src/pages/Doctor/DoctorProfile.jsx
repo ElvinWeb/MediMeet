@@ -134,6 +134,15 @@ const DoctorProfile = () => {
           {isSubmitting && "Updating profile information"}
         </div>
 
+        <div className="mb-4 lg:mb-4">
+          <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
+            Doctor Profile
+          </h1>
+          <p className="text-gray-600 mt-1">
+            Manage doctor personal information
+          </p>
+        </div>
+
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="md:flex">
             <div className="md:w-1/3 bg-gradient-to-br from-blue-50 to-blue-100 p-8 flex items-center justify-center">

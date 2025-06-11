@@ -148,7 +148,7 @@ const DoctorsList = () => {
     <main className="max-w-7xl mx-auto p-6" role="main">
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
         <div className="mb-4 lg:mb-0">
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+          <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
             All Doctors
           </h1>
           <p className="text-gray-600 mt-1">
@@ -176,7 +176,7 @@ const DoctorsList = () => {
             id="speciality-filter"
             value={specialityFilter}
             onChange={(e) => setSpecialityFilter(e.target.value)}
-            className="w-48 px-3 py-2 border border-gray-300 rounded-lg bg-white text-gray-700"
+            className="w-48 p-3 border border-gray-300 rounded-lg bg-white text-gray-700"
           >
             <option value="all">All Specialities</option>
             {availableSpecialities.map((speciality) => (
@@ -287,7 +287,7 @@ const DoctorsList = () => {
             />
             <button
               onClick={handleAddDoctor}
-              className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-lg"
             >
               <PlusIcon className="w-5 h-5" />
               Add First Doctor

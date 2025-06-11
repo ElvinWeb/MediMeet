@@ -208,23 +208,34 @@ const DoctorAppointments = () => {
       tabIndex="-1"
     >
       <div className="mb-6 space-y-4">
-        <div className="w-full lg:flex-row flex justify-between items-start">
-          <SearchBar
-            onSearchSubmit={handleSearchSubmit}
-            placeholder="Search appointments..."
-            aria-label="Search appointments"
-          />
-          <select
-            id="status-filter"
-            value={filterStatus}
-            onChange={(e) => handleStatusFilter(e.target.value)}
-            className="min-w-[140px] px-4 py-2.5 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium transition-colors hover:border-gray-400 cursor-pointer"
-            aria-describedby="status-filter-help"
-          >
-            <option value="all">All Status</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
+        <div className="mb-4 lg:mb-0">
+          <h1 className="text-3xl font-bold text-primary flex items-center gap-2">
+            Doctor Appointments
+          </h1>
+          <p className="text-gray-600 mt-1">
+            Manage doctor appointments and actions
+          </p>
+        </div>
+
+        <div className="bg-white rounded-lg border border-gray-200 p-4 mb-6">
+          <div className="w-full lg:flex-row flex justify-between items-center">
+            <SearchBar
+              onSearchSubmit={handleSearchSubmit}
+              placeholder="Search appointments..."
+              aria-label="Search appointments"
+            />
+            <select
+              id="status-filter"
+              value={filterStatus}
+              onChange={(e) => handleStatusFilter(e.target.value)}
+              className="w-48 p-3 border border-gray-300 rounded-lg bg-white text-gray-700 font-medium transition-colors hover:border-gray-400 cursor-pointer"
+              aria-describedby="status-filter-help"
+            >
+              <option value="all">All Status</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
         </div>
 
         {(searchTerm || filterStatus !== "all") && (
