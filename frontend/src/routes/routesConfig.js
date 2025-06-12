@@ -9,7 +9,6 @@ const Appointment = lazy(() => import("../pages/Appointment"));
 const MyAppointments = lazy(() => import("../pages/MyAppointments"));
 const MyProfile = lazy(() => import("../pages/MyProfile"));
 const Verify = lazy(() => import("../pages/Verify"));
-const PrivacyPolicy = lazy(() => import("../pages/PrivacyPolicy"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 
 export const protectedRoutes = [
@@ -18,7 +17,6 @@ export const protectedRoutes = [
   { path: "/doctors/:speciality", component: Doctors },
   { path: "/about", component: About },
   { path: "/contact", component: Contact },
-  { path: "/privacy-policy", component: PrivacyPolicy },
   { path: "/appointment/:docId", component: Appointment },
   { path: "/my-appointments", component: MyAppointments },
   { path: "/my-profile", component: MyProfile },

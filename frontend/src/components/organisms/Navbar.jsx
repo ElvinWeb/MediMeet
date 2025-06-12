@@ -1,8 +1,11 @@
-import { useContext, useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { assets } from "../../assets/assets";
-import { AppContext } from "../../context/AppContext";
+import { useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { useNavigate } from "react-router-dom";
+import { assets } from "../../assets/assets";
+import { NAV_LINKS } from "../../constants/navLinkConstants";
+import { AppContext } from "../../context/AppContext";
+import NavBarLink from "../atoms/NavBarLink";
+import SidebarNavLink from "../atoms/SidebarNavLink";
 import ConfirmationModal from "../molecules/ConfirmationModal";
 import ProfileDropdown from "../molecules/ProfileDropdown";
 
@@ -69,61 +72,11 @@ const Navbar = () => {
             </div>
 
             <ul className="md:flex items-center gap-8 font-medium hidden">
-              <li>
-                <NavLink
-                  to="/"
-                  className={({ isActive }) =>
-                    `relative py-2 px-1 transition-all duration-300 hover:text-primary group ${
-                      isActive ? "text-primary" : "text-gray-700"
-                    }`
-                  }
-                >
-                  HOME
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                </NavLink>
-              </li>
-
-              <li>
-                <NavLink
-                  to="/doctors"
-                  className={({ isActive }) =>
-                    `relative py-2 px-1 transition-all duration-300 hover:text-primary group ${
-                      isActive ? "text-primary" : "text-gray-700"
-                    }`
-                  }
-                >
-                  ALL DOCTORS
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                </NavLink>
-              </li>
-
-              <li>
-                <NavLink
-                  to="/about"
-                  className={({ isActive }) =>
-                    `relative py-2 px-1 transition-all duration-300 hover:text-primary group ${
-                      isActive ? "text-primary" : "text-gray-700"
-                    }`
-                  }
-                >
-                  ABOUT
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                </NavLink>
-              </li>
-
-              <li>
-                <NavLink
-                  to="/contact"
-                  className={({ isActive }) =>
-                    `relative py-2 px-1 transition-all duration-300 hover:text-primary group ${
-                      isActive ? "text-primary" : "text-gray-700"
-                    }`
-                  }
-                >
-                  CONTACT
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-                </NavLink>
-              </li>
+              {NAV_LINKS.map((link) => (
+                <li key={link.to}>
+                  <NavBarLink link={link} />
+                </li>
+              ))}
             </ul>
 
             <div className="flex items-center gap-4">
@@ -221,30 +174,14 @@ const Navbar = () => {
 
             <nav className="p-6" aria-label="Mobile navigation">
               <ul className="space-y-4">
-                {[
-                  { to: "/", label: "HOME" },
-                  { to: "/doctors", label: "ALL DOCTORS" },
-                  { to: "/about", label: "ABOUT" },
-                  { to: "/contact", label: "CONTACT" },
-                ].map((item, index) => (
-                  <li key={item.to}>
-                    <NavLink
-                      to={item.to}
-                      onClick={closeMenu}
-                      className={({ isActive }) =>
-                        `block px-4 py-3 rounded-lg text-lg font-medium transition-all duration-200 transform hover:scale-105 hover:bg-blue-50 hover:text-primary ${
-                          isActive ? "text-primary bg-blue-50" : "text-gray-700"
-                        }`
-                      }
-                      style={{
-                        animationDelay: `${index * 100}ms`,
-                        animation: showMenu
-                          ? "slideInRight 0.3s ease-out forwards"
-                          : "none",
-                      }}
-                    >
-                      {item.label}
-                    </NavLink>
+                {NAV_LINKS.map((link, index) => (
+                  <li key={link.to}>
+                    <SidebarNavLink
+                      link={link}
+                      index={index}
+                      closeMenu={closeMenu}
+                      showMenu={showMenu}
+                    />
                   </li>
                 ))}
               </ul>

@@ -1,5 +1,5 @@
-import { NavLink } from "react-router-dom";
-
+import { NAV_LINKS } from "../../constants/navLinkConstants";
+import NavBarLink from "../atoms/NavBarLink";
 const Footer = () => {
   return (
     <section id="footer" aria-labelledby="Footer">
@@ -20,18 +20,11 @@ const Footer = () => {
           <div>
             <p className="text-xl font-medium mb-5">COMPANY</p>
             <ul className="flex flex-col gap-2 text-gray-600">
-              <NavLink to="/">
-                <li>Home</li>
-              </NavLink>
-              <NavLink to="/about">
-                <li>About us</li>
-              </NavLink>
-              <NavLink to="/doctors">
-                <li>Doctors</li>
-              </NavLink>
-              <NavLink to="/privacy-policy">
-                <li>Privacy policy</li>
-              </NavLink>
+              {NAV_LINKS.slice(0, 3).map((link) => (
+                <li key={link.to}>
+                  <NavBarLink link={link} isFooter={true} />
+                </li>
+              ))}
             </ul>
           </div>
 
