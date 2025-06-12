@@ -42,10 +42,7 @@ app.use(mongoSanitize());
 app.use(xss());
 app.use(
   cors({
-    origin: [
-      "https://medi-meet-web-six.vercel.app",
-      "https://medi-meet-admin.vercel.app",
-    ],
+    origin: [process.env.ADMIN_APP_URL, process.env.MAIN_APP_URL],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
