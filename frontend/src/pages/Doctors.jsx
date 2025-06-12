@@ -8,6 +8,7 @@ import SpecialityFilter from "../components/molecules/SpecialityFilter";
 import { MAX_PRICE_RANGE } from "../constants/filterConstants";
 import { AppContext } from "../context/AppContext";
 import SEOHelmet from "../components/SEO/SEOHelmet";
+import PageTitle from "../components/atoms/PageTitle";
 
 const Doctors = () => {
   const { speciality } = useParams();
@@ -55,16 +56,7 @@ const Doctors = () => {
         keywords={pageKeywords}
       />
       <main id="main-content" className="mt-11">
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            {speciality ? `${speciality} Doctors` : "Find Doctors"}
-          </h1>
-          <p className="text-gray-600">
-            {speciality
-              ? `Browse and book appointments with qualified ${speciality} specialists`
-              : "Browse and book appointments with qualified medical professionals"}
-          </p>
-        </div>
+        <PageTitle normalText="ALL" boldText="DOCTORS" />
 
         <div
           aria-live="polite"
