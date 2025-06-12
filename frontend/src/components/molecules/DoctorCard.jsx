@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import AvailableStatus from "../atoms/availableStatus";
+import AvailableStatus from "../atoms/AvailableStatusvailableStatus";
 import DegreeBadge from "../atoms/DegreeBadge";
 
 const DoctorCard = ({ doctor }) => {
