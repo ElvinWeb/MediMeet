@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import AvailableStatus from "../atoms/availableStatus";
+import DegreeBadge from "../atoms/DegreeBadge";
 
 const DoctorCard = ({ doctor }) => {
   const navigate = useNavigate();
@@ -34,37 +36,11 @@ const DoctorCard = ({ doctor }) => {
           loading="lazy"
           decoding="async"
         />
-
-        <span
-          className="bg-blue-600 py-1 px-2 rounded-md text-white text-xs absolute top-3 right-3 font-medium"
-          aria-label={`Qualification: ${doctor.degree}`}
-        >
-          {doctor.degree}
-        </span>
+        <DegreeBadge degree={doctor.degree} />
       </div>
 
       <div className="p-4">
-        <div
-          className={`flex items-center gap-2 text-sm mb-2 ${
-            doctor.available ? "text-green-600" : "text-gray-500"
-          }`}
-          role="status"
-          aria-label={`Availability status: ${
-            doctor.available
-              ? "Available for appointments"
-              : "Currently not available"
-          }`}
-        >
-          <span
-            className={`w-2 h-2 rounded-full ${
-              doctor.available ? "bg-green-500" : "bg-gray-400"
-            }`}
-            aria-hidden="true"
-          ></span>
-          <span className="font-medium">
-            {doctor.available ? "Available" : "Not Available"}
-          </span>
-        </div>
+        <AvailableStatus available={doctor.available} />
 
         <h3
           id={`doctor-name-${doctor._id}`}
@@ -79,7 +55,6 @@ const DoctorCard = ({ doctor }) => {
           </p>
         </div>
 
-        {/* Screen reader only additional context */}
         <span className="sr-only">
           Click to book an appointment with Dr. {doctor.name}
         </span>
