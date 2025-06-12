@@ -8,11 +8,13 @@ import { API_ENDPOINTS } from "../constants/apiEndpoints";
 import { AppContext } from "../context/AppContext";
 import api from "../utils/api";
 import SEOHelmet from "../components/SEO/SEOHelmet";
+import MoreButton from "../components/atoms/MoreButton";
 
 const MyAppointments = () => {
   const { token } = useContext(AppContext);
   const [appointments, setAppointments] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(5);
 
   const fetchAppointments = useCallback(async () => {
     try {
@@ -61,6 +63,10 @@ const MyAppointments = () => {
     }
   };
 
+  const loadMoreAppointments = () => {
+    setVisibleCount((prevCount) => prevCount + 5);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       if (token) {
@@ -76,9 +82,13 @@ const MyAppointments = () => {
     };
 
     fetchData();
-  }, [setAppointments, token, fetchAppointments]);
+  }, [token, fetchAppointments]);
 
   const noAppointments = !appointments || appointments.length === 0;
+  const visibleAppointments = appointments.slice(0, visibleCount);
+  const hasMoreAppointments = appointments.length > visibleCount;
+
+  console.log(appointments);
 
   return (
     <>
@@ -114,6 +124,7 @@ const MyAppointments = () => {
               <AppointmentCardSkeleton />
               <AppointmentCardSkeleton />
               <AppointmentCardSkeleton />
+              <AppointmentCardSkeleton />
             </div>
           </section>
         ) : noAppointments ? (
@@ -128,7 +139,7 @@ const MyAppointments = () => {
             </h2>
 
             <ul className="divide-y divide-gray-200">
-              {appointments.map((appointment, index) => (
+              {visibleAppointments.map((appointment, index) => (
                 <li key={appointment._id} className="py-4">
                   <AppointmentCard
                     appointment={appointment}
@@ -140,6 +151,15 @@ const MyAppointments = () => {
                 </li>
               ))}
             </ul>
+
+            {hasMoreAppointments && (
+              <div className="flex justify-center mt-8">
+                <MoreButton
+                  ariaLabel={`Load more appointments. Showing ${visibleCount} of ${appointments.length} appointments`}
+                  onLoadMore={loadMoreAppointments}
+                />
+              </div>
+            )}
           </section>
         )}
       </main>
