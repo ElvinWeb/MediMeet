@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import AvailableStatus from "../atoms/AvailableStatusvailableStatus";
 import DegreeBadge from "../atoms/DegreeBadge";
+import AvailableStatus from "../atoms/AvailableStatus";
 
 const DoctorCard = ({ doctor }) => {
   const navigate = useNavigate();
