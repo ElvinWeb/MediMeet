@@ -55,7 +55,7 @@ const Doctors = () => {
         description={pageDescription}
         keywords={pageKeywords}
       />
-      <main id="main-content" className="mt-6">
+      <main id="main-content">
         <PageTitle normalText="ALL" boldText="DOCTORS" />
 
         <div
