@@ -1,5 +1,5 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [react()],
@@ -17,6 +17,7 @@ export default defineConfig({
           utils: [
             "axios",
             "jwt-decode",
+            "prop-types",
             "react-toastify",
             "react-helmet-async",
             "react-loading-skeleton",
@@ -24,7 +25,7 @@ export default defineConfig({
         },
       },
     },
-    minify: 'esbuild',
+    minify: "esbuild",
     terserOptions: {
       compress: {
         drop_console: true,
@@ -40,9 +41,8 @@ export default defineConfig({
       "react",
       "react-dom",
       "react-router-dom",
-      "axios",
-      "dayjs",
       "react-hook-form",
+      "axios",
       "yup",
     ],
     exclude: ["@vite/client", "@vite/env"],
