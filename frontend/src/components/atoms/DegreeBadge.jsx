@@ -12,7 +12,7 @@ const DegreeBadge = ({ degree }) => {
 };
 
 DegreeBadge.propTypes = {
-  degree: PropTypes.bool.isRequired,
+  degree: PropTypes.string.isRequired,
 };
 
 export default DegreeBadge;

@@ -22,7 +22,7 @@ const Footer = () => {
 
           <div>
             <p className="text-xl font-medium mb-5 leading-tight">COMPANY</p>
-            <ul className="flex flex-col gap-2 text-gray-600">
+            <ul className="flex flex-col gap-4 text-gray-600">
               {NAV_LINKS.slice(0, 3).map((link) => (
                 <li key={link.to} className="leading-tight">
                   <NavBarLink link={link} isFooter={true} />
