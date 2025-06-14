@@ -3,10 +3,14 @@ import NavBarLink from "../atoms/NavBarLink";
 
 const Footer = () => {
   return (
-    <footer id="footer" aria-labelledby="Footer">
+    <footer
+      id="footer"
+      aria-labelledby="Footer"
+      className="min-h-[250px]"
+    >
       <div className="md:mx-10">
-        <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-40 text-sm">
-          <div>
+        <div className="grid grid-cols-1 sm:grid-cols-[3fr_1fr_1fr] gap-8 sm:gap-14 my-10 mt-40 text-sm">
+          <div className="order-1">
             <h3 className="text-primary font-medium text-4xl mb-2 leading-tight">
               MediMeet
             </h3>
@@ -14,13 +18,11 @@ const Footer = () => {
               Your trusted partner for managing healthcare needs conveniently
               and securely. Our HIPAA-compliant platform lets you browse
               certified specialists, book virtual or in-person visits in
-              seconds, and keep all your medical records in one place. From
-              first check-ups to ongoing care, MediMeet brings personalized,
-              24/7 support right to your fingertips.
+              seconds, and keep all your medical records in one place.
             </p>
           </div>
 
-          <div>
+          <div className="order-2 sm:order-2">
             <p className="text-xl font-medium mb-5 leading-tight">COMPANY</p>
             <ul className="flex flex-col gap-4 text-gray-600">
               {NAV_LINKS.slice(0, 3).map((link) => (
@@ -31,7 +33,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
+          <div className="order-3 sm:order-3">
             <p className="text-xl font-medium mb-5 leading-tight">
               GET IN TOUCH
             </p>
