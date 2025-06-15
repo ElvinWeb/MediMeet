@@ -72,7 +72,7 @@ const Login = () => {
           aria-labelledby="login-heading"
           aria-describedby="login-description"
         >
-          <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border border-gray-300 rounded-xl text-gray-700 text-sm shadow-lg">
+          <div className="flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border bg-[#FFF] border-gray-300 rounded-xl text-gray-700 text-sm shadow-lg">
             <header className="w-full text-center">
               <h1
                 id="login-heading"
