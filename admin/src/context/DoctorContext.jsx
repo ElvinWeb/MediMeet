@@ -8,7 +8,7 @@ export const DoctorContext = createContext();
 
 const DoctorContextProvider = ({ children }) => {
   const [dToken, setDToken] = useState(
-    () => localStorage.getItem("dToken") || ""
+    () => sessionStorage.getItem("dToken") || ""
   );
   const [appointments, setAppointments] = useState([]);
   const [totalAppointments, setTotalAppointments] = useState(0);

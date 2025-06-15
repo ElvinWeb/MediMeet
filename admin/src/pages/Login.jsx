@@ -43,7 +43,7 @@ const Login = () => {
       const tokenKey = isAdmin ? "aToken" : "dToken";
       const dashboardRoute = isAdmin ? "/admin-dashboard" : "/doctor-dashboard";
 
-      localStorage.setItem(tokenKey, data.token);
+      sessionStorage.setItem(tokenKey, data.token);
       isAdmin ? setAToken(data.token) : setDToken(data.token);
       navigate(dashboardRoute);
       toast.success(`${userType} login successful!`);

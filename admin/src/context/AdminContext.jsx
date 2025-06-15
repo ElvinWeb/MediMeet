@@ -8,7 +8,7 @@ export const AdminContext = createContext();
 
 const AdminContextProvider = ({ children }) => {
   const [aToken, setAToken] = useState(
-    () => localStorage.getItem("aToken") || ""
+    () => sessionStorage.getItem("aToken") || ""
   );
   const [appointments, setAppointments] = useState([]);
   const [totalAppointments, setTotalAppointments] = useState(0);

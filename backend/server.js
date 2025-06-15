@@ -50,7 +50,6 @@ app.use(
 );
 app.use(mongoSanitize());
 app.use(xss());
-
 app.use(
   session({
     secret: process.env.SESSION_SECRET,

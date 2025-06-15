@@ -25,9 +25,7 @@ export const registerUser = async ({ name, email, password }) => {
 
   const newUser = new userModel(userData);
   const user = await newUser.save();
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
   return { success: true, token };
 };
@@ -39,9 +37,7 @@ export const loginUser = async ({ email, password }) => {
   }
   const isMatch = await bcrypt.compare(password, user.password);
   if (isMatch) {
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     return { success: true, token };
   } else {
     return { success: false, message: "Invalid credentials" };

@@ -17,9 +17,9 @@ const Navbar = ({ isMobile, onMenuClick }) => {
   const handleLogout = () => {
     navigate("/");
     dToken && setDToken("");
-    dToken && localStorage.removeItem("dToken");
+    dToken && sessionStorage.removeItem("dToken");
     aToken && setAToken("");
-    aToken && localStorage.removeItem("aToken");
+    aToken && sessionStorage.removeItem("aToken");
   };
 
   return (
