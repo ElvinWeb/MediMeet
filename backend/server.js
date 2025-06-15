@@ -23,15 +23,25 @@ await connectCloudinary();
 
 // ---------- Middlewares ----------
 app.use(compression());
+app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
+const corsOptions = {
+  origin: [process.env.ADMIN_APP_URL, process.env.MAIN_APP_URL],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  preflightContinue: false,
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
   message: { success: false, message: "Too many requests, try again later" },
 });
 app.use(limiter);
-app.use(express.json({ limit: "10kb" }));
-app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(
   helmet({
     contentSecurityPolicy: false,
@@ -40,16 +50,7 @@ app.use(
 );
 app.use(mongoSanitize());
 app.use(xss());
-app.use(
-  cors({
-    origin: [process.env.ADMIN_APP_URL, process.env.MAIN_APP_URL],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-    preflightContinue: false,
-    optionsSuccessStatus: 200,
-  })
-);
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -57,7 +58,7 @@ app.use(
     saveUninitialized: false,
     name: "sessionId",
     cookie: {
-      sameSite: "lax",
+      sameSite: "none",
       secure: true,
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24,
