@@ -7,9 +7,11 @@ import {
   renderCustomizedLabel,
 } from "../../utils/statusUtils.jsx";
 import MiniLoadingSpinner from "../atoms/MiniLoadingSpinner.jsx";
+import EmptyState from "../atoms/EmptyState.jsx";
 
 const AppointmentsStatusPieChart = ({ appointments, isLoading }) => {
   const chartData = getAppointmentStatusCounts(appointments);
+  const isChartAvailable = !chartData || chartData.length === 0;
 
   return (
     <div className="w-full sm:w-1/2 bg-white rounded-lg shadow">
@@ -24,6 +26,11 @@ const AppointmentsStatusPieChart = ({ appointments, isLoading }) => {
       </div>
       {isLoading ? (
         <MiniLoadingSpinner />
+      ) : isChartAvailable ? (
+        <EmptyState
+          title="No Appointment Data Available"
+          subtitle="Your appointment status breakdown (confirmed, pending, cancelled) will appear here once you have scheduled appointments."
+        />
       ) : (
         <ResponsiveContainer width="100%" height={250}>
           <PieChart margin={{ top: 22 }}>
