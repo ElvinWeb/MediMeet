@@ -1,11 +1,12 @@
 import { v2 as cloudinary } from "cloudinary";
+import logger from "../utils/logger.js";
 
 const connectCloudinary = async () => {
   const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_SECRET_KEY } =
     process.env;
 
   if (!CLOUDINARY_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_SECRET_KEY) {
-    console.error(
+    logger.error(
       "❌ Missing Cloudinary credentials in environment variables."
     );
     process.exit(1);

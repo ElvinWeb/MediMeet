@@ -1,24 +1,25 @@
 import mongoose from "mongoose";
+import logger from "../utils/logger.js";
 
 const connectDB = async () => {
   const { MONGODB_URI } = process.env;
 
   if (!MONGODB_URI) {
-    console.error("❌ MongoDB URI is not defined in environment variables.");
+    logger.error("❌ MongoDB URI is not defined in environment variables.");
     process.exit(1);
   }
 
   try {
     mongoose.connection.on("connected", () => {
-      console.log("✅ DB connected successfully.");
+      logger.info("✅ DB connected successfully.");
     });
 
     mongoose.connection.on("error", (err) => {
-      console.error("❌ DB connection error:", err);
+      logger.error("❌ DB connection error:", err);
     });
 
     mongoose.connection.on("disconnected", () => {
-      console.warn("⚠️ DB disconnected.");
+      logger.warn("⚠️ DB disconnected.");
     });
 
     await mongoose.connect(`${MONGODB_URI}/prescripto`, {
@@ -26,7 +27,7 @@ const connectDB = async () => {
       socketTimeoutMS: 45000,
     });
   } catch (error) {
-    console.error("❌ Failed to connect to MongoDB:", error.message);
+    logger.error("❌ Failed to connect to MongoDB:", error.message);
     process.exit(1);
   }
 };
